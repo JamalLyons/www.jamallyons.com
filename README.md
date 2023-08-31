@@ -1,6 +1,6 @@
 ### Hi there, I'm Jamal - aka [ThatGuyJamal][website] 👋
 
-[![discord](https://img.shields.io/discord/991449362246934648?style=for-the-badge)](https://discord.com/invite/waxQWUH9z3)
+[![discord](https://img.shields.io/discord/1133866454618472590?style=for-the-badge)](https://discord.gg/KvrKWZFxzJ)
 [![youtube](https://img.shields.io/youtube/channel/views/UCVOQobByo_2WISQf2037eXQ?style=for-the-badge)](https://www.youtube.com/c/ThatGuyJamal)
 <!-- <img src="https://tokei.rs/b1/github/ThatGuyJamal/thatguyjamal?category=lines"></img> -->
 
