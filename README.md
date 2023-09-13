@@ -25,18 +25,13 @@ __________                 __      ________.__       .__
 
 ## CS University Student and Self-Taught developer
 
-- 🌱 I’m currently learning [Rust](https://www.rust-lang.org/), [TypeScript](https://www.typescriptlang.org), and [MongoDB](https://www.mongodb.com)
+- 🌱 I’m currently learning [Rust](https://www.rust-lang.org/), [TypeScript](https://www.typescriptlang.org), and CPP
 - 👯 I’m looking to collaborate with other content creators and developers.
 - ⚡ For fun I love watching and reading anime, as well as playing video games and exploring outdoors.
 
 ## Active Projects (2023)
 
-[NeuraLabs AI](https://neuralabs.vercel.app) - Machine Learning Algoithms for all developers!
-
-[Code Goblin](https://github.com/ThatGuyJamal/Code-Goblin) - A Discord Bot made for programmers and technology enthusiast!
-
-[Audio Lion](https://github.com/audio-lion-dev/Audio-Lion) - A simple audio player and downloader for your desktop, built in rust!
-
+TBA
 
 ### Future projects / goals in tech
 - Research AI / matchine learning with audio 🎼
