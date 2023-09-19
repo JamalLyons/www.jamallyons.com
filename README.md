@@ -1,43 +1,24 @@
 ### Hi there, I'm Jamal - aka [ThatGuyJamal][website] 👋
 
-[![discord](https://img.shields.io/discord/1133866454618472590?style=for-the-badge)](https://discord.gg/KvrKWZFxzJ)
-[![youtube](https://img.shields.io/youtube/channel/views/UCVOQobByo_2WISQf2037eXQ?style=for-the-badge)](https://www.youtube.com/c/ThatGuyJamal)
 <!-- <img src="https://tokei.rs/b1/github/ThatGuyJamal/thatguyjamal?category=lines"></img> -->
 
-<img height="350" src="./assets/zero_two.svg" align="right"/>
-
-<br/>
-
-```
-__________                    ___________                  
-\____    /___________  ____   \__    ___/_  _  ______      
-  /     // __ \_  __ \/  _ \    |    |  \ \/ \/ /  _ \     
- /     /\  ___/|  | \(  <_> )   |    |   \     (  <_> )    
-/_______ \___  >__|   \____/    |____|    \/\_/ \____/     
-        \/   \/                                            
-__________                 __      ________.__       .__   
-\______   \ ____   _______/  |_   /  _____/|__|______|  |  
- |    |  _// __ \ /  ___/\   __\ /   \  ___|  \_  __ \  |  
- |    |   \  ___/ \___ \  |  |   \    \_\  \  ||  | \/  |__
- |______  /\___  >____  > |__|    \______  /__||__|  |____/
-        \/     \/     \/                 \/                
-```
+<!-- <img height="350" src="./assets/zero_two.svg" align="right"/> -->
 
 ## CS University Student and Self-Taught developer
 
-- 🌱 I’m currently learning [Rust](https://www.rust-lang.org/), [TypeScript](https://www.typescriptlang.org), and CPP
+- 🌱 I’m currently learning [Rust](https://www.rust-lang.org/), [TypeScript](https://www.typescriptlang.org), and C++
 - 👯 I’m looking to collaborate with other content creators and developers.
-- ⚡ For fun I love watching and reading anime, as well as playing video games and exploring outdoors.
+- ⚡ For fun I love watching and reading anime, as well as playing video games and exploring the outdoors.
 
 ## Active Projects (2023)
 
 TBA
 
-### Future projects / goals in tech
-- Research AI / matchine learning with audio 🎼
-- Contribute to open source projects 🌐
+### Future projects/goals in tech
+- Research AI/machine learning with audio 🎼
+- Contribute to open-source projects 🌐
 - Make my own cryptocurrency💰
-- Start my own company with other developers in the tech indestry 💼
+- Start my own company with other developers in the tech industry 💼
 - Teach other developers programming 📺
 
 ### Connect with me:
@@ -55,7 +36,6 @@ TBA
 ### Languages and Tools I Use:
 
 [<img align="left" alt="Visual Studio Code" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png" />][webdevplaylist]
-
 
 [<img align="left" alt="CSS3" width="26px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" />][cssplaylist]
 
