@@ -6,7 +6,7 @@
 
 ## CS University Student and Self-Taught developer
 
-- 🌱 I’m currently learning [Rust](https://www.rust-lang.org/), [TypeScript](https://www.typescriptlang.org), and C++
+- 🌱 I’m currently learning [Rust](https://www.rust-lang.org/) and [JavaScript/TypeScript](https://www.typescriptlang.org)
 - 👯 I’m looking to collaborate with other content creators and developers.
 - ⚡ For fun I love watching and reading anime, as well as playing video games and exploring the outdoors.
 
@@ -15,9 +15,8 @@
 TBA
 
 ### Future projects/goals in tech
-- Research AI/machine learning with audio 🎼
+- Research AI/machine learning
 - Contribute to open-source projects 🌐
-- Make my own cryptocurrency💰
 - Start my own company with other developers in the tech industry 💼
 - Teach other developers programming 📺
 
