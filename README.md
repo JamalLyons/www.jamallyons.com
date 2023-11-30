@@ -12,7 +12,7 @@
 
 ## Active Projects (2023)
 
-TBA
+- [Neuralab AI](https://neuralab.dev)
 
 ### Future projects/goals in tech
 - Research AI/machine learning
