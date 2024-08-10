@@ -12,7 +12,6 @@ for (let i = 0; i < socialLinks.length; i++) {
 
 	anchor.href = socialLinks[i].link;
 	anchor.textContent = socialLinks[i].name;
-	anchor.className = "hover:underline";
 	anchor.target = "_blank";
 
 	listItem.appendChild(anchor);

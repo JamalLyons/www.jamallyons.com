@@ -2,7 +2,17 @@
  * List of projects
  * @type {{name: string, github_url: string}[]}
  */
-const projects = [];
+const projects = [
+	{
+		name: "Linux Toolbox",
+		github_url: "https://github.com/ThatGuyJamal/jlt",
+	},
+	{
+		name: "Data Structures and Algorithms using Rust",
+		github_url:
+			"https://github.com/ThatGuyJamal/Learn-Data-Structures-and-Algorithms",
+	},
+];
 
 const projectsContainer = document.getElementById("project-links");
 
@@ -13,7 +23,6 @@ if (projects.length > 0) {
 
 		anchor.href = projects[i].github_url;
 		anchor.textContent = projects[i].name;
-		anchor.className = "hover:underline hover:text-red-500";
 		anchor.target = "_blank";
 
 		listItem.appendChild(anchor);
