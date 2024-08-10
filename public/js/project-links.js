@@ -23,6 +23,7 @@ if (projects.length > 0) {
 
 		anchor.href = projects[i].github_url;
 		anchor.textContent = projects[i].name;
+		anchor.className = "hover:text-purple-400";
 		anchor.target = "_blank";
 
 		listItem.appendChild(anchor);

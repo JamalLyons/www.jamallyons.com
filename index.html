@@ -6,30 +6,32 @@
     <title>CodingWithJamal</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body class="font-mono bg-zinc-900">
+  <body
+    class="flex items-center justify-center min-h-screen font-mono bg-zinc-900"
+  >
+    <!-- ? Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="loading-spinner"></div>
+    </div>
     <div class="container flex flex-col items-center px-4 py-10 mx-auto">
-      <h1 class="mb-4 text-3xl text-center text-purple-400">CodingWithJamal</h1>
-      <div
-        class="w-full max-w-md p-4 mb-10 rounded-lg shadow-lg bg-zinc-800 hover:bg-zinc-700"
-      >
+      <h1 class="mb-6 text-3xl text-center text-purple-400">CodingWithJamal</h1>
+      <!-- ? Social links -->
+      <div class="w-full max-w-md p-4 mb-10 rounded-lg shadow-lg bg-zinc-800">
         <p class="mb-2 text-center text-white">Social links</p>
-        <ul
-          id="social-links"
-          class="mb-2 text-white list-disc list-inside"
-        ></ul>
+        <ul id="social-links" class="mb-2 text-white list-disc list-inside" />
       </div>
-      <div
-        class="w-full max-w-md p-4 rounded-lg shadow-lg bg-zinc-800 hover:bg-zinc-700"
-      >
+      <!-- ? Current projects -->
+      <div class="w-full max-w-md p-4 rounded-lg shadow-lg bg-zinc-800">
         <p class="mb-2 text-center text-white">Current projects</p>
-        <ul id="project-links" class="text-white list-disc list-inside"></ul>
+        <ul id="project-links" class="text-white list-disc list-inside" />
       </div>
     </div>
-    <script type="module" src="main.js"></script>
-    <script
-      src="https://beamanalytics.b-cdn.net/beam.min.js"
-      data-token="bf73f66b-6d2b-446b-88bd-d7feda0d8f94"
-      async
-    ></script>
   </body>
+  <!-- ! Scripts -->
+  <script type="module" src="main.js"></script>
+  <script
+    src="https://beamanalytics.b-cdn.net/beam.min.js"
+    data-token="bf73f66b-6d2b-446b-88bd-d7feda0d8f94"
+    async
+  ></script>
 </html>
