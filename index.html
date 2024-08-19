@@ -13,25 +13,167 @@
     <div id="loading-overlay" class="loading-overlay">
       <div class="loading-spinner"></div>
     </div>
+    <!-- ? Main Content -->
     <div class="container flex flex-col items-center px-4 py-10 mx-auto">
-      <h1 class="mb-6 text-3xl text-center text-purple-400">CodingWithJamal</h1>
-      <!-- ? Social links -->
-      <div class="w-full max-w-md p-4 mb-10 rounded-lg shadow-lg bg-zinc-800">
-        <p class="mb-2 text-center text-white">Social links</p>
-        <ul id="social-links" class="mb-2 text-white list-disc list-inside" />
+      <h1 class="mb-6 text-3xl font-bold text-center text-purple-400">
+        CodingWithJamal
+      </h1>
+
+      <div
+        class="flex flex-col items-center justify-center w-full max-w-5xl space-y-6 md:flex-row md:space-y-0 md:space-x-6"
+      >
+        <!-- ? About me -->
+        <div class="w-full max-w-3xl p-6 rounded-lg shadow-lg bg-zinc-800 h-60">
+          <p
+            class="mb-4 text-lg font-semibold text-center text-white underline underline-offset-4"
+          >
+            About Me
+          </p>
+          <p class="text-white">
+            I'm a <span class="text-purple-400">computer science</span> student
+            at Georgia State University. I am passionate about learning new
+            technologies and creating projects that make a positive impact on
+            the world. I am always looking for new challenges and opportunities
+            to grow as a developer. I am excited to contribute my skills and
+            knowledge to make a positive impact on the world.
+          </p>
+        </div>
+
+        <!-- ? Social links -->
+        <div class="w-full max-w-md p-6 rounded-lg shadow-lg bg-zinc-800 h-60">
+          <p
+            class="mb-4 text-lg font-semibold text-center text-white underline underline-offset-4"
+          >
+            Find me at:
+          </p>
+          <ul id="social-links" class="flex flex-wrap justify-around"></ul>
+        </div>
       </div>
+
       <!-- ? Current projects -->
-      <div class="w-full max-w-md p-4 rounded-lg shadow-lg bg-zinc-800">
-        <p class="mb-2 text-center text-white">Current projects</p>
-        <ul id="project-links" class="text-white list-disc list-inside" />
+      <div class="w-full max-w-3xl p-4 mt-10 rounded-lg shadow-lg bg-zinc-800">
+        <p class="mb-4 text-lg font-semibold text-center text-white">
+          My Projects
+        </p>
+        <div
+          id="project-cards"
+          class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        ></div>
       </div>
     </div>
   </body>
   <!-- ! Scripts -->
   <script type="module" src="main.js"></script>
+  <!-- ? Beam-analytics -->
   <script
     src="https://beamanalytics.b-cdn.net/beam.min.js"
     data-token="bf73f66b-6d2b-446b-88bd-d7feda0d8f94"
     async
   ></script>
+  <!-- ? Project cards -->
+  <script>
+    const projects = [
+      {
+        name: "Type Fetch",
+        description:
+          "A lightweight, flexible HTTP client library for making API requests in JavaScript/TypeScript.",
+        github_url: "https://github.com/ThatGuyJamal/type-fetch",
+      },
+      {
+        name: "Quick KV",
+        description: "A Key-Value storage database written in rust.",
+        github_url: "https://github.com/ThatGuyJamal/quick-kv",
+      },
+      {
+        name: "Convex TypeGen",
+        description:
+          "A tool for converting convex db schema to rust compatible types.",
+        github_url: "https://github.com/ThatGuyJamal/convex-typegen",
+      },
+      {
+        name: "Linux Toolbox",
+        description:
+          "A personal utility script for automating my linux systems.",
+        github_url: "https://github.com/ThatGuyJamal/jlt",
+      },
+      {
+        name: "Learn Data Structures and Algorithms",
+        description:
+          "A free book for learning data structures and algorithms written by me in Rust.",
+        github_url:
+          "https://github.com/ThatGuyJamal/Learn-Data-Structures-and-Algorithms",
+      },
+      // {
+      //   name: "",
+      //   description: "",
+      //   github_url: "",
+      // }
+    ];
+
+    const projectsContainer = document.getElementById("project-cards");
+
+    if (projects.length > 0) {
+      projects.forEach((project) => {
+        const card = document.createElement("div");
+        card.className =
+          "p-4 border border-purple-400 rounded-lg shadow-lg bg-zinc-700";
+
+        const projectName = document.createElement("h3");
+        projectName.className = "mb-2 text-xl font-semibold text-purple-400";
+        projectName.textContent = project.name;
+
+        const projectDescription = document.createElement("p");
+        projectDescription.className = "mb-4 text-white";
+        projectDescription.textContent = project.description;
+
+        const projectLink = document.createElement("a");
+        projectLink.href = project.github_url;
+        projectLink.textContent = "View on GitHub";
+        projectLink.className = "text-purple-400 hover:underline";
+        projectLink.target = "_blank";
+
+        card.appendChild(projectName);
+        card.appendChild(projectDescription);
+        card.appendChild(projectLink);
+
+        projectsContainer.appendChild(card);
+      });
+    } else {
+      const noProjectsMessage = document.createElement("p");
+      noProjectsMessage.className = "text-white";
+      noProjectsMessage.textContent = "No projects to display.";
+      projectsContainer.appendChild(noProjectsMessage);
+    }
+  </script>
+  <!-- ? Social links -->
+  <script>
+    const socialLinks = [
+      { name: "Twitter", link: "https://twitter.com/codingwithjamal" },
+      { name: "YouTube", link: "https://www.youtube.com/@codingwithjamal" },
+      {
+        name: "LinkedIn",
+        link: "https://www.linkedin.com/in/jamal-lyons-a71052248/",
+      },
+      { name: "Instagram", link: "https://www.instagram.com/codingwithjamal/" },
+      { name: "GitHub", link: "https://github.com/ThatGuyJamal" },
+    ];
+
+    const socialLinksContainer = document.getElementById("social-links");
+
+    socialLinks.forEach((social) => {
+      const listItem = document.createElement("li");
+      const anchor = document.createElement("a");
+
+      anchor.href = social.link;
+      anchor.textContent = social.name;
+      anchor.className =
+        "text-white text-lg font-semibold hover:text-purple-400 transition-colors duration-300";
+      anchor.target = "_blank";
+
+      listItem.appendChild(anchor);
+      listItem.className = "p-2"; // Adds padding to each list item
+
+      socialLinksContainer.appendChild(listItem);
+    });
+  </script>
 </html>
