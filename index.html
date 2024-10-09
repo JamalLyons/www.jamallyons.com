@@ -81,33 +81,38 @@
       {
         name: "Pheonix",
         description: "A Key-Value storage database written in rust.",
-        github_url: "https://github.com/ThatGuyJamal/phoenix-db",
+        url: "https://github.com/ThatGuyJamal/phoenix-db",
       },
       {
         name: "Type Fetch",
         description:
           "A lightweight, flexible HTTP client library for making API requests in JavaScript/TypeScript.",
-        github_url: "https://github.com/ThatGuyJamal/type-fetch",
+          url: "https://github.com/ThatGuyJamal/type-fetch",
+      },
+      {
+        name: "Poems By Jamal",
+        description: "A site created for sharing my poems.",
+        url: "https://poemsbyjamal.vercel.app",
       },
       {
         name: "Convex TypeGen",
         description:
           "A tool for converting convex db schema to rust compatible types.",
-        github_url: "https://github.com/ThatGuyJamal/convex-typegen",
+          url: "https://github.com/ThatGuyJamal/convex-typegen",
       },
       {
         name: "Linux Toolbox",
         description:
           "A personal utility script for automating my linux systems.",
-        github_url: "https://github.com/ThatGuyJamal/jlt",
+          url: "https://github.com/ThatGuyJamal/jlt",
       },
       {
         name: "Learn Data Structures and Algorithms",
         description:
           "A free book for learning data structures and algorithms written by me in Rust.",
-        github_url:
+          url:
           "https://github.com/ThatGuyJamal/Learn-Data-Structures-and-Algorithms",
-      },
+      }
     ];
 
     const projectsContainer = document.getElementById("project-cards");
@@ -127,8 +132,8 @@
         projectDescription.textContent = project.description;
 
         const projectLink = document.createElement("a");
-        projectLink.href = project.github_url;
-        projectLink.textContent = "View on GitHub";
+        projectLink.href = project.url;
+        projectLink.textContent = "View project";
         projectLink.className = "text-purple-400 hover:underline";
         projectLink.target = "_blank";
 
