@@ -58,8 +58,13 @@
       <!-- ? Current projects -->
       <div class="w-full max-w-3xl p-4 mt-10 rounded-lg shadow-lg bg-zinc-800">
         <p class="mb-4 text-lg font-semibold text-center text-white">
-          My Projects
+          Current Projects
         </p>
+        <span>
+          <p class="mb-4 text-sm italic text-center text-white">
+            More projects can be found on my Github profile.
+          </p>
+        </span>
         <div
           id="project-cards"
           class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
@@ -90,29 +95,29 @@
           url: "https://github.com/ThatGuyJamal/type-fetch",
       },
       {
-        name: "Poems By Jamal",
-        description: "A site created for sharing my poems.",
-        url: "https://poemsbyjamal.vercel.app",
-      },
-      {
         name: "Convex TypeGen",
         description:
           "A tool for converting convex db schema to rust compatible types.",
           url: "https://github.com/ThatGuyJamal/convex-typegen",
       },
       {
-        name: "Linux Toolbox",
+        name: "Embedded GPT",
         description:
-          "A personal utility script for automating my linux systems.",
-          url: "https://github.com/ThatGuyJamal/jlt",
+          "A script for building a pair programmer with context from the web.",
+          url: "https://github.com/ThatGuyJamal/embedded-gpt",
       },
       {
-        name: "Learn Data Structures and Algorithms",
+        name: "SQLite Tenant Lib",
         description:
-          "A free book for learning data structures and algorithms written by me in Rust.",
+          "SQLite Multi-Tenant Management Library",
           url:
-          "https://github.com/ThatGuyJamal/Learn-Data-Structures-and-Algorithms",
-      }
+          "https://github.com/ThatGuyJamal/sqlite-tenant-lib",
+      },
+      {
+        name: "Poems By Jamal",
+        description: "A site created for sharing my poems.",
+        url: "https://poemsbyjamal.vercel.app",
+      },
     ];
 
     const projectsContainer = document.getElementById("project-cards");
