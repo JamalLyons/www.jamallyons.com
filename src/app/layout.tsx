@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,11 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <Script
+        async
+        src="https://beamanalytics.b-cdn.net/beam.min.js"
+        data-token="bf73f66b-6d2b-446b-88bd-d7feda0d8f94"
+      />
     </html>
   );
 }
