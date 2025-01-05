@@ -40,7 +40,9 @@ export default function TechStack() {
   return (
     <section className="py-20 bg-black">
       <div className="container px-4 mx-auto">
-        <h2 className="mb-10 text-3xl font-bold text-center">Tech Stack</h2>
+        <h2 className="mb-10 text-3xl font-bold text-center">
+          Technologies I Use
+        </h2>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {technologies.map((tech) => (
             <div key={tech.name} className="flex flex-col items-center">
