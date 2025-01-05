@@ -17,6 +17,7 @@ import {
   SiNodedotjs,
   SiCplusplus,
 } from "react-icons/si";
+import ConvexIcon from "../_icons/ConvexIcon";
 
 export default function TechStack() {
   const technologies = [
@@ -41,9 +42,8 @@ export default function TechStack() {
       icon: SiTailwindcss,
       link: "https://tailwindcss.com/",
     },
-    { name: "HTML", icon: SiHtml5, link: "https://html.spec.whatwg.org/" },
-    { name: "CSS", icon: SiCss3, link: "https://www.w3.org/Style/CSS/" },
     { name: "Node.js", icon: SiNodedotjs, link: "https://nodejs.org/" },
+    // { name: "Convex", icon: ConvexIcon, link: "https://convex.dev/" },
   ];
 
   return (
