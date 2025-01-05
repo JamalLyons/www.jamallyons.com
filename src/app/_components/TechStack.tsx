@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DiJava } from "react-icons/di";
 import {
   SiRust,
@@ -19,22 +20,30 @@ import {
 
 export default function TechStack() {
   const technologies = [
-    { name: "TypeScript", icon: SiTypescript },
-    { name: "Rust", icon: SiRust },
-    { name: "Python", icon: SiPython },
-    { name: "SQL", icon: SiPostgresql },
-    { name: "React", icon: SiReact },
-    { name: "Java", icon: DiJava },
-    { name: "C++", icon: SiCplusplus },
-    { name: "Linux", icon: SiLinux },
-    { name: "MongoDB", icon: SiMongodb },
-    { name: "Redis", icon: SiRedis },
-    { name: "Git", icon: SiGit },
-    { name: "Docker", icon: SiDocker },
-    { name: "Tailwind CSS", icon: SiTailwindcss },
-    { name: "HTML", icon: SiHtml5 },
-    { name: "CSS", icon: SiCss3 },
-    { name: "Node.js", icon: SiNodedotjs },
+    {
+      name: "TypeScript",
+      icon: SiTypescript,
+      link: "https://www.typescriptlang.org/",
+    },
+    { name: "Rust", icon: SiRust, link: "https://www.rust-lang.org/" },
+    { name: "Python", icon: SiPython, link: "https://www.python.org/" },
+    { name: "SQL", icon: SiPostgresql, link: "https://www.postgresql.org/" },
+    { name: "React", icon: SiReact, link: "https://react.dev/" },
+    { name: "Java", icon: DiJava, link: "https://www.java.com/" },
+    { name: "C++", icon: SiCplusplus, link: "https://en.cppreference.com/w/" },
+    { name: "Linux", icon: SiLinux, link: "https://www.linux.org/" },
+    { name: "MongoDB", icon: SiMongodb, link: "https://www.mongodb.com/" },
+    { name: "Redis", icon: SiRedis, link: "https://redis.io/" },
+    { name: "Git", icon: SiGit, link: "https://git-scm.com/" },
+    { name: "Docker", icon: SiDocker, link: "https://www.docker.com/" },
+    {
+      name: "Tailwind CSS",
+      icon: SiTailwindcss,
+      link: "https://tailwindcss.com/",
+    },
+    { name: "HTML", icon: SiHtml5, link: "https://html.spec.whatwg.org/" },
+    { name: "CSS", icon: SiCss3, link: "https://www.w3.org/Style/CSS/" },
+    { name: "Node.js", icon: SiNodedotjs, link: "https://nodejs.org/" },
   ];
 
   return (
@@ -46,8 +55,15 @@ export default function TechStack() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {technologies.map((tech) => (
             <div key={tech.name} className="flex flex-col items-center">
-              <tech.icon className="mb-2 text-5xl text-purple-500" />
-              <span className="text-sm">{tech.name}</span>
+              <Link
+                href={tech.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm flex flex-col items-center"
+              >
+                <tech.icon className="mb-2 text-5xl text-purple-500" />
+                <span className="text-center">{tech.name}</span>
+              </Link>
             </div>
           ))}
         </div>
