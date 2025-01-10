@@ -1,4 +1,10 @@
-import { FaTwitter, FaGithub, FaYoutube, FaLinkedin } from "react-icons/fa";
+import {
+  FaTwitter,
+  FaGithub,
+  FaYoutube,
+  FaLinkedin,
+  FaTwitch,
+} from "react-icons/fa";
 
 const socialLinks = [
   {
@@ -20,6 +26,11 @@ const socialLinks = [
     href: "https://www.youtube.com/@codingwithjamal",
     label: "YouTube",
     icon: <FaYoutube className="text-2xl" />,
+  },
+  {
+    href: "https://www.twitch.tv/codingwithjamal",
+    label: "Twitch",
+    icon: <FaTwitch className="text-2xl" />,
   },
 ];
 
