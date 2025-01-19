@@ -13,9 +13,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Jamal Lyons - Developer Portfolio",
-  description: "Computer Science student and aspiring developer",
+export const metadata = {
+  title: "Jamal Lyons - Backend Software Engineer",
+  description:
+    "Portfolio of Jamal Lyons, a Backend Software Engineer and Computer Science student at Georgia State University.",
 };
 
 export default function RootLayout({
@@ -26,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-black text-white ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`bg-black text-purple-300 ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
