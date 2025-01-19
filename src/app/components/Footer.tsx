@@ -2,14 +2,22 @@ import { Github, Twitter, Linkedin, Youtube, Twitch } from "lucide-react";
 
 const socialLinks = [
   { name: "GitHub", icon: Github, url: "https://github.com/jamallyons" },
-  { name: "Twitter", icon: Twitter, url: "https://twitter.com/jamallyons" },
+  {
+    name: "Twitter",
+    icon: Twitter,
+    url: "https://twitter.com/codingwithjamal",
+  },
   {
     name: "LinkedIn",
     icon: Linkedin,
-    url: "https://linkedin.com/in/jamallyons",
+    url: "https://linkedin.com/in/codingwithjamal",
   },
-  { name: "YouTube", icon: Youtube, url: "https://youtube.com/@jamallyons" },
-  { name: "Twitch", icon: Twitch, url: "https://twitch.tv/jamallyons" },
+  {
+    name: "YouTube",
+    icon: Youtube,
+    url: "https://youtube.com/@codingwithjamal",
+  },
+  { name: "Twitch", icon: Twitch, url: "https://twitch.tv/codingwithjamal" },
 ];
 
 export default function Footer() {
