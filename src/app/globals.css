@@ -3,22 +3,46 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 216, 180, 254;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --terminal-purple: #a855f7;
+  --terminal-purple-dark: #7e22ce;
+  --terminal-purple-light: #d8b4fe;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #000;
+  color: var(--terminal-purple-light);
+  font-family: "JetBrains Mono", monospace;
 }
 
-/* Custom scrollbar styles */
+/* Terminal window styles */
+.terminal-window {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--terminal-purple);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.terminal-prompt::before {
+  content: "$ ";
+  color: var(--terminal-purple);
+}
+
+.terminal-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -28,21 +52,26 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #a855f7;
+  background: var(--terminal-purple);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9333ea;
+  background: var(--terminal-purple-dark);
 }
 
-/* Typing animation */
+/* Activity graph styles */
+.activity-graph {
+  stroke: var(--terminal-purple);
+  fill: rgba(168, 85, 247, 0.1);
+}
+
+/* Terminal text animation */
 .typing-animation {
   overflow: hidden;
-  border-right: 2px solid #a855f7;
+  border-right: 2px solid var(--terminal-purple);
   white-space: nowrap;
   animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-  transition: width 0.3s ease-in-out;
 }
 
 @keyframes typing {
@@ -60,11 +89,6 @@ body {
     border-color: transparent;
   }
   50% {
-    border-color: #a855f7;
+    border-color: var(--terminal-purple);
   }
-}
-
-/* Blog card hover effect */
-.blog-card:hover .blog-card-content {
-  transform: translateY(-4px);
 }
