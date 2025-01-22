@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import {
@@ -58,7 +58,9 @@ const backEnd = [
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
-  const typeSpeed = 85;
+
+  const typeSpeed = 95;
+
   const blogButtonEnabled = false;
   const contactButtonEnabled = false;
 
@@ -105,39 +107,33 @@ export default function Hero() {
             />
           </div>
           <div className="space-y-4">
-            <div>
-              <span className="text-purple-400">name: </span>
-              <span>Jamal Lyons</span>
-            </div>
-            <div>
-              <span className="text-purple-400">role: </span>
-              <span>Backend Software Engineer</span>
-            </div>
-            <div>
-              <span className="text-purple-400">experience: </span>
-              <span>
-                Interning at{" "}
-                <a
-                  href="https://www.claritytext.com"
-                  target="_blank"
-                  className="hover:text-purple-400 underline"
-                >
-                  Clarity Text
-                </a>
-              </span>
-            </div>
-            <div>
-              <span className="text-purple-400">about: </span>
-              <TypeAnimation
-                sequence={[aboutMe, 1000]}
-                speed={typeSpeed}
-                className="block"
-                repeat={0}
-              />
-            </div>
-            <div>
-              <span className="text-purple-400">links: </span>
-              <div className="inline-flex space-x-4">
+            <TypeAnimation
+              sequence={[
+                "name: Jamal Lyons",
+                1000,
+                "name: Jamal Lyons\nrole: Backend Software Engineer",
+                1000,
+                "name: Jamal Lyons\nrole: Backend Software Engineer\nexperience: Intern at Clarity Text",
+                1000,
+                `name: Jamal Lyons\nrole: Backend Software Engineer\nexperience: Intern at Clarity Text\nabout: ${aboutMe}`,
+                1000,
+                `name: Jamal Lyons\nrole: Backend Software Engineer\nexperience: Intern at Clarity Text\nabout: ${aboutMe}\nFrontend skills: ${frontEnd.join(
+                  ", "
+                )}\nuhhhhhh one more thing... hold on...`,
+                1000,
+                `name: Jamal Lyons\nrole: Backend Software Engineer\nexperience: Intern at Clarity Text\nabout: ${aboutMe}\nFrontend skills: ${frontEnd.join(
+                  ", "
+                )}\nBackend skills: ${backEnd.join(", ")}`,
+                1000,
+              ]}
+              speed={typeSpeed}
+              style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+              repeat={0}
+              className="block"
+            />
+            <div className="mt-4">
+              <span className="text-purple-400">Find me at: </span>
+              <div className="inline-flex flex-wrap gap-2 mt-2">
                 {links.map(({ href, icon, children }) => (
                   <a
                     key={href}
@@ -151,14 +147,6 @@ export default function Hero() {
                   </a>
                 ))}
               </div>
-            </div>
-            <div>
-              <span className="text-purple-400">frontend skills: </span>
-              <span>{frontEnd.map((tech) => tech).join(", ")}</span>
-            </div>
-            <div>
-              <span className="text-purple-400">backend skills: </span>
-              <span>{backEnd.map((tech) => tech).join(", ")}</span>
             </div>
           </div>
         </div>
