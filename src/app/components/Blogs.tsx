@@ -13,6 +13,14 @@ const blogs = [
     readTime: "15 min read",
     link: "https://stack.convex.dev/building-type-safe-rust-applications-with-convex",
   },
+  {
+    title: "Authentication Best Practices: Convex, Clerk and Next.js",
+    excerpt:
+      "Authentication is the backbone of any full-stack application, but it’s also one of the easiest places to introduce subtle, hard-to-debug security flaws. As developers, we aim to build secure, reliable systems, but scaling an app to a global audience presents unique challenges—especially regarding authentication.",
+    data: "2025-03-06",
+    readTime: "25 min read",
+    link: `https://stack.convex.dev/authentication-best-practices-convex-clerk-and-nextjs`,
+  },
 ];
 
 export default function Blogs() {
