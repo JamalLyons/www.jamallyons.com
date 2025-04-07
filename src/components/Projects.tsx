@@ -10,8 +10,8 @@ interface Project {
   name: string;
   description: string;
   image: string;
-  github: string;
-  registryUrl: string;
+  github?: string;
+  registryUrl?: string;
 }
 
 const projects: Project[] = [
@@ -47,7 +47,6 @@ const projects: Project[] = [
     image:
       "https://gist.github.com/user-attachments/assets/8c5b5d49-3de3-48ee-a693-cd7afd0a808c",
     github: "https://github.com/ThatGuyJamal/phoenix-db",
-    registryUrl: "https://github.com/ThatGuyJamal/phoenix-db",
   },
   {
     name: "Poems Collection",
@@ -55,7 +54,6 @@ const projects: Project[] = [
       "A personal collection of poems and creative writing pieces showcasing my thoughts, emotions, and storytelling abilities through verse.",
     image:
       "https://gist.github.com/user-attachments/assets/584be388-758b-4f71-8240-bb7c09d38063",
-    github: "https://github.com/JamalLyons/poems",
     registryUrl: "https://poems.jamallyons.com",
   },
 ];
@@ -97,22 +95,26 @@ export default function Projects() {
                 />
                 {hoveredProject === project.name && (
                   <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center space-x-4 transition-all duration-300">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-white hover:text-purple-400 transition-colors transform hover:scale-110"
-                    >
-                      <FaGithub className="w-8 h-8" />
-                    </a>
-                    <a
-                      href={project.registryUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-white hover:text-purple-400 transition-colors transform hover:scale-110"
-                    >
-                      <FaExternalLinkAlt className="w-8 h-8" />
-                    </a>
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white hover:text-purple-400 transition-colors transform hover:scale-110"
+                      >
+                        <FaGithub className="w-8 h-8" />
+                      </a>
+                    )}
+                    {project.registryUrl && (
+                      <a
+                        href={project.registryUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white hover:text-purple-400 transition-colors transform hover:scale-110"
+                      >
+                        <FaExternalLinkAlt className="w-8 h-8" />
+                      </a>
+                    )}
                   </div>
                 )}
               </div>
