@@ -49,8 +49,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-black text-purple-300 ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`bg-[#0a0a0f] text-purple-300 ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <div className="grid-background" />
         {children}
       </body>
       <Script

@@ -6,6 +6,11 @@
   --terminal-purple: #a855f7;
   --terminal-purple-dark: #7e22ce;
   --terminal-purple-light: #d8b4fe;
+  --electric-blue: #00f2ff;
+  --deep-gray: #333333;
+  --bg-dark: #0a0a0f;
+  --glow-effect: 0 0 10px var(--terminal-purple),
+    0 0 30px rgba(168, 85, 247, 0.3);
 }
 
 @font-face {
@@ -14,17 +19,40 @@
 }
 
 body {
-  background-color: #000;
+  background-color: var(--bg-dark);
   color: var(--terminal-purple-light);
   font-family: "JetBrains Mono", monospace;
+  overflow-x: hidden;
 }
 
 /* Terminal window styles */
 .terminal-window {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(10, 10, 15, 0.8);
   border: 1px solid var(--terminal-purple);
-  border-radius: 4px;
-  padding: 1rem;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--glow-effect);
+  backdrop-filter: blur(3px);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.terminal-window::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--terminal-purple-dark),
+    var(--terminal-purple),
+    var(--terminal-purple-dark)
+  );
+  z-index: 2;
+  animation: glow 3s ease-in-out infinite;
 }
 
 .terminal-prompt::before {
@@ -48,7 +76,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: var(--bg-dark);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -90,5 +118,164 @@ body {
   }
   50% {
     border-color: var(--terminal-purple);
+  }
+}
+
+/* Neon glow animation */
+@keyframes glow {
+  0% {
+    opacity: 0.7;
+    box-shadow: 0 0 5px var(--terminal-purple);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--terminal-purple),
+      0 0 30px var(--terminal-purple-dark);
+  }
+  100% {
+    opacity: 0.7;
+    box-shadow: 0 0 5px var(--terminal-purple);
+  }
+}
+
+/* Particle animation styles */
+.particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.particle {
+  position: absolute;
+  background: var(--terminal-purple);
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Skill icon styles */
+.skill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  margin: 0.25rem;
+  border-radius: 8px;
+  background-color: rgba(10, 10, 15, 0.8);
+  border: 1px solid var(--terminal-purple-dark);
+  color: var(--terminal-purple-light);
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-icon::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 10px;
+  background: linear-gradient(
+    45deg,
+    var(--terminal-purple),
+    var(--electric-blue),
+    var(--terminal-purple-dark)
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skill-icon:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--glow-effect);
+}
+
+.skill-icon:hover::before {
+  opacity: 0.8;
+  animation: rotation 2s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Floating animation for skill icons */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Grid background */
+.grid-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(var(--bg-dark) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-dark) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: center center;
+  z-index: -2;
+  opacity: 0.15;
+}
+
+/* Hero section styles */
+.hero-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(
+    circle,
+    rgba(168, 85, 247, 0.2) 0%,
+    rgba(10, 10, 15, 0) 70%
+  );
+  z-index: -1;
+  filter: blur(40px);
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.7;
   }
 }

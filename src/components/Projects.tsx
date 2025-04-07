@@ -11,7 +11,7 @@ const projects = [
     image:
       "https://gist.github.com/user-attachments/assets/2ca74613-5e8a-4f91-a2da-f11cccd437f4",
     github: "https://github.com/ThatGuyJamal/convex-typegen",
-    live: "https://crates.io/crates/convex-typegen",
+    registryUrl: "https://crates.io/crates/convex-typegen",
   },
   {
     name: "Type Fetch",
@@ -20,7 +20,7 @@ const projects = [
     image:
       "https://gist.github.com/user-attachments/assets/94369288-fdc8-46c5-982a-dc5d820eadd6",
     github: "https://github.com/ThatGuyJamal/type-fetch",
-    live: "#",
+    registryUrl: "#",
   },
   {
     name: "PheonixDB",
@@ -28,7 +28,7 @@ const projects = [
     image:
       "https://gist.github.com/user-attachments/assets/8c5b5d49-3de3-48ee-a693-cd7afd0a808c",
     github: "https://github.com/ThatGuyJamal/phoenix-db",
-    live: "#",
+    registryUrl: "#",
   },
 ];
 
@@ -67,7 +67,7 @@ export default function Projects() {
                     <FaGithub className="w-8 h-8" />
                   </a>
                   <a
-                    href={project.live}
+                    href={project.registryUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-purple-400 transition-colors"
