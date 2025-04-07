@@ -13,6 +13,18 @@
     0 0 30px rgba(168, 85, 247, 0.3);
 }
 
+/* Hydration handling - prevent animation flashes */
+.no-animation * {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
+/* Ensure consistent rendering between server and client */
+html {
+  overflow-x: hidden;
+  height: 100%;
+}
+
 @font-face {
   font-family: "JetBrains Mono";
   src: url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap");
@@ -23,6 +35,15 @@ body {
   color: var(--terminal-purple-light);
   font-family: "JetBrains Mono", monospace;
   overflow-x: hidden;
+  min-height: 100%;
+}
+
+/* Apply hardware acceleration for smoother animations */
+.hw-accel {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* Terminal window styles */
@@ -167,6 +188,9 @@ body {
   background-color: rgba(10, 10, 15, 0.5);
   border: 1px solid var(--terminal-purple);
   transition: all 0.3s ease;
+}
+
+.skill-icon.float {
   animation: float 3s ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
@@ -210,6 +234,7 @@ body {
 
 /* Floating animation for skill icons */
 .float {
+  will-change: transform;
   animation: float 3s ease-in-out infinite;
 }
 
@@ -279,6 +304,29 @@ body {
   }
 }
 
+/* Performance detection script */
+@media screen {
+  body::after {
+    content: "";
+    display: none;
+  }
+
+  body {
+    animation-name: performance-test;
+    animation-duration: 0.001s;
+  }
+
+  /* Immediately executed animation to detect device performance */
+  @keyframes performance-test {
+    from {
+      opacity: 0.9999;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
   .terminal-window {
@@ -327,6 +375,38 @@ body {
     100% {
       opacity: 0.2;
       transform: translate(-50%, -50%) scale(0.7);
+    }
+  }
+}
+
+/* Low-performance device optimizations */
+@media (prefers-reduced-motion), (max-width: 480px) {
+  .float {
+    animation-duration: 5s; /* Slower animation */
+  }
+
+  .hero-glow {
+    animation-duration: 6s;
+    filter: blur(20px);
+  }
+
+  .terminal-window::before {
+    animation-duration: 5s;
+  }
+
+  /* Optionally disable some animations for very low performance */
+  @media (max-width: 380px) {
+    .float {
+      animation: none;
+    }
+
+    .hero-glow {
+      animation: none;
+      opacity: 0.3;
+    }
+
+    .grid-background {
+      background-size: 25px 25px; /* Larger grid requires less rendering */
     }
   }
 }
