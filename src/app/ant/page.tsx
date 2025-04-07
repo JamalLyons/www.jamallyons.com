@@ -66,7 +66,7 @@ export default function AntPage() {
         setSimulationState={handleSimulationStateChange}
       />
 
-      <Card className="relative aspect-[16/9] w-full overflow-hidden">
+      <Card className="relative aspect-[16/0] w-full overflow-hidden">
         <AntSimulation
           config={config}
           simulationState={simulationState}
