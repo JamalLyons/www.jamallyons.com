@@ -16,19 +16,24 @@ export default function SkillIcon({
   delay = 0,
 }: SkillIconProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Calculate deterministic position based on index
   const calculatePosition = () => {
     // Use index to create a deterministic pattern
     const angle = (index * 137.5) % 360; // Golden angle
-    const radius = 30 + (index % 3) * 15; // Varying distances
+
+    // Adjust radius based on screen size
+    const baseRadius = isMobile ? 20 : 30;
+    const radius = baseRadius + (index % 3) * (isMobile ? 10 : 15);
 
     // Convert polar coordinates to cartesian
     const x = Math.cos((angle * Math.PI) / 180) * radius;
     const y = Math.sin((angle * Math.PI) / 180) * radius;
 
-    // Scale factor based on index
-    const scale = 0.85 + (index % 5) * 0.05;
+    // Scale factor based on index and screen size
+    const baseScale = isMobile ? 0.7 : 0.85;
+    const scale = baseScale + (index % 5) * 0.05;
 
     return { x, y, scale };
   };
@@ -36,12 +41,26 @@ export default function SkillIcon({
   const position = calculatePosition();
 
   useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkMobile();
+
+    // Add resize listener
+    window.addEventListener("resize", checkMobile);
+
     // Delay the appearance for a staggered effect
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, delay);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, [delay]);
 
   // Calculate a unique animation delay for floating effect
@@ -57,8 +76,8 @@ export default function SkillIcon({
         animationDelay: floatDelay,
       }}
     >
-      <div className="text-2xl mb-1">{icon}</div>
-      <div className="text-xs font-medium">{name}</div>
+      <div className="text-xl sm:text-2xl mb-1">{icon}</div>
+      <div className="text-[10px] sm:text-xs font-medium">{name}</div>
     </div>
   );
 }

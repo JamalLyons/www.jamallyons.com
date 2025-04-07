@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Particle {
   x: number;
@@ -22,6 +22,7 @@ function seededRandom(seed: number) {
 
 export default function Particles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,6 +33,17 @@ export default function Particles() {
 
     let animationFrameId: number;
     let particles: Particle[] = [];
+
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkMobile();
+
+    // Add resize listener
+    window.addEventListener("resize", checkMobile);
 
     // Set canvas to full screen
     const resizeCanvas = () => {
@@ -44,16 +56,24 @@ export default function Particles() {
 
     // Create particles with deterministic values
     const createParticles = () => {
-      const particleCount = Math.min(50, Math.floor(window.innerWidth / 30));
+      // Reduce particle count on mobile
+      const particleCount = isMobile
+        ? Math.min(25, Math.floor(window.innerWidth / 40))
+        : Math.min(50, Math.floor(window.innerWidth / 30));
+
       const random = seededRandom(42); // Fixed seed for consistency
 
       for (let i = 0; i < particleCount; i++) {
+        // Reduce particle size on mobile
+        const baseSize = isMobile ? 1 : 2;
+        const size = random() * baseSize + 0.5;
+
         particles.push({
           x: random() * canvas.width,
           y: random() * canvas.height,
-          size: random() * 2 + 0.5,
-          speedX: (random() - 0.5) * 0.3,
-          speedY: (random() - 0.5) * 0.3,
+          size: size,
+          speedX: (random() - 0.5) * (isMobile ? 0.2 : 0.3),
+          speedY: (random() - 0.5) * (isMobile ? 0.2 : 0.3),
           opacity: random() * 0.5 + 0.2,
           color: i % 5 === 0 ? "#00f2ff" : "#a855f7", // Mix of purple and blue
         });
@@ -82,20 +102,21 @@ export default function Particles() {
         ctx.globalAlpha = particle.opacity;
         ctx.fill();
 
-        // Draw glow effect
+        // Draw glow effect - reduce glow size on mobile
+        const glowSize = isMobile ? particle.size * 2 : particle.size * 3;
         const gradient = ctx.createRadialGradient(
           particle.x,
           particle.y,
           0,
           particle.x,
           particle.y,
-          particle.size * 3
+          glowSize
         );
         gradient.addColorStop(0, particle.color);
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, glowSize, 0, Math.PI * 2);
         ctx.fillStyle = gradient;
         ctx.globalAlpha = particle.opacity * 0.5;
         ctx.fill();
@@ -123,20 +144,29 @@ export default function Particles() {
       animationFrameId = requestAnimationFrame(drawParticles);
     };
 
-    createParticles();
-    drawParticles();
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
+    // Animation loop
+    const animate = () => {
+      drawParticles();
+      animationFrameId = requestAnimationFrame(animate);
     };
-  }, []);
+
+    // Initialize and start animation
+    createParticles();
+    animate();
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", resizeCanvas);
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, [isMobile]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[-10]"
-      style={{ opacity: 0.6 }}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ zIndex: 0 }}
     />
   );
 }

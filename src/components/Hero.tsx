@@ -168,7 +168,8 @@ export default function Hero() {
         <div className="terminal-window w-full md:w-3/5 backdrop-blur-sm">
           <div className="terminal-prompt mb-4 text-xl">whoami</div>
 
-          <div className="mb-6">
+          {/* Fixed height container for animation to prevent layout shifts */}
+          <div className="mb-6 h-[80px] sm:h-[100px] flex items-center">
             <TypeAnimation
               sequence={[
                 "Jamal Lyons",
@@ -182,11 +183,15 @@ export default function Hero() {
               ]}
               speed={typeSpeed}
               repeat={Infinity}
-              className="text-3xl font-bold text-purple-300"
+              className="text-2xl sm:text-3xl font-bold text-purple-300"
+              wrapper="div"
+              cursor={true}
             />
           </div>
 
-          <div className="mb-6 leading-relaxed">{aboutMe}</div>
+          <div className="mb-6 leading-relaxed text-sm sm:text-base">
+            {aboutMe}
+          </div>
 
           {/* <div className="mb-6 terminal-prompt">
             <span className="text-purple-400">stack</span>:
@@ -213,7 +218,7 @@ export default function Hero() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center bg-purple-900 bg-opacity-30 border border-purple-700 text-purple-300 px-3 py-1 rounded text-sm hover:bg-purple-800 hover:bg-opacity-50 transition-all hover:translate-y-[-2px] hover:shadow-[0_0_10px_rgba(168,85,247,0.3)]"
+                  className="inline-flex items-center bg-purple-900 bg-opacity-30 border border-purple-700 text-purple-300 px-2 sm:px-3 py-1 rounded text-xs sm:text-sm hover:bg-purple-800 hover:bg-opacity-50 transition-all hover:translate-y-[-2px] hover:shadow-[0_0_10px_rgba(168,85,247,0.3)]"
                 >
                   {icon}
                   {children} ↗
@@ -223,7 +228,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="w-full md:w-2/5 relative min-h-[300px]">
+        <div className="w-full md:w-2/5 relative min-h-[300px] mt-8 md:mt-0">
           {/* Abstract backend visualization */}
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent rounded-lg border border-purple-800/30 overflow-hidden">
             {/* Floating skill icons */}
@@ -239,9 +244,9 @@ export default function Hero() {
               ))}
 
               {/* Center glowing circuit */}
-              <div className="absolute w-40 h-40 rounded-full bg-purple-900/20 border border-purple-600/30 flex items-center justify-center">
-                <div className="w-32 h-32 rounded-full bg-purple-900/30 border border-purple-500/50 animate-pulse flex items-center justify-center">
-                  <div className="w-20 h-20 rounded-full bg-purple-800/50 border border-purple-400/70 flex items-center justify-center text-purple-300 text-4xl">
+              <div className="absolute w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-purple-900/20 border border-purple-600/30 flex items-center justify-center">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-purple-900/30 border border-purple-500/50 animate-pulse flex items-center justify-center">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-purple-800/50 border border-purple-400/70 flex items-center justify-center text-purple-300 text-2xl sm:text-4xl">
                     {"</>"}
                   </div>
                 </div>

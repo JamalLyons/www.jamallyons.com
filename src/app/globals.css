@@ -99,7 +99,9 @@ body {
   overflow: hidden;
   border-right: 2px solid var(--terminal-purple);
   white-space: nowrap;
-  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+  margin: 0 auto;
+  letter-spacing: 2px;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
 @keyframes typing {
@@ -124,17 +126,13 @@ body {
 /* Neon glow animation */
 @keyframes glow {
   0% {
-    opacity: 0.7;
-    box-shadow: 0 0 5px var(--terminal-purple);
+    opacity: 0.5;
   }
   50% {
     opacity: 1;
-    box-shadow: 0 0 20px var(--terminal-purple),
-      0 0 30px var(--terminal-purple-dark);
   }
   100% {
-    opacity: 0.7;
-    box-shadow: 0 0 5px var(--terminal-purple);
+    opacity: 0.5;
   }
 }
 
@@ -151,28 +149,26 @@ body {
 
 .particle {
   position: absolute;
-  background: var(--terminal-purple);
+  background-color: var(--terminal-purple);
   border-radius: 50%;
-  filter: blur(1px);
-  opacity: 0.5;
   pointer-events: none;
+  opacity: 0.5;
 }
 
 /* Skill icon styles */
 .skill-icon {
-  display: inline-flex;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  margin: 0.25rem;
   border-radius: 8px;
-  background-color: rgba(10, 10, 15, 0.8);
-  border: 1px solid var(--terminal-purple-dark);
-  color: var(--terminal-purple-light);
-  font-size: 1.25rem;
+  background-color: rgba(10, 10, 15, 0.5);
+  border: 1px solid var(--terminal-purple);
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  animation: float 3s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
 }
 
 .skill-icon::before {
@@ -182,40 +178,39 @@ body {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  border-radius: 10px;
   background: linear-gradient(
     45deg,
     var(--terminal-purple),
     var(--electric-blue),
-    var(--terminal-purple-dark)
+    var(--terminal-purple)
   );
+  border-radius: 10px;
   z-index: -1;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .skill-icon:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--glow-effect);
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
 }
 
 .skill-icon:hover::before {
-  opacity: 0.8;
-  animation: rotation 2s linear infinite;
+  opacity: 0.5;
 }
 
 @keyframes rotation {
-  0% {
+  from {
     transform: rotate(0deg);
   }
-  100% {
+  to {
     transform: rotate(360deg);
   }
 }
 
 /* Floating animation for skill icons */
 .float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -232,17 +227,17 @@ body {
 
 /* Grid background */
 .grid-background {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(var(--bg-dark) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bg-dark) 1px, transparent 1px);
-  background-size: 30px 30px;
+  background-image: linear-gradient(var(--terminal-purple) 1px, transparent 1px),
+    linear-gradient(90deg, var(--terminal-purple) 1px, transparent 1px);
+  background-size: 20px 20px;
   background-position: center center;
-  z-index: -2;
-  opacity: 0.15;
+  opacity: 0.1;
+  z-index: -1;
 }
 
 /* Hero section styles */
@@ -253,29 +248,85 @@ body {
 
 .hero-glow {
   position: absolute;
-  top: 30%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
+  width: 80%;
+  height: 80%;
   background: radial-gradient(
     circle,
     rgba(168, 85, 247, 0.2) 0%,
-    rgba(10, 10, 15, 0) 70%
+    rgba(0, 242, 255, 0.1) 50%,
+    transparent 70%
   );
-  z-index: -1;
   filter: blur(40px);
-  animation: pulse 8s ease-in-out infinite;
+  z-index: -1;
+  animation: pulse 4s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.5;
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 0.7;
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .terminal-window {
+    padding: 1rem;
+  }
+
+  .hero-glow {
+    width: 100%;
+    height: 100%;
+    filter: blur(30px);
+  }
+
+  .grid-background {
+    background-size: 15px 15px;
+  }
+
+  .skill-icon {
+    padding: 0.3rem;
+  }
+
+  .skill-icon:hover {
+    transform: translateY(-3px);
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0.2;
+      transform: translate(-50%, -50%) scale(0.7);
+    }
+    50% {
+      opacity: 0.4;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+    100% {
+      opacity: 0.2;
+      transform: translate(-50%, -50%) scale(0.7);
+    }
   }
 }
