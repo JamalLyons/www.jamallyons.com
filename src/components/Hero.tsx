@@ -188,7 +188,7 @@ export default function Hero() {
 
           <div className="mb-6 leading-relaxed">{aboutMe}</div>
 
-          <div className="mb-6 terminal-prompt">
+          {/* <div className="mb-6 terminal-prompt">
             <span className="text-purple-400">stack</span>:
           </div>
 
@@ -202,7 +202,7 @@ export default function Hero() {
                 <div className="text-xs font-medium">{skill.name}</div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           <div className="mt-6">
             <span className="text-purple-400 terminal-prompt">connect</span>
