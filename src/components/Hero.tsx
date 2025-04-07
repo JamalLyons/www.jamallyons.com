@@ -10,7 +10,6 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import Link from "next/link";
-import ActivityGraph from "./ActivityGraph";
 import Particles from "./Particles";
 import SkillIcon from "./SkillIcon";
 import {
@@ -270,8 +269,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      <ActivityGraph />
     </div>
   );
 }
