@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Card from "@/components/ui/Card";
 import AntSimulation from "./components/AntSimulation";
 import SimulationControls from "./components/SimulationControls";
 
@@ -54,8 +53,8 @@ export default function AntPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-white mb-8 text-center">
+    <div className="container mx-auto px-4 py-8 flex flex-col gap-4 min-h-screen">
+      <h1 className="text-3xl font-bold text-white text-center">
         Ant Colony Simulation
       </h1>
 
@@ -66,13 +65,13 @@ export default function AntPage() {
         setSimulationState={handleSimulationStateChange}
       />
 
-      <Card className="relative aspect-[16/0] w-full overflow-hidden">
+      <div className="relative w-full aspect-square max-w-4xl mx-auto bg-zinc-900 rounded-lg overflow-hidden shadow-xl">
         <AntSimulation
           config={config}
           simulationState={simulationState}
           setSimulationState={handleSimulationStateChange}
         />
-      </Card>
+      </div>
     </div>
   );
 }

@@ -9,8 +9,10 @@ type Ant = {
   direction: number;
   hasFood: boolean;
   age: number;
+  foodCarried: number; // Amount of food carried by an ant
+  explorationBias: number; // Individual ant exploration tendency (0-1)
 };
-type Food = Position;
+type Food = Position & { amount: number }; // Added food amount
 type SimulationConfigType = {
   antCount: number;
   foodCount: number;
@@ -43,6 +45,7 @@ export default function AntSimulation({
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [isInitialized, setIsInitialized] = useState(false);
   const [initializationAttempted, setInitializationAttempted] = useState(false);
+  const [collectedFood, setCollectedFood] = useState(0); // Track total food collected
 
   // Debug log for simulation state changes
   useEffect(() => {
@@ -91,16 +94,21 @@ export default function AntSimulation({
     };
     setNestPosition(nest);
 
-    // Initialize ants
+    // Initialize ants with individual traits
     const newAnts = Array.from({ length: config.antCount }, () => ({
       position: { ...nest },
       direction: Math.random() * Math.PI * 2,
       hasFood: false,
       age: 0,
+      foodCarried: 0,
+      explorationBias: 0.1 + Math.random() * 0.4, // Random exploration tendency
     }));
     setAnts(newAnts);
 
-    // Initialize food in random positions avoiding the nest
+    // Reset collected food
+    setCollectedFood(0);
+
+    // Initialize food in random positions avoiding the nest with random amounts
     const newFood: Food[] = [];
     for (let i = 0; i < config.foodCount; i++) {
       let foodPos: Position;
@@ -113,7 +121,12 @@ export default function AntSimulation({
         Math.hypot(foodPos.x - nest.x, foodPos.y - nest.y) <
         Math.min(containerWidth, containerHeight) / 4
       );
-      newFood.push(foodPos);
+
+      // Add food with random amounts between 50-150 units
+      newFood.push({
+        ...foodPos,
+        amount: 50 + Math.floor(Math.random() * 100),
+      });
     }
     setFood(newFood);
 
@@ -181,6 +194,8 @@ export default function AntSimulation({
     const newAnts = [...ants];
     const newHomePheromones = homePheromones.map((row) => [...row]);
     const newFoodPheromones = foodPheromones.map((row) => [...row]);
+    const newFood = [...food];
+    let newCollectedFood = collectedFood;
 
     // Safety check for array sizes
     if (
@@ -201,11 +216,16 @@ export default function AntSimulation({
       const ant = newAnts[i];
       ant.age += 1;
 
-      // Calculate sensor positions
+      // Calculate sensor positions with wider range for better pheromone detection
       const leftSensorAngle =
         ant.direction - (config.sensorAngle * Math.PI) / 180;
       const rightSensorAngle =
         ant.direction + (config.sensorAngle * Math.PI) / 180;
+      // Add more sensors for better pheromone detection
+      const farLeftSensorAngle =
+        ant.direction - (config.sensorAngle * 1.5 * Math.PI) / 180;
+      const farRightSensorAngle =
+        ant.direction + (config.sensorAngle * 1.5 * Math.PI) / 180;
 
       const leftSensorPos = {
         x: Math.round(
@@ -234,6 +254,28 @@ export default function AntSimulation({
         ),
       };
 
+      const farLeftSensorPos = {
+        x: Math.round(
+          ant.position.x +
+            Math.cos(farLeftSensorAngle) * config.sensorDistance * 1.2
+        ),
+        y: Math.round(
+          ant.position.y +
+            Math.sin(farLeftSensorAngle) * config.sensorDistance * 1.2
+        ),
+      };
+
+      const farRightSensorPos = {
+        x: Math.round(
+          ant.position.x +
+            Math.cos(farRightSensorAngle) * config.sensorDistance * 1.2
+        ),
+        y: Math.round(
+          ant.position.y +
+            Math.sin(farRightSensorAngle) * config.sensorDistance * 1.2
+        ),
+      };
+
       // Check if sensors are in bounds
       const inBounds = (pos: Position) => {
         return (
@@ -257,7 +299,7 @@ export default function AntSimulation({
         }
       };
 
-      // Sense pheromones
+      // Sense pheromones with all sensors
       const leftPheromone = inBounds(leftSensorPos)
         ? getPheromoneValue(leftSensorPos, ant.hasFood)
         : 0;
@@ -267,56 +309,176 @@ export default function AntSimulation({
       const centerPheromone = inBounds(centerSensorPos)
         ? getPheromoneValue(centerSensorPos, ant.hasFood)
         : 0;
+      const farLeftPheromone = inBounds(farLeftSensorPos)
+        ? getPheromoneValue(farLeftSensorPos, ant.hasFood)
+        : 0;
+      const farRightPheromone = inBounds(farRightSensorPos)
+        ? getPheromoneValue(farRightSensorPos, ant.hasFood)
+        : 0;
 
-      // Adjust direction based on pheromone concentration
-      if (centerPheromone > leftPheromone && centerPheromone > rightPheromone) {
-        // Continue straight if center sensor has the strongest signal
-      } else if (leftPheromone > rightPheromone) {
-        ant.direction -= Math.random() * 0.3; // Turn left
-      } else if (rightPheromone > leftPheromone) {
-        ant.direction += Math.random() * 0.3; // Turn right
+      // Adjust direction based on pheromone concentration with more realistic behavior
+      const allSensorsEqual =
+        Math.abs(centerPheromone - leftPheromone) < 0.05 &&
+        Math.abs(centerPheromone - rightPheromone) < 0.05 &&
+        Math.abs(leftPheromone - rightPheromone) < 0.05;
+
+      // Exploration factor - higher value = more random movement
+      const explorationFactor =
+        ant.explorationBias *
+        (1 -
+          Math.min(1, (centerPheromone + leftPheromone + rightPheromone) * 2));
+
+      // When carrying food, prioritize home pheromones more strongly
+      if (ant.hasFood) {
+        // Calculate direction to nest
+        const angleToNest = Math.atan2(
+          nestPosition.y - ant.position.y,
+          nestPosition.x - ant.position.x
+        );
+
+        // Blend between pheromone following and direct path to nest
+        const pheromoneWeight = Math.min(
+          0.8,
+          Math.max(0.2, (centerPheromone + leftPheromone + rightPheromone) * 3)
+        );
+
+        if (
+          centerPheromone > leftPheromone &&
+          centerPheromone > rightPheromone
+        ) {
+          // Continue straight if center sensor has the strongest signal
+          ant.direction =
+            ant.direction * (1 - pheromoneWeight) +
+            angleToNest * pheromoneWeight +
+            (Math.random() - 0.5) * 0.05;
+        } else if (
+          leftPheromone > rightPheromone ||
+          farLeftPheromone > farRightPheromone
+        ) {
+          // Turn left - stronger turn when difference is larger
+          const turnStrength = Math.min(
+            0.4,
+            (leftPheromone - rightPheromone) * 2 + 0.1
+          );
+          ant.direction =
+            ant.direction * (1 - pheromoneWeight) +
+            (ant.direction - turnStrength) * pheromoneWeight +
+            (Math.random() - 0.5) * 0.05;
+        } else if (
+          rightPheromone > leftPheromone ||
+          farRightPheromone > farLeftPheromone
+        ) {
+          // Turn right - stronger turn when difference is larger
+          const turnStrength = Math.min(
+            0.4,
+            (rightPheromone - leftPheromone) * 2 + 0.1
+          );
+          ant.direction =
+            ant.direction * (1 - pheromoneWeight) +
+            (ant.direction + turnStrength) * pheromoneWeight +
+            (Math.random() - 0.5) * 0.05;
+        } else if (allSensorsEqual) {
+          // When no strong gradient, head more directly toward nest
+          ant.direction =
+            ant.direction * (1 - pheromoneWeight) +
+            angleToNest * pheromoneWeight +
+            (Math.random() - 0.5) * explorationFactor;
+        }
       } else {
-        // Random walk with slight changes to current direction
-        ant.direction += (Math.random() - 0.5) * 0.2;
+        // Normal pheromone following behavior when not carrying food
+        if (
+          centerPheromone > leftPheromone &&
+          centerPheromone > rightPheromone
+        ) {
+          // Continue straight if center sensor has the strongest signal
+          ant.direction += (Math.random() - 0.5) * 0.05;
+        } else if (
+          leftPheromone > rightPheromone ||
+          farLeftPheromone > farRightPheromone
+        ) {
+          // Turn left - stronger turn when difference is larger
+          const turnStrength = Math.min(
+            0.4,
+            (leftPheromone - rightPheromone) * 2 + 0.1
+          );
+          ant.direction -= turnStrength;
+        } else if (
+          rightPheromone > leftPheromone ||
+          farRightPheromone > farLeftPheromone
+        ) {
+          // Turn right - stronger turn when difference is larger
+          const turnStrength = Math.min(
+            0.4,
+            (rightPheromone - leftPheromone) * 2 + 0.1
+          );
+          ant.direction += turnStrength;
+        } else if (allSensorsEqual) {
+          // Explore with random movement when no strong gradient is detected
+          ant.direction += (Math.random() - 0.5) * explorationFactor;
+        }
       }
 
-      // Random direction adjustment (small random walk component)
-      ant.direction += (Math.random() - 0.5) * 0.1;
+      // Random direction adjustment scaled by exploration bias
+      ant.direction += (Math.random() - 0.5) * 0.05 * explorationFactor;
 
-      // Update position
-      const newX = ant.position.x + Math.cos(ant.direction) * config.antSpeed;
-      const newY = ant.position.y + Math.sin(ant.direction) * config.antSpeed;
+      // Update position with variable speed (faster when following trails)
+      const speedMultiplier =
+        1 + Math.max(centerPheromone, leftPheromone, rightPheromone) * 0.5;
+      const newX =
+        ant.position.x +
+        Math.cos(ant.direction) * config.antSpeed * speedMultiplier;
+      const newY =
+        ant.position.y +
+        Math.sin(ant.direction) * config.antSpeed * speedMultiplier;
 
-      // Bounce off walls
+      // Bounce off walls with more natural angles
       if (newX < 0) {
         ant.position.x = 0;
-        ant.direction = Math.PI - ant.direction;
+        ant.direction = Math.PI - ant.direction + (Math.random() - 0.5) * 0.2;
       } else if (newX >= canvasSize.width) {
         ant.position.x = canvasSize.width - 1;
-        ant.direction = Math.PI - ant.direction;
+        ant.direction = Math.PI - ant.direction + (Math.random() - 0.5) * 0.2;
       } else {
         ant.position.x = newX;
       }
 
       if (newY < 0) {
         ant.position.y = 0;
-        ant.direction = -ant.direction;
+        ant.direction = -ant.direction + (Math.random() - 0.5) * 0.2;
       } else if (newY >= canvasSize.height) {
         ant.position.y = canvasSize.height - 1;
-        ant.direction = -ant.direction;
+        ant.direction = -ant.direction + (Math.random() - 0.5) * 0.2;
       } else {
         ant.position.y = newY;
       }
 
       // Check if ant found food
       if (!ant.hasFood) {
-        const foundFood = food.findIndex(
+        const foundFoodIndex = newFood.findIndex(
           (f) => Math.hypot(ant.position.x - f.x, ant.position.y - f.y) < 5
         );
 
-        if (foundFood >= 0) {
+        if (foundFoodIndex >= 0 && newFood[foundFoodIndex].amount > 0) {
+          // Take food based on amount available
+          const foodTaken = Math.min(5, newFood[foundFoodIndex].amount);
+          newFood[foundFoodIndex].amount -= foodTaken;
+
+          // Ant takes food and heads back to nest
           ant.hasFood = true;
-          ant.direction += Math.PI; // Turn back
+          ant.foodCarried = foodTaken;
+
+          // Calculate direction to nest with less randomness
+          const angleToNest = Math.atan2(
+            nestPosition.y - ant.position.y,
+            nestPosition.x - ant.position.x
+          );
+          // Add a small random factor to avoid all ants taking the exact same path
+          ant.direction = angleToNest + (Math.random() - 0.5) * 0.2;
+
+          // Remove food source if depleted
+          if (newFood[foundFoodIndex].amount <= 0) {
+            newFood.splice(foundFoodIndex, 1);
+          }
         }
       }
 
@@ -328,8 +490,34 @@ export default function AntSimulation({
         );
 
         if (distToNest < 15) {
+          // Deposit food at nest
+          newCollectedFood += ant.foodCarried;
           ant.hasFood = false;
-          ant.direction += Math.PI; // Turn back
+          ant.foodCarried = 0;
+
+          // Turn around and head back out with slight random direction
+          ant.direction += Math.PI + (Math.random() - 0.5) * 1.0;
+
+          // Increase pheromone strength when food is found to reinforce path
+          const phX = Math.floor(ant.position.x);
+          const phY = Math.floor(ant.position.y);
+
+          if (inBounds({ x: phX, y: phY })) {
+            try {
+              // Create a stronger home pheromone signal when food is brought back
+              newHomePheromones[phY][phX] = Math.min(
+                1,
+                (newHomePheromones[phY][phX] || 0) +
+                  config.pheromoneStrength * 0.01
+              );
+            } catch (e) {
+              console.error(
+                "Error updating nest pheromone at:",
+                { x: phX, y: phY },
+                e
+              );
+            }
+          }
         }
       }
 
@@ -340,16 +528,30 @@ export default function AntSimulation({
       if (inBounds({ x: phX, y: phY })) {
         try {
           if (ant.hasFood) {
-            newFoodPheromones[phY][phX] = Math.min(
-              1,
-              (newFoodPheromones[phY][phX] || 0) +
-                config.pheromoneStrength * 0.003
-            );
-          } else {
+            // Stronger home pheromones when carrying food back to nest
             newHomePheromones[phY][phX] = Math.min(
               1,
               (newHomePheromones[phY][phX] || 0) +
-                config.pheromoneStrength * 0.003
+                config.pheromoneStrength * 0.01 * (0.5 + ant.foodCarried / 5)
+            );
+            // Weaker food pheromones when returning to nest
+            newFoodPheromones[phY][phX] = Math.min(
+              1,
+              (newFoodPheromones[phY][phX] || 0) +
+                config.pheromoneStrength * 0.002
+            );
+          } else {
+            // Weaker home pheromones when searching
+            newHomePheromones[phY][phX] = Math.min(
+              1,
+              (newHomePheromones[phY][phX] || 0) +
+                config.pheromoneStrength * 0.002
+            );
+            // Stronger food pheromones when searching for food
+            newFoodPheromones[phY][phX] = Math.min(
+              1,
+              (newFoodPheromones[phY][phX] || 0) +
+                config.pheromoneStrength * 0.005
             );
           }
         } catch (e) {
@@ -362,6 +564,24 @@ export default function AntSimulation({
     setAnts(newAnts);
     setHomePheromones(newHomePheromones);
     setFoodPheromones(newFoodPheromones);
+    setFood(newFood);
+
+    // Update collected food separately to ensure it's updated
+    if (newCollectedFood !== collectedFood) {
+      console.log("Updating collected food:", newCollectedFood);
+      setCollectedFood(newCollectedFood);
+    }
+
+    // Clean up any food sources with 0 amount
+    const remainingFood = newFood.filter((f) => f.amount > 0);
+    if (remainingFood.length !== newFood.length) {
+      setFood(remainingFood);
+    }
+
+    // End simulation if all food is collected
+    if (remainingFood.length === 0) {
+      setSimulationState("paused");
+    }
   };
 
   // Update pheromones (evaporation and diffusion)
@@ -489,15 +709,30 @@ export default function AntSimulation({
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Draw food
+    // Display collected food count at nest
+    ctx.font = "12px sans-serif";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.textAlign = "center";
+    ctx.fillText(`${collectedFood}`, nestPosition.x, nestPosition.y + 4);
+
+    // Draw food with size based on amount
     food.forEach((f) => {
+      const foodSize = Math.max(3, Math.min(8, 3 + f.amount / 25));
       ctx.beginPath();
-      ctx.arc(f.x, f.y, 5, 0, Math.PI * 2);
+      ctx.arc(f.x, f.y, foodSize, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(0, 242, 255, 0.8)";
       ctx.fill();
       ctx.strokeStyle = "rgba(125, 211, 252, 0.9)";
       ctx.lineWidth = 1.5;
       ctx.stroke();
+
+      // Show food amount
+      if (f.amount > 0) {
+        ctx.font = "10px sans-serif";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        ctx.textAlign = "center";
+        ctx.fillText(`${f.amount}`, f.x, f.y + 3);
+      }
     });
 
     // Draw ants
@@ -529,6 +764,25 @@ export default function AntSimulation({
       ctx.lineWidth = 1;
       ctx.stroke();
     });
+
+    // Display simulation status
+    ctx.font = "14px sans-serif";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.textAlign = "left";
+    ctx.fillText(`Food sources: ${food.length}`, 10, 20);
+    ctx.fillText(`Food collected: ${collectedFood}`, 10, 40);
+    ctx.fillText(`Ants: ${ants.length}`, 10, 60);
+
+    if (food.length === 0 && simulationState === "paused") {
+      ctx.font = "24px sans-serif";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+      ctx.textAlign = "center";
+      ctx.fillText(
+        "Simulation complete! All food collected",
+        canvasSize.width / 2,
+        canvasSize.height / 2
+      );
+    }
   };
 
   // Handle window resize
@@ -536,25 +790,53 @@ export default function AntSimulation({
     const handleResize = () => {
       if (!canvasRef.current) return;
 
-      // Pause simulation during resize
-      const wasRunning = simulationState === "running";
-      if (wasRunning) {
-        setSimulationState("paused");
+      const canvas = canvasRef.current;
+      const parentElement = canvas.parentElement;
+      if (!parentElement) return;
+
+      // Get the new container dimensions
+      const containerWidth = parentElement.clientWidth;
+      const containerHeight = parentElement.clientHeight;
+
+      // Update canvas size with pixel density adjustment
+      const pixelRatio = window.devicePixelRatio || 1;
+      canvas.width = containerWidth * pixelRatio;
+      canvas.height = containerHeight * pixelRatio;
+
+      // Update CSS size
+      canvas.style.width = `${containerWidth}px`;
+      canvas.style.height = `${containerHeight}px`;
+
+      // Update context scale
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.scale(pixelRatio, pixelRatio);
       }
 
-      // Reinitialize simulation with new dimensions
-      setIsInitialized(false);
-      setInitializationAttempted(false);
+      // Update simulation dimensions
+      setCanvasSize({ width: containerWidth, height: containerHeight });
 
-      // Resume if it was running
-      if (wasRunning) {
-        setTimeout(() => setSimulationState("running"), 100);
-      }
+      // Update nest position
+      setNestPosition({
+        x: Math.floor(containerWidth / 2),
+        y: Math.floor(containerHeight / 2),
+      });
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [simulationState, setSimulationState]);
+    // Add resize observer for more reliable size updates
+    const resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+
+    if (canvasRef.current?.parentElement) {
+      resizeObserver.observe(canvasRef.current.parentElement);
+    }
+
+    // Clean up
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   // Reset simulation when stopped
   useEffect(() => {
@@ -571,7 +853,7 @@ export default function AntSimulation({
   return (
     <canvas
       ref={canvasRef}
-      className="absolute top-0 left-0 w-full h-full"
+      className="w-full h-full"
       style={{ imageRendering: "pixelated" }}
     />
   );
