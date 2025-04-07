@@ -14,14 +14,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const description =
+  "Portfolio of Jamal Lyons, a Backend Software Engineer at ClarityText and Computer Science student at Georgia State University.";
+
 export const metadata: Metadata = {
   title: "Jamal Lyons - Backend Software Engineer",
-  description:
-    "Portfolio of Jamal Lyons, a Backend Software Engineer and Computer Science student at Georgia State University.",
+  description,
   openGraph: {
     title: "Jamal Lyons - Backend Software Engineer",
-    description:
-      "Portfolio of Jamal Lyons, a Backend Software Engineer and Computer Science student at Georgia State University.",
+    description,
     url: "https://www.jamallyons.com",
     siteName: "jamallyons.com",
     images: [
@@ -33,8 +34,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Jamal Lyons - Backend Software Engineer",
-    description:
-      "Portfolio of Jamal Lyons, a Backend Software Engineer and Computer Science student at Georgia State University.",
+    description,
     images: [
       "https://gist.github.com/user-attachments/assets/fc8bc581-6c41-4731-9591-efb5f22f7655",
     ],
