@@ -6,7 +6,15 @@ import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import Card from "./ui/Card";
 import Particles from "./Particles";
 
-const projects = [
+interface Project {
+  name: string;
+  description: string;
+  image: string;
+  github: string;
+  registryUrl: string;
+}
+
+const projects: Project[] = [
   {
     name: "Convex TypeGen",
     description: "A Blazingly fast type generator for ConvexDB",
@@ -16,21 +24,39 @@ const projects = [
     registryUrl: "https://crates.io/crates/convex-typegen",
   },
   {
+    name: "Bluefox Email",
+    description:
+      "A TypeScript client library for sending emails using Bluefox.email. Features include type-safe API, subscriber management, email sending with template data, attachment support, webhook handling, and comprehensive error handling.",
+    image:
+      "https://gist.github.com/user-attachments/assets/f06bfc9e-0ab9-42d2-a56d-6d0a0db6e63a",
+    github: "https://github.com/JamalLyons/bluefox-email",
+    registryUrl: "https://www.npmjs.com/package/bluefox-email",
+  },
+  {
     name: "Type Fetch",
     description:
       "A lightweight, flexible HTTP client library for making API requests in JavaScript",
     image:
       "https://gist.github.com/user-attachments/assets/94369288-fdc8-46c5-982a-dc5d820eadd6",
     github: "https://github.com/ThatGuyJamal/type-fetch",
-    registryUrl: "#",
+    registryUrl: "https://www.npmjs.com/package/@thatguyjamal/type-fetch",
   },
   {
-    name: "PheonixDB",
+    name: "PhoenixDB",
     description: "An experimental Key-Value storage database written in rust",
     image:
       "https://gist.github.com/user-attachments/assets/8c5b5d49-3de3-48ee-a693-cd7afd0a808c",
     github: "https://github.com/ThatGuyJamal/phoenix-db",
-    registryUrl: "#",
+    registryUrl: "https://github.com/ThatGuyJamal/phoenix-db",
+  },
+  {
+    name: "Poems Collection",
+    description:
+      "A personal collection of poems and creative writing pieces showcasing my thoughts, emotions, and storytelling abilities through verse.",
+    image:
+      "https://gist.github.com/user-attachments/assets/584be388-758b-4f71-8240-bb7c09d38063",
+    github: "https://github.com/JamalLyons/poems",
+    registryUrl: "https://poems.jamallyons.com",
   },
 ];
 
