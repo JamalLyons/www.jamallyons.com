@@ -5,6 +5,7 @@ import { TypeAnimation } from "react-type-animation";
 import {
   FaGithub,
   FaLinkedin,
+  FaMoneyCheck,
   FaTwitch,
   FaTwitter,
   FaYoutube,
@@ -30,6 +31,11 @@ const links = [
     href: "https://github.com/jamallyons",
     icon: <FaGithub className="mr-1" />,
     children: "GITHUB",
+  },
+  {
+    href: "https://github.com/sponsors/JamalLyons",
+    icon: <FaMoneyCheck className="mr-1" />,
+    children: "SPONSOR ME",
   },
   {
     href: "https://linkedin.com/in/codingwithjamal",
