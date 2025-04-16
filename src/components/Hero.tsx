@@ -33,11 +33,6 @@ const links = [
     children: "GITHUB",
   },
   {
-    href: "https://github.com/sponsors/JamalLyons",
-    icon: <FaMoneyCheck className="mr-1" />,
-    children: "SPONSOR ME",
-  },
-  {
     href: "https://linkedin.com/in/codingwithjamal",
     icon: <FaLinkedin className="mr-1" />,
     children: "LINKEDIN",
@@ -56,6 +51,11 @@ const links = [
     href: "https://twitch.tv/codingwithjamal",
     icon: <FaTwitch className="mr-1" />,
     children: "TWITCH",
+  },
+  {
+    href: "https://github.com/sponsors/JamalLyons",
+    icon: <FaMoneyCheck className="mr-1" />,
+    children: "SPONSOR ME",
   },
 ];
 
