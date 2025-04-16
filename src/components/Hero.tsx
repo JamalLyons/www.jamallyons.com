@@ -65,7 +65,7 @@ const links = [
 ];
 
 const aboutMe =
-  "I am a Computer Science student at Georgia State University with a strong passion for exploring new technologies and developing impactful projects. My enthusiasm for continuous learning drives me to seek out new challenges and opportunities for growth as a developer.";
+  "I am a Computer Science student at Georgia State University. I am passionate about exploring new technologies and developing impactful projects. My enthusiasm for continuous learning drives me to seek out new challenges and opportunities for growth as a developer.";
 
 const skills = [
   { name: "React.js", icon: <SiReact /> },
