@@ -30,32 +30,37 @@ const links = [
   {
     href: "https://github.com/jamallyons",
     icon: <FaGithub className="mr-1" />,
-    children: "GITHUB",
+    children: "GitHub",
   },
   {
     href: "https://linkedin.com/in/codingwithjamal",
     icon: <FaLinkedin className="mr-1" />,
-    children: "LINKEDIN",
+    children: "LinkedIn",
+  },
+  {
+    href: "https://claritytext.com",
+    icon: <FaMoneyCheck className="mr-1" />,
+    children: "ClarityText",
   },
   {
     href: "https://twitter.com/codingwithjamal",
     icon: <FaTwitter className="mr-1" />,
-    children: "TWITTER",
+    children: "Twitter",
   },
   {
     href: "https://youtube.com/@codingwithjamal",
     icon: <FaYoutube className="mr-1" />,
-    children: "YOUTUBE",
+    children: "YouTube",
   },
   {
     href: "https://twitch.tv/codingwithjamal",
     icon: <FaTwitch className="mr-1" />,
-    children: "TWITCH",
+    children: "Twitch",
   },
   {
     href: "https://github.com/sponsors/JamalLyons",
     icon: <FaMoneyCheck className="mr-1" />,
-    children: "SPONSOR ME",
+    children: "Sponsor Me",
   },
 ];
 
@@ -216,7 +221,9 @@ export default function Hero() {
           </div> */}
 
           <div className="mt-6">
-            <span className="text-purple-400 terminal-prompt">connect</span>
+            <span className="text-purple-400 terminal-prompt">
+              connect with me
+            </span>
             <div className="flex flex-wrap gap-2 mt-2">
               {links.map(({ href, icon, children }) => (
                 <a
