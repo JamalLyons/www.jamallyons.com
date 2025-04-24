@@ -38,7 +38,7 @@ const links = [
     children: "LinkedIn",
   },
   {
-    href: "https://claritytext.com",
+    href: "https://www.claritytext.com/u/jamallyons",
     icon: <FaMoneyCheck className="mr-1" />,
     children: "ClarityText",
   },
