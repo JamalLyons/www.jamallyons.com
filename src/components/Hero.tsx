@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import MotionStagger from "./motion/MotionStagger";
+import MotionSection from "./motion/MotionSection";
+import { useParallax } from "./motion/useParallax";
 import { TypeAnimation } from "react-type-animation";
 import {
   FaGithub,
@@ -86,6 +90,7 @@ export default function Hero() {
   const blogButtonEnabled = false;
   const contactButtonEnabled = false;
   const heroRef = useRef<HTMLDivElement>(null);
+  const { x, y } = useParallax(6);
 
   useEffect(() => {
     setMounted(true);
@@ -179,30 +184,31 @@ export default function Hero() {
         <div className="terminal-window w-full md:w-3/5 backdrop-blur-sm">
           <div className="terminal-prompt mb-4 text-xl">whoami</div>
 
-          {/* Fixed height container for animation to prevent layout shifts */}
-          <div className="mb-6 h-[80px] sm:h-[100px] flex items-center">
-            <TypeAnimation
-              sequence={[
-                "Jamal Lyons",
-                1000,
-                "Backend Software Engineer",
-                1000,
-                "Computer Science Student @ GSU",
-                1000,
-                "Tech Enthusiast & Problem Solver",
-                1000,
-              ]}
-              speed={typeSpeed}
-              repeat={Infinity}
-              className="text-2xl sm:text-3xl font-bold text-purple-300"
-              wrapper="div"
-              cursor={true}
-            />
-          </div>
+          <MotionStagger>
+            <div className="mb-6 h-[80px] sm:h-[100px] flex items-center">
+              <TypeAnimation
+                sequence={[
+                  "Jamal Lyons",
+                  1200,
+                  "Backend Software Engineer",
+                  1200,
+                  "Computer Science Student @ GSU",
+                  1200,
+                  "Tech Enthusiast & Problem Solver",
+                  1200,
+                ]}
+                speed={typeSpeed}
+                repeat={Infinity}
+                className="text-2xl sm:text-3xl font-bold text-purple-300"
+                wrapper="div"
+                cursor={true}
+              />
+            </div>
 
-          <div className="mb-6 leading-relaxed text-sm sm:text-base">
-            {aboutMe}
-          </div>
+            <div className="mb-6 leading-relaxed text-sm sm:text-base">
+              {aboutMe}
+            </div>
+          </MotionStagger>
 
           {/* <div className="mb-6 terminal-prompt">
             <span className="text-purple-400">stack</span>:
@@ -220,30 +226,38 @@ export default function Hero() {
             ))}
           </div> */}
 
-          <div className="mt-6">
-            <span className="text-purple-400 terminal-prompt">
-              connect with me
-            </span>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {links.map(({ href, icon, children }) => (
-                <a
-                  key={href}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center bg-purple-900 bg-opacity-30 border border-purple-700 text-purple-300 px-2 sm:px-3 py-1 rounded text-xs sm:text-sm hover:bg-purple-800 hover:bg-opacity-50 transition-all hover:translate-y-[-2px] hover:shadow-[0_0_10px_rgba(168,85,247,0.3)]"
-                >
-                  {icon}
-                  {children} ↗
-                </a>
-              ))}
+          <MotionSection delay={0.2}>
+            <div className="mt-6">
+              <span className="text-purple-400 terminal-prompt">
+                connect with me
+              </span>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {links.map(({ href, icon, children }) => (
+                  <motion.a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ y: -2, boxShadow: "0 0 10px rgba(168,85,247,0.35)" }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-flex items-center bg-purple-900 bg-opacity-30 border border-purple-700 text-purple-300 px-2 sm:px-3 py-1 rounded text-xs sm:text-sm hover:bg-purple-800 hover:bg-opacity-50 transition-all"
+                  >
+                    {icon}
+                    {children} ↗
+                  </motion.a>
+                ))}
+              </div>
             </div>
-          </div>
+          </MotionSection>
         </div>
 
         <div className="w-full md:w-2/5 relative min-h-[300px] mt-8 md:mt-0">
           {/* Abstract backend visualization */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent rounded-lg border border-purple-800/30 overflow-hidden">
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent rounded-lg border border-purple-800/30 overflow-hidden"
+            style={{ transform: `translate3d(${x}px, ${y}px, 0)` }}
+            transition={{ type: "spring", stiffness: 60, damping: 12 }}
+          >
             {/* Floating skill icons */}
             <div className="relative w-full h-full flex items-center justify-center">
               {skills.map((skill, index) => (
@@ -284,7 +298,7 @@ export default function Hero() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

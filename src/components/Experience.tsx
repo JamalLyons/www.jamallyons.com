@@ -39,7 +39,7 @@ export default function Experience() {
   );
 
   return (
-    <section className="py-16 relative">
+    <section id="experience" className="py-16 relative">
       {/* Background effects */}
       <div className="absolute inset-0 overflow-hidden">
         <Particles />
@@ -99,11 +99,10 @@ export default function Experience() {
                       href={experience.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`typing-animation flex items-center hover:text-purple-300 transition-colors ${
-                        hoveredExperience === experience.company
+                      className={`typing-animation flex items-center hover:text-purple-300 transition-colors ${hoveredExperience === experience.company
                           ? "w-full"
                           : "w-0"
-                      }`}
+                        }`}
                     >
                       view-company{" "}
                       {experience.company.toLowerCase().replace(" ", "-")}

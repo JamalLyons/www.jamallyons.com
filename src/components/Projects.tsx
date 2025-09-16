@@ -56,13 +56,27 @@ const projects: Project[] = [
       "https://gist.github.com/user-attachments/assets/584be388-758b-4f71-8240-bb7c09d38063",
     registryUrl: "https://poems.jamallyons.com",
   },
+  {
+    name: "Ant Colony Simulation",
+    description:
+      "An interactive ant colony simulation showcasing emergent behavior, performance-sensitive rendering, and playful controls.",
+    image: "/me.png",
+    registryUrl: "/ant",
+  },
+  {
+    name: "UI Library Demo",
+    description:
+      "A live demo of the site’s Tailwind UI components with buttons, cards, inputs, and modal interactions.",
+    image: "/me.png",
+    registryUrl: "/ui",
+  },
 ];
 
 export default function Projects() {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
   return (
-    <section className="py-16 relative">
+    <section id="projects" className="py-16 relative">
       {/* Background effects */}
       <div className="absolute inset-0 overflow-hidden">
         <Particles />

@@ -44,7 +44,7 @@ export default function Blogs() {
   const [hoveredBlog, setHoveredBlog] = useState<string | null>(null);
 
   return (
-    <section className="py-16 relative">
+    <section id="blog" className="py-16 relative">
       {/* Background effects */}
       <div className="absolute inset-0 overflow-hidden">
         <Particles />
@@ -83,16 +83,14 @@ export default function Blogs() {
                     <div className="flex items-center space-x-2 text-sm text-purple-400">
                       <span className="text-green-400">$</span>
                       <span
-                        className={`typing-animation ${
-                          hoveredBlog === blog.title ? "w-full" : "w-0"
-                        }`}
+                        className={`typing-animation ${hoveredBlog === blog.title ? "w-full" : "w-0"
+                          }`}
                       >
                         read-article {blog.link.split("/").pop()}
                       </span>
                       <FaChevronRight
-                        className={`transition-transform duration-300 ${
-                          hoveredBlog === blog.title ? "translate-x-2" : ""
-                        }`}
+                        className={`transition-transform duration-300 ${hoveredBlog === blog.title ? "translate-x-2" : ""
+                          }`}
                       />
                     </div>
                   </div>
