@@ -41,7 +41,7 @@ export default function Header() {
                         <a href="#experience" className="hover:text-purple-400 transition-colors">experience</a>
                         <a href="#projects" className="hover:text-purple-400 transition-colors">projects</a>
                         <a href="#blog" className="hover:text-purple-400 transition-colors">blog</a>
-                        <a href="/resume.pdf" className="hover:text-purple-400 transition-colors">resume</a>
+                        {/* <a href="/resume.pdf" className="hover:text-purple-400 transition-colors">resume</a> */}
                     </nav>
                 </div>
             </motion.div>

@@ -143,9 +143,8 @@ export default function SkillIcon({
   return (
     <div
       ref={iconRef}
-      className={`skill-icon absolute transform transition-opacity duration-500 ease-in-out flex flex-col items-center ${
-        isVisible ? "opacity-100" : "opacity-0"
-      } ${!isLowPerformance ? "float" : ""}`}
+      className={`skill-icon absolute transform transition-opacity duration-500 ease-in-out flex flex-col items-center ${isVisible ? "opacity-100" : "opacity-0"
+        } ${!isLowPerformance ? "float" : ""}`}
       style={{
         // Initial values - will be updated via JS
         transform: `translate(0px, 0px) scale(0)`,
@@ -154,7 +153,7 @@ export default function SkillIcon({
       }}
     >
       <div className="text-xl sm:text-2xl mb-1">{icon}</div>
-      <div className="text-[10px] sm:text-xs font-medium">{name}</div>
+      <div className="skill-label text-[10px] sm:text-xs font-medium">{name}</div>
     </div>
   );
 }

@@ -12,6 +12,16 @@ import Particles from "./Particles";
 
 const experiences = [
   {
+    company: "Live Thrive",
+    position: "Recycle Associate",
+    startDate: "May-2025",
+    endDate: "present",
+    location: "on-site",
+    description:
+      "As a Recycle Associate at Live Thrive, I am responsible for helping customers recycle their items and ensuring the facility is clean and organized.",
+    website: "https://livethrive.org/",
+  },
+  {
     company: "ClarityText",
     position: "Backend Development Intern",
     startDate: "Nov-2024",
@@ -30,7 +40,7 @@ const experiences = [
     description:
       "As a Game Development Instructor at Code Ninjas, I taught children aged 7-14 how to create their own video games using JavaScript. Leveraging a game-based curriculum, I guided students through hands-on coding projects, fostering creativity, problem-solving skills, and a strong understanding of programming concepts. My role included providing individual support, leading small group lessons, and helping students progress through the Code Ninjas belt system, which mirrors martial arts to encourage achievement and mastery in coding. I played a key role in creating an engaging learning environment where students developed both technical and soft skills.",
     website: "https://codeninjas.com",
-  },
+  }
 ];
 
 export default function Experience() {
@@ -100,8 +110,8 @@ export default function Experience() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`typing-animation flex items-center hover:text-purple-300 transition-colors ${hoveredExperience === experience.company
-                          ? "w-full"
-                          : "w-0"
+                        ? "w-full"
+                        : "w-0"
                         }`}
                     >
                       view-company{" "}

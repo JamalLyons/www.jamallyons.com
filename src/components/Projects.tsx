@@ -56,20 +56,6 @@ const projects: Project[] = [
       "https://gist.github.com/user-attachments/assets/584be388-758b-4f71-8240-bb7c09d38063",
     registryUrl: "https://poems.jamallyons.com",
   },
-  {
-    name: "Ant Colony Simulation",
-    description:
-      "An interactive ant colony simulation showcasing emergent behavior, performance-sensitive rendering, and playful controls.",
-    image: "/me.png",
-    registryUrl: "/ant",
-  },
-  {
-    name: "UI Library Demo",
-    description:
-      "A live demo of the site’s Tailwind UI components with buttons, cards, inputs, and modal interactions.",
-    image: "/me.png",
-    registryUrl: "/ui",
-  },
 ];
 
 export default function Projects() {
@@ -90,6 +76,26 @@ export default function Projects() {
             <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
           </span>
         </h2>
+
+        {/* Compact demos card */}
+        <div className="mb-8">
+          <Card title="Interactive Demos" hover className="group">
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="/ant"
+                className="inline-flex items-center bg-purple-900/30 border border-purple-700 text-purple-300 px-3 py-1.5 rounded text-sm hover:bg-purple-800/40 transition-colors"
+              >
+                Ant Colony Simulation ↗
+              </a>
+              <a
+                href="/ui"
+                className="inline-flex items-center bg-purple-900/30 border border-purple-700 text-purple-300 px-3 py-1.5 rounded text-sm hover:bg-purple-800/40 transition-colors"
+              >
+                UI Library Demo ↗
+              </a>
+            </div>
+          </Card>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project) => (
