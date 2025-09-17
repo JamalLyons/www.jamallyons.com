@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import Card from "./ui/Card";
 import Particles from "./Particles";
+import Link from "next/link";
 
 interface Project {
   name: string;
@@ -81,18 +82,18 @@ export default function Projects() {
         <div className="mb-8">
           <Card title="Interactive Demos" hover className="group">
             <div className="flex flex-wrap gap-3">
-              <a
+              {/* <a
                 href="/ant"
                 className="inline-flex items-center bg-purple-900/30 border border-purple-700 text-purple-300 px-3 py-1.5 rounded text-sm hover:bg-purple-800/40 transition-colors"
               >
                 Ant Colony Simulation ↗
-              </a>
-              <a
+              </a> */}
+              <Link
                 href="/ui"
                 className="inline-flex items-center bg-purple-900/30 border border-purple-700 text-purple-300 px-3 py-1.5 rounded text-sm hover:bg-purple-800/40 transition-colors"
               >
                 UI Library Demo ↗
-              </a>
+              </Link>
             </div>
           </Card>
         </div>

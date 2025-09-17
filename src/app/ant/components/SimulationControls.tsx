@@ -4,23 +4,13 @@ import React, { useState, useEffect } from "react";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-
-type SimulationConfigType = {
-  antCount: number;
-  foodCount: number;
-  evaporationRate: number;
-  diffusionRate: number;
-  antSpeed: number;
-  pheromoneStrength: number;
-  sensorAngle: number;
-  sensorDistance: number;
-};
+import { SimulationConfig, SimulationState, DEFAULT_CONFIG } from "../types";
 
 interface SimulationControlsProps {
-  config: SimulationConfigType;
-  setConfig: (config: SimulationConfigType) => void;
-  simulationState: "stopped" | "running" | "paused";
-  setSimulationState: (state: "stopped" | "running" | "paused") => void;
+  config: SimulationConfig;
+  setConfig: (config: SimulationConfig) => void;
+  simulationState: SimulationState;
+  setSimulationState: (state: SimulationState) => void;
 }
 
 export default function SimulationControls({
@@ -50,7 +40,7 @@ export default function SimulationControls({
   }, [config]);
 
   const handleConfigChange = (
-    key: keyof SimulationConfigType,
+    key: keyof SimulationConfig,
     value: number
   ) => {
     console.log("SimulationControls: Config change requested:", key, value);
@@ -77,16 +67,7 @@ export default function SimulationControls({
   const handleReset = () => {
     console.log("SimulationControls: Reset button clicked");
     setSimulationState("stopped");
-    setConfig({
-      antCount: 100,
-      foodCount: 5,
-      evaporationRate: 0.01,
-      diffusionRate: 0.1,
-      antSpeed: 1,
-      pheromoneStrength: 1,
-      sensorAngle: 30,
-      sensorDistance: 10,
-    });
+    setConfig(DEFAULT_CONFIG);
   };
 
   // Format the evaporation and diffusion rates for display
@@ -106,6 +87,9 @@ export default function SimulationControls({
           <p className="text-gray-400 text-sm">
             Adjust parameters to see how they affect ant behavior
           </p>
+          <div className="mt-2 text-xs text-purple-400/60">
+            Current: {localConfig.antCount} ants, {localConfig.foodCount} food sources
+          </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {simulationState === "stopped" && (

@@ -38,10 +38,9 @@ export default function Header() {
                         jamal_lyons:~$
                     </Link>
                     <nav className="hidden md:flex items-center gap-6 text-sm text-purple-2 00">
-                        <a href="#experience" className="hover:text-purple-400 transition-colors">experience</a>
-                        <a href="#projects" className="hover:text-purple-400 transition-colors">projects</a>
-                        <a href="#blog" className="hover:text-purple-400 transition-colors">blog</a>
-                        {/* <a href="/resume.pdf" className="hover:text-purple-400 transition-colors">resume</a> */}
+                        <Link href="#experience" className="hover:text-purple-400 transition-colors">experience</Link>
+                        <Link href="#projects" className="hover:text-purple-400 transition-colors">projects</Link>
+                        <Link href="#blog" className="hover:text-purple-400 transition-colors">blog</Link>
                     </nav>
                 </div>
             </motion.div>
