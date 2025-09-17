@@ -66,6 +66,7 @@ export default function Blogs() {
                 className="group transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
                 onMouseEnter={() => setHoveredBlog(blog.title)}
                 onMouseLeave={() => setHoveredBlog(null)}
+                interactive={false}
               >
                 <div className="flex flex-col md:flex-row md:items-start gap-4">
                   <div className="flex-1">

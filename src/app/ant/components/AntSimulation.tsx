@@ -171,7 +171,8 @@ export default function AntSimulation({
 
     const simulationStep = () => {
       updateAnts();
-      if (animationRef.current && animationRef.current % 5 === 0) {
+      // Update pheromones less frequently for better performance
+      if (animationRef.current && animationRef.current % 3 === 0) {
         updatePheromones();
       }
       render();
@@ -257,22 +258,22 @@ export default function AntSimulation({
       const farLeftSensorPos = {
         x: Math.round(
           ant.position.x +
-            Math.cos(farLeftSensorAngle) * config.sensorDistance * 1.2
+          Math.cos(farLeftSensorAngle) * config.sensorDistance * 1.2
         ),
         y: Math.round(
           ant.position.y +
-            Math.sin(farLeftSensorAngle) * config.sensorDistance * 1.2
+          Math.sin(farLeftSensorAngle) * config.sensorDistance * 1.2
         ),
       };
 
       const farRightSensorPos = {
         x: Math.round(
           ant.position.x +
-            Math.cos(farRightSensorAngle) * config.sensorDistance * 1.2
+          Math.cos(farRightSensorAngle) * config.sensorDistance * 1.2
         ),
         y: Math.round(
           ant.position.y +
-            Math.sin(farRightSensorAngle) * config.sensorDistance * 1.2
+          Math.sin(farRightSensorAngle) * config.sensorDistance * 1.2
         ),
       };
 
@@ -508,7 +509,7 @@ export default function AntSimulation({
               newHomePheromones[phY][phX] = Math.min(
                 1,
                 (newHomePheromones[phY][phX] || 0) +
-                  config.pheromoneStrength * 0.01
+                config.pheromoneStrength * 0.01
               );
             } catch (e) {
               console.error(
@@ -532,26 +533,26 @@ export default function AntSimulation({
             newHomePheromones[phY][phX] = Math.min(
               1,
               (newHomePheromones[phY][phX] || 0) +
-                config.pheromoneStrength * 0.01 * (0.5 + ant.foodCarried / 5)
+              config.pheromoneStrength * 0.01 * (0.5 + ant.foodCarried / 5)
             );
             // Weaker food pheromones when returning to nest
             newFoodPheromones[phY][phX] = Math.min(
               1,
               (newFoodPheromones[phY][phX] || 0) +
-                config.pheromoneStrength * 0.002
+              config.pheromoneStrength * 0.002
             );
           } else {
             // Weaker home pheromones when searching
             newHomePheromones[phY][phX] = Math.min(
               1,
               (newHomePheromones[phY][phX] || 0) +
-                config.pheromoneStrength * 0.002
+              config.pheromoneStrength * 0.002
             );
             // Stronger food pheromones when searching for food
             newFoodPheromones[phY][phX] = Math.min(
               1,
               (newFoodPheromones[phY][phX] || 0) +
-                config.pheromoneStrength * 0.005
+              config.pheromoneStrength * 0.005
             );
           }
         } catch (e) {
@@ -565,12 +566,7 @@ export default function AntSimulation({
     setHomePheromones(newHomePheromones);
     setFoodPheromones(newFoodPheromones);
     setFood(newFood);
-
-    // Update collected food separately to ensure it's updated
-    if (newCollectedFood !== collectedFood) {
-      console.log("Updating collected food:", newCollectedFood);
-      setCollectedFood(newCollectedFood);
-    }
+    setCollectedFood(newCollectedFood);
 
     // Clean up any food sources with 0 amount
     const remainingFood = newFood.filter((f) => f.amount > 0);
@@ -664,35 +660,27 @@ export default function AntSimulation({
     // Render pheromones with blurring for more natural look
     ctx.globalAlpha = 0.7;
 
-    // Draw home pheromones (purple)
-    for (let y = 0; y < canvasSize.height && y < homePheromones.length; y++) {
-      for (
-        let x = 0;
-        x < canvasSize.width && x < homePheromones[y].length;
-        x++
-      ) {
+    // Draw home pheromones (purple) - optimized rendering
+    ctx.fillStyle = "rgba(168, 85, 247, 0.7)";
+    for (let y = 0; y < canvasSize.height && y < homePheromones.length; y += 2) {
+      for (let x = 0; x < canvasSize.width && x < homePheromones[y].length; x += 2) {
         const value = homePheromones[y][x];
-        if (value > 0.01) {
-          ctx.fillStyle = `rgba(168, 85, 247, ${value * 0.7})`;
+        if (value > 0.02) {
           ctx.beginPath();
-          ctx.arc(x, y, value * 2, 0, Math.PI * 2);
+          ctx.arc(x, y, Math.min(value * 3, 4), 0, Math.PI * 2);
           ctx.fill();
         }
       }
     }
 
-    // Draw food pheromones (cyan)
-    for (let y = 0; y < canvasSize.height && y < foodPheromones.length; y++) {
-      for (
-        let x = 0;
-        x < canvasSize.width && x < foodPheromones[y].length;
-        x++
-      ) {
+    // Draw food pheromones (cyan) - optimized rendering
+    ctx.fillStyle = "rgba(0, 210, 255, 0.7)";
+    for (let y = 0; y < canvasSize.height && y < foodPheromones.length; y += 2) {
+      for (let x = 0; x < canvasSize.width && x < foodPheromones[y].length; x += 2) {
         const value = foodPheromones[y][x];
-        if (value > 0.01) {
-          ctx.fillStyle = `rgba(0, 210, 255, ${value * 0.7})`;
+        if (value > 0.02) {
           ctx.beginPath();
-          ctx.arc(x, y, value * 2, 0, Math.PI * 2);
+          ctx.arc(x, y, Math.min(value * 3, 4), 0, Math.PI * 2);
           ctx.fill();
         }
       }
@@ -765,13 +753,20 @@ export default function AntSimulation({
       ctx.stroke();
     });
 
-    // Display simulation status
-    ctx.font = "14px sans-serif";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    // Display simulation status with better styling
+    ctx.font = "bold 14px sans-serif";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    ctx.fillRect(8, 8, 200, 80);
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
     ctx.textAlign = "left";
-    ctx.fillText(`Food sources: ${food.length}`, 10, 20);
-    ctx.fillText(`Food collected: ${collectedFood}`, 10, 40);
-    ctx.fillText(`Ants: ${ants.length}`, 10, 60);
+    ctx.fillText(`Food Sources: ${food.length}`, 12, 25);
+    ctx.fillText(`Food Collected: ${collectedFood}`, 12, 45);
+    ctx.fillText(`Active Ants: ${ants.length}`, 12, 65);
+
+    // Add efficiency metric
+    const efficiency = ants.length > 0 ? Math.round((collectedFood / (ants.length * 0.1)) * 100) : 0;
+    ctx.fillText(`Efficiency: ${efficiency}%`, 12, 85);
 
     if (food.length === 0 && simulationState === "paused") {
       ctx.font = "24px sans-serif";

@@ -97,44 +97,44 @@ export default function SimulationControls({
   };
 
   return (
-    <Card className="p-6">
-      <div className="mb-6 flex items-center justify-between">
+    <Card className="p-4 md:p-6" hover={false} interactive={false}>
+      <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex-1">
-          <h2 className="text-xl text-purple-300 font-semibold mb-2">
+          <h2 className="text-lg md:text-xl text-purple-300 font-semibold mb-2">
             Simulation Controls
           </h2>
           <p className="text-gray-400 text-sm">
             Adjust parameters to see how they affect ant behavior
           </p>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex flex-wrap gap-2">
           {simulationState === "stopped" && (
-            <Button variant="primary" onClick={handleStart}>
+            <Button variant="primary" onClick={handleStart} className="flex-1 md:flex-none">
               Start
             </Button>
           )}
 
           {simulationState === "running" && (
-            <Button variant="secondary" onClick={handlePause}>
+            <Button variant="secondary" onClick={handlePause} className="flex-1 md:flex-none">
               Pause
             </Button>
           )}
 
           {simulationState === "paused" && (
-            <Button variant="secondary" onClick={handleStart}>
+            <Button variant="secondary" onClick={handleStart} className="flex-1 md:flex-none">
               Resume
             </Button>
           )}
 
           {(simulationState === "running" || simulationState === "paused") && (
-            <Button variant="outline" onClick={handleStop}>
+            <Button variant="outline" onClick={handleStop} className="flex-1 md:flex-none">
               Stop
             </Button>
           )}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {/* Ant Count */}
         <div>
           <label className="block text-sm text-purple-300 mb-1">
@@ -352,8 +352,13 @@ export default function SimulationControls({
         </ul>
       </div>
 
-      <div className="flex justify-center gap-4 mt-4">
-        <Button onClick={handleReset}>Reset</Button>
+      <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+        <Button onClick={handleReset} variant="outline" className="w-full sm:w-auto">
+          Reset to Defaults
+        </Button>
+        <div className="text-center text-xs text-gray-500">
+          Tip: Try different ant counts and speeds to see emergent behavior!
+        </div>
       </div>
     </Card>
   );

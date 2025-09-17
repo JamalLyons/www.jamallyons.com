@@ -21,6 +21,7 @@ export default function Card({
   children,
   footer,
   hover = true,
+  interactive = true,
   className = "",
   titleClassName = "",
   contentClassName = "",
@@ -41,7 +42,7 @@ export default function Card({
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || !motionEnabled) return;
+    if (!cardRef.current || !motionEnabled || !interactive) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -58,7 +59,9 @@ export default function Card({
   };
 
   const handleMouseLeave = () => {
-    setVars({ "--rx": "0deg", "--ry": "0deg" });
+    if (interactive) {
+      setVars({ "--rx": "0deg", "--ry": "0deg" });
+    }
     onMouseLeave?.();
   };
 
@@ -70,29 +73,31 @@ export default function Card({
       onMouseEnter={onMouseEnter}
       style={vars as React.CSSProperties}
       className={`relative bg-gradient-to-b from-[#0c0c14] to-[#080810] border border-purple-900/30 rounded-lg overflow-hidden backdrop-blur-sm transition-all duration-300 ${hover
-          ? "hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:-translate-y-1 hover:border-purple-700/50"
-          : ""
+        ? "hover:shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:-translate-y-1 hover:border-purple-700/50"
+        : ""
         } ${className}`}
     >
-      {/* Spotlight */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background:
-            "radial-gradient(180px circle at var(--px) var(--py), rgba(168,85,247,0.18), transparent 45%)",
-        }}
-      />
+      {/* Spotlight - only show when interactive */}
+      {interactive && (
+        <div
+          className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{
+            background:
+              "radial-gradient(180px circle at var(--px) var(--py), rgba(168,85,247,0.18), transparent 45%)",
+          }}
+        />
+      )}
 
       {/* 3D tilt wrapper */}
       <div
         className="relative"
         style={{
           transform:
-            motionEnabled ?
+            motionEnabled && interactive ?
               "perspective(900px) rotateX(var(--ry)) rotateY(var(--rx)) translateZ(0)" :
               undefined,
-          transformStyle: "preserve-3d",
-          transition: "transform 300ms ease",
+          transformStyle: interactive ? "preserve-3d" : undefined,
+          transition: interactive ? "transform 300ms ease" : undefined,
         }}
       >
         {/* Top border glow */}
