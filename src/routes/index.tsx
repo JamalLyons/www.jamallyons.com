@@ -1,16 +1,21 @@
-import { createFileRoute, useLocation } from "@tanstack/react-router";
+import { createFileRoute, useLocation, useSearch } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { TerminalLayout } from "../components/TerminalLayout";
-import { TypewriterText } from "../components/TypewriterText";
 import { PageTransition } from "../components/PageTransition";
+import { BootScreen } from "../components/BootScreen";
 import { siteConfig } from "../config/siteConfig";
 
 export const Route = createFileRoute("/")({
   component: Home,
+  validateSearch: (search: Record<string, unknown>) => ({
+    booted: (search.booted as string) || undefined,
+  }),
 });
 
 function Home() {
   const location = useLocation();
+  const search = useSearch({ from: '/' });
+  const [showBootScreen, setShowBootScreen] = useState<boolean | null>(null);
   const [bootComplete, setBootComplete] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
@@ -25,8 +30,44 @@ function Home() {
     "> Welcome to my world.",
   ];
 
+  // Check if already booted from query param or session storage
   useEffect(() => {
-    if (!bootComplete && currentBootLine < bootSequence.length) {
+    if (showBootScreen === null) {
+      const checkIfBooted = () => {
+        // Check query param first
+        if (search.booted === '1') {
+          return true;
+        }
+
+        // Check session storage with expiry
+        const bootedValue = sessionStorage.getItem('booted');
+        const bootedTime = sessionStorage.getItem('bootedTime');
+
+        if (bootedValue === '1' && bootedTime) {
+          const now = Date.now();
+          const bootTime = parseInt(bootedTime);
+          const oneHourInMs = 60 * 60 * 1000;
+
+          // If less than 1 hour has passed, still booted
+          if (now - bootTime < oneHourInMs) {
+            return true;
+          } else {
+            // Expired, clear storage
+            sessionStorage.removeItem('booted');
+            sessionStorage.removeItem('bootedTime');
+          }
+        }
+
+        return false;
+      };
+
+      const isBooted = checkIfBooted();
+      setShowBootScreen(!isBooted);
+    }
+  }, [search.booted, showBootScreen]);
+
+  useEffect(() => {
+    if (!bootComplete && !showBootScreen && currentBootLine < bootSequence.length) {
       const timer = setTimeout(() => {
         setCurrentBootLine((prev) => prev + 1);
         if (currentBootLine === bootSequence.length - 1) {
@@ -38,8 +79,34 @@ function Home() {
       }, 400);
       return () => clearTimeout(timer);
     }
-  }, [currentBootLine, bootComplete, bootSequence.length]);
+  }, [currentBootLine, bootComplete, showBootScreen, bootSequence.length]);
 
+  const handleBoot = () => {
+    // Store in session storage to persist across refreshes (1 = booted, 0 = not booted)
+    sessionStorage.setItem('booted', '1');
+    // Store timestamp for 1 hour expiry
+    sessionStorage.setItem('bootedTime', Date.now().toString());
+
+    // Update URL with query param
+    window.history.replaceState(
+      { ...window.history.state, as: undefined, scroll: undefined },
+      '',
+      window.location.pathname + '?booted=1'
+    );
+    setShowBootScreen(false);
+  };
+
+  // Don't render anything until we know if we should show boot screen
+  if (showBootScreen === null) {
+    return null;
+  }
+
+  // Show boot screen if not booted
+  if (showBootScreen) {
+    return <BootScreen onBoot={handleBoot} />;
+  }
+
+  // Show normal content with terminal animation
   return (
     <TerminalLayout>
       <PageTransition trigger={location.pathname}>

@@ -3,7 +3,7 @@
 @theme {
   /* Custom Colors */
   --color-background: #0b0b0f;
-  --color-text: #e0e0ff;
+  --color-text: #f0f0ff;
   --color-accent: #9d4edd;
   --color-accent-glow: #c77dff;
   --color-terminal: #00ffb7;
@@ -141,6 +141,55 @@
     filter: blur(0.3px);
     text-shadow: 0 0 3px currentColor;
   }
+}
+
+/* Matrix animation */
+@keyframes scroll-down {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes scroll-up {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+.animate-scroll-down {
+  animation: scroll-down linear infinite;
+}
+
+.matrix-char {
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  text-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
+  white-space: nowrap;
 }
 
 /* Global Styles */
