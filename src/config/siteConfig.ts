@@ -28,7 +28,6 @@ export const siteConfig = {
     // Tech stack
     stack: [
         "React.js",
-        "Next.js",
         "Tailwind CSS",
         "Rust",
         "TypeScript",
