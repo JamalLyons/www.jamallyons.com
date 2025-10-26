@@ -1,8 +1,0 @@
-Update core site UI
-
-Update ant simulation:
-- Fix bug where collected food is not being updated in sim
-- Update the UI of the page to be more user friendly and it on any device
-- Make it preformant and improve visual effects. 
-
-- Add a card in showcase that links to the ant sim and ui library demo for the site
