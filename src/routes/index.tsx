@@ -145,6 +145,7 @@ function Home() {
               <div className="space-y-4 pt-4">
                 <div className="text-terminal font-bold">&gt; quick_access</div>
                 <div className="pl-4 space-y-2 text-text/80">
+                  <div>• Type <span className="text-accent">&gt; help</span> to see available commands</div>
                   <div>• Type <span className="text-accent">&gt; about</span> to learn more</div>
                   <div>• Type <span className="text-accent">&gt; projects</span> to see my work</div>
                   <div>• Type <span className="text-accent">&gt; contact</span> to send a message</div>
