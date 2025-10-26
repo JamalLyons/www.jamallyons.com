@@ -41,6 +41,11 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     };
 
     const handleTerminalInput = (e: KeyboardEvent) => {
+      // Don't handle terminal commands on mobile
+      if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        return;
+      }
+
       const input = document.getElementById('terminal-input') as HTMLInputElement;
       if (!input) return;
 
@@ -123,7 +128,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
         {/* Help Popup Modal */}
         {showHelp && (
-          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in" onClick={() => setShowHelp(false)}>
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in p-4" onClick={() => setShowHelp(false)}>
             <div className="bg-background border-2 border-accent/50 shadow-[0_0_40px_rgba(157,78,221,0.5)] max-w-2xl w-full max-h-[80vh] overflow-auto relative" onClick={(e) => e.stopPropagation()}>
               {/* Close button */}
               <button
@@ -134,53 +139,53 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
               </button>
 
               {/* Content */}
-              <div className="p-8">
-                <h2 className="text-accent-glow text-3xl font-bold font-mono mb-6">Available Commands</h2>
+              <div className="p-4 md:p-8">
+                <h2 className="text-accent-glow text-2xl md:text-3xl font-bold font-mono mb-4 md:mb-6">Available Commands</h2>
 
-                <div className="space-y-4 text-text/80">
-                  <div className="border-l-2 border-terminal pl-4 py-2">
-                    <div className="font-mono text-terminal text-sm">&gt; home</div>
-                    <div className="text-sm mt-1">Navigate to home page</div>
+                <div className="space-y-2 md:space-y-4 text-text/80">
+                  <div className="border-l-2 border-terminal pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-terminal text-xs md:text-sm">&gt; home</div>
+                    <div className="text-xs md:text-sm mt-1">Navigate to home page</div>
                   </div>
 
-                  <div className="border-l-2 border-terminal pl-4 py-2">
-                    <div className="font-mono text-terminal text-sm">&gt; about</div>
-                    <div className="text-sm mt-1">View about page</div>
+                  <div className="border-l-2 border-terminal pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-terminal text-xs md:text-sm">&gt; about</div>
+                    <div className="text-xs md:text-sm mt-1">View about page</div>
                   </div>
 
-                  <div className="border-l-2 border-terminal pl-4 py-2">
-                    <div className="font-mono text-terminal text-sm">&gt; projects</div>
-                    <div className="text-sm mt-1">View projects page</div>
+                  <div className="border-l-2 border-terminal pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-terminal text-xs md:text-sm">&gt; projects</div>
+                    <div className="text-xs md:text-sm mt-1">View projects page</div>
                   </div>
 
-                  <div className="border-l-2 border-terminal pl-4 py-2">
-                    <div className="font-mono text-terminal text-sm">&gt; contact</div>
-                    <div className="text-sm mt-1">View contact page</div>
+                  <div className="border-l-2 border-terminal pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-terminal text-xs md:text-sm">&gt; contact</div>
+                    <div className="text-xs md:text-sm mt-1">View contact page</div>
                   </div>
 
-                  <div className="border-l-2 border-accent/50 pl-4 py-2">
-                    <div className="font-mono text-accent text-sm">&gt; help</div>
-                    <div className="text-sm mt-1">Show this help dialog</div>
+                  <div className="border-l-2 border-accent/50 pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-accent text-xs md:text-sm">&gt; help</div>
+                    <div className="text-xs md:text-sm mt-1">Show this help dialog</div>
                   </div>
 
-                  <div className="border-l-2 border-accent/50 pl-4 py-2">
-                    <div className="font-mono text-accent text-sm">&gt; clear</div>
-                    <div className="text-sm mt-1">Refresh the page</div>
+                  <div className="border-l-2 border-accent/50 pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-accent text-xs md:text-sm">&gt; clear</div>
+                    <div className="text-xs md:text-sm mt-1">Refresh the page</div>
                   </div>
 
-                  <div className="border-l-2 border-accent/50 pl-4 py-2">
-                    <div className="font-mono text-accent text-sm">&gt; shutdown</div>
-                    <div className="text-sm mt-1">Clear boot session and return to login</div>
+                  <div className="border-l-2 border-accent/50 pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-accent text-xs md:text-sm">&gt; shutdown</div>
+                    <div className="text-xs md:text-sm mt-1">Clear boot session and return to login</div>
                   </div>
 
-                  <div className="border-l-2 border-accent/50 pl-4 py-2">
-                    <div className="font-mono text-accent text-sm">&gt; whoami</div>
-                    <div className="text-sm mt-1">Display user information</div>
+                  <div className="border-l-2 border-accent/50 pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-accent text-xs md:text-sm">&gt; whoami</div>
+                    <div className="text-xs md:text-sm mt-1">Display user information</div>
                   </div>
 
-                  <div className="border-l-2 border-accent/50 pl-4 py-2">
-                    <div className="font-mono text-accent text-sm">&gt; ls</div>
-                    <div className="text-sm mt-1">List available routes</div>
+                  <div className="border-l-2 border-accent/50 pl-3 md:pl-4 py-1.5 md:py-2">
+                    <div className="font-mono text-accent text-xs md:text-sm">&gt; ls</div>
+                    <div className="text-xs md:text-sm mt-1">List available routes</div>
                   </div>
                 </div>
               </div>
@@ -190,9 +195,9 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
         {/* Command Output Display */}
         {commandOutput && (
-          <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-slide-up">
-            <div className="bg-background border-2 border-terminal/50 px-6 py-4 shadow-[0_0_20px_rgba(0,255,183,0.3)] max-w-2xl">
-              <pre className="text-terminal text-sm font-mono whitespace-pre-wrap">{commandOutput}</pre>
+          <div className="fixed bottom-20 md:bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-slide-up px-4 w-full max-w-[95vw] md:max-w-2xl">
+            <div className="bg-background border-2 border-terminal/50 px-4 md:px-6 py-3 md:py-4 shadow-[0_0_20px_rgba(0,255,183,0.3)]">
+              <pre className="text-terminal text-xs md:text-sm font-mono whitespace-pre-wrap">{commandOutput}</pre>
             </div>
           </div>
         )}

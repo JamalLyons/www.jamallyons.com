@@ -161,14 +161,14 @@ function Home() {
 
               <div className="space-y-3 pt-4">
                 <div className="text-terminal font-bold">&gt; connect.social</div>
-                <div className="pl-4 flex gap-6 text-sm">
+                <div className="pl-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
                   {siteConfig.social.map((link) => (
                     <a
                       key={link.name}
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text/60 hover:text-accent transition-colors"
+                      className="text-text/60 hover:text-accent transition-colors whitespace-nowrap"
                     >
                       {link.name}
                     </a>

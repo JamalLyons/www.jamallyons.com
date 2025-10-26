@@ -100,20 +100,20 @@ export function BootScreen({ onBoot }: BootScreenProps) {
             <div className="absolute inset-0 scanlines pointer-events-none" />
 
             {/* Center content */}
-            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${isBooting ? 'opacity-0' : 'opacity-100'}`}>
-                <div className="text-center space-y-6 relative z-10">
+            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 p-4 ${isBooting ? 'opacity-0' : 'opacity-100'}`}>
+                <div className="text-center space-y-4 md:space-y-6 relative z-10 w-full max-w-md">
                     {/* Flickering title effect */}
-                    <div className="text-accent-glow text-6xl font-bold font-mono mb-20 relative animate-pulse">
+                    <div className="text-accent-glow text-4xl md:text-6xl font-bold font-mono mb-12 md:mb-20 relative animate-pulse">
                         <span className="drop-shadow-[0_0_20px_rgba(157,78,221,0.8)]">Jamal's OS</span>
                         <div className="absolute inset-0 text-accent-glow animate-ping opacity-25 blur-sm">Jamal's OS</div>
                     </div>
 
                     {/* Terminal-style boot message */}
-                    <div className="text-terminal/80 text-sm font-mono mb-12 animate-fade-in">
+                    <div className="text-terminal/80 text-xs md:text-sm font-mono mb-8 md:mb-12 animate-fade-in px-4">
                         &gt; System Ready | Initializing Secure Boot Protocol
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-4 px-4">
                         <input
                             type="password"
                             value={password}
@@ -124,7 +124,7 @@ export function BootScreen({ onBoot }: BootScreenProps) {
                                 }
                             }}
                             placeholder="Enter password..."
-                            className="bg-background/90 border-2 border-accent/50 text-text px-4 py-3 font-mono focus:outline-none focus:border-accent focus:box-glow transition-all w-64 backdrop-blur-sm"
+                            className="bg-background/90 border-2 border-accent/50 text-text px-4 py-3 font-mono focus:outline-none focus:border-accent focus:box-glow transition-all w-full max-w-xs backdrop-blur-sm text-sm"
                             autoFocus
                             disabled={isBooting}
                         />
@@ -133,7 +133,7 @@ export function BootScreen({ onBoot }: BootScreenProps) {
                             <button
                                 onClick={handleBoot}
                                 disabled={!password.trim() || isBooting}
-                                className={`font-mono px-8 py-3 border-2 transition-all relative ${password.trim() && !isBooting
+                                className={`font-mono px-6 md:px-8 py-3 border-2 transition-all relative text-sm md:text-base ${password.trim() && !isBooting
                                     ? 'border-terminal text-terminal hover:border-accent-glow hover:text-accent-glow box-glow-hover cursor-pointer'
                                     : 'border-border/30 text-text/30 cursor-not-allowed'
                                     }`}
