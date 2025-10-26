@@ -148,7 +148,6 @@ function Home() {
                   <div>• Type <span className="text-accent">&gt; help</span> to see available commands</div>
                   <div>• Type <span className="text-accent">&gt; about</span> to learn more</div>
                   <div>• Type <span className="text-accent">&gt; projects</span> to see my work</div>
-                  <div>• Type <span className="text-accent">&gt; contact</span> to send a message</div>
                 </div>
               </div>
 
