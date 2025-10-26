@@ -217,11 +217,73 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "Portfolio | Jamal Lyons",
+        title: "Jamal Lyons - Backend Engineer & Full Stack Developer",
       },
       {
         name: "description",
-        content: "A portfolio website for Jamal Lyons, a backend engineer and computer science student.",
+        content: "Portfolio of Jamal Lyons, a backend engineer and computer science student specializing in full stack development, API design, and system architecture.",
+      },
+      {
+        name: "keywords",
+        content: "Jamal Lyons, backend engineer, full stack developer, computer science, portfolio, web development, API design, TypeScript, JavaScript, system architecture",
+      },
+      {
+        name: "author",
+        content: "Jamal Lyons",
+      },
+      {
+        name: "robots",
+        content: "index, follow",
+      },
+      {
+        name: "language",
+        content: "English",
+      },
+      {
+        name: "theme-color",
+        content: "#9d4edd",
+      },
+      // Open Graph
+      {
+        property: "og:title",
+        content: "Jamal Lyons - Backend Engineer & Full Stack Developer",
+      },
+      {
+        property: "og:description",
+        content: "Portfolio of Jamal Lyons, a backend engineer and computer science student specializing in full stack development, API design, and system architecture.",
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: "https://www.jamallyons.com",
+      },
+      {
+        property: "og:site_name",
+        content: "Jamal Lyons Portfolio",
+      },
+      // Twitter Card
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: "Jamal Lyons - Backend Engineer & Full Stack Developer",
+      },
+      {
+        name: "twitter:description",
+        content: "Portfolio of Jamal Lyons, a backend engineer and computer science student specializing in full stack development, API design, and system architecture.",
+      },
+      {
+        name: "twitter:site",
+        content: "@codingwithjamal",
+      },
+      {
+        name: "twitter:creator",
+        content: "@codingwithjamal",
       },
     ],
     links: [
@@ -241,6 +303,10 @@ export const Route = createRootRoute({
       {
         rel: "stylesheet",
         href: appStyles,
+      },
+      {
+        rel: "canonical",
+        href: "https://www.jamallyons.com",
       },
     ],
   }),
