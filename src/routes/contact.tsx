@@ -15,6 +15,7 @@ function Contact() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showForm, setShowForm] = useState(false);
+    const [showComingSoon, setShowComingSoon] = useState(false);
     const [displayedLines, setDisplayedLines] = useState<string[]>([]);
     const [currentLine, setCurrentLine] = useState(0);
 
@@ -42,31 +43,30 @@ function Contact() {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setIsSubmitting(true);
-
-        // Simulate transmission
+        // Show coming soon notification instead of submitting
+        setShowComingSoon(true);
+        // Auto-hide after 5 seconds
         setTimeout(() => {
-            setIsSubmitting(false);
-            setIsSubmitted(true);
-        }, 2000);
+            setShowComingSoon(false);
+        }, 5000);
     };
 
     return (
         <TerminalLayout>
             <PageTransition trigger={location.pathname}>
                 <div className="space-y-1 text-left">
-                    {!isSubmitted ? (
+                    {!isSubmitted && (
                         <>
                             {displayedLines.map((line, index) => (
                                 <div
                                     key={index}
                                     className={`${line.startsWith("[jamal@future")
-                                            ? "text-accent-glow font-bold"
-                                            : line.startsWith(">")
-                                                ? "text-terminal"
-                                                : line === ""
-                                                    ? "h-3"
-                                                    : "text-text/80"
+                                        ? "text-accent-glow font-bold"
+                                        : line.startsWith(">")
+                                            ? "text-terminal"
+                                            : line === ""
+                                                ? "h-3"
+                                                : "text-text/80"
                                         }`}
                                 >
                                     {line === "" ? "\u00A0" : line}
@@ -74,111 +74,108 @@ function Contact() {
                             ))}
 
                             {showForm && (
-                                <div className="space-y-6 pt-4 animate-fade-in">
-                                    <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
-                                        <div className="space-y-2">
-                                            <label className="block text-terminal text-sm">
-                                                &gt; enter_name:
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                required
-                                                className="w-full bg-background/50 border border-border/50 text-text px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:box-glow transition-all"
-                                                placeholder="Your name"
-                                                disabled={isSubmitting}
-                                            />
-                                        </div>
+                                <>
+                                    <div className="space-y-6 pt-4 animate-fade-in">
+                                        <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
+                                            <div className="space-y-2">
+                                                <label className="block text-terminal text-sm">
+                                                    &gt; enter_name:
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    value={name}
+                                                    onChange={(e) => setName(e.target.value)}
+                                                    required
+                                                    className="w-full bg-background/50 border border-border/50 text-text px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:box-glow transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    placeholder="Your name"
+                                                    disabled={true}
+                                                />
+                                            </div>
 
-                                        <div className="space-y-2">
-                                            <label className="block text-terminal text-sm">
-                                                &gt; enter_email:
-                                            </label>
-                                            <input
-                                                type="email"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                required
-                                                className="w-full bg-background/50 border border-border/50 text-text px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:box-glow transition-all"
-                                                placeholder="your.email@domain.com"
-                                                disabled={isSubmitting}
-                                            />
-                                        </div>
+                                            <div className="space-y-2">
+                                                <label className="block text-terminal text-sm">
+                                                    &gt; enter_email:
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    required
+                                                    className="w-full bg-background/50 border border-border/50 text-text px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:box-glow transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    placeholder="your.email@domain.com"
+                                                    disabled={true}
+                                                />
+                                            </div>
 
-                                        <div className="space-y-2">
-                                            <label className="block text-terminal text-sm">
-                                                &gt; enter_message:
-                                            </label>
-                                            <textarea
-                                                value={message}
-                                                onChange={(e) => setMessage(e.target.value)}
-                                                required
-                                                rows={6}
-                                                className="w-full bg-background/50 border border-border/50 text-text px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:box-glow transition-all resize-none"
-                                                placeholder="Type your message here..."
-                                                disabled={isSubmitting}
-                                            />
-                                        </div>
+                                            <div className="space-y-2">
+                                                <label className="block text-terminal text-sm">
+                                                    &gt; enter_message:
+                                                </label>
+                                                <textarea
+                                                    value={message}
+                                                    onChange={(e) => setMessage(e.target.value)}
+                                                    required
+                                                    rows={6}
+                                                    className="w-full bg-background/50 border border-border/50 text-text px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:box-glow transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    placeholder="Type your message here..."
+                                                    disabled={true}
+                                                />
+                                            </div>
 
-                                        <button
-                                            type="submit"
-                                            disabled={isSubmitting}
-                                            className={`font-mono text-terminal border border-terminal/50 px-6 py-2 text-sm transition-all duration-300 box-glow-hover hover:bg-terminal/10 hover:text-accent-glow active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${isSubmitting ? "animate-pulse" : ""
-                                                }`}
-                                        >
-                                            {isSubmitting ? "&gt; transmitting..." : "&gt; transmit"}
-                                        </button>
-                                    </form>
+                                            <button
+                                                type="submit"
+                                                className="font-mono text-terminal border border-terminal/50 px-6 py-2 text-sm transition-all duration-300 box-glow-hover hover:bg-terminal/10 hover:text-accent-glow active:scale-95"
+                                            >
+                                                &gt; transmit
+                                            </button>
+                                        </form>
 
-                                    {!isSubmitting && (
                                         <div className="pt-4">
                                             <span className="inline-block animate-blink text-accent-glow">_</span>
                                         </div>
-                                    )}
-                                </div>
+                                    </div>
+                                </>
                             )}
                         </>
-                    ) : (
-                        <div className="space-y-2 animate-fade-in">
-                            <div className="text-accent-glow font-bold">
-                                [jamal@future ~]$ transmission_status
-                            </div>
-                            <div className="h-3"></div>
-                            <div className="text-terminal">&gt; Transmission received successfully.</div>
-                            <div className="h-3"></div>
-                            <div className="space-y-1 text-sm text-text/70 pl-4 border-l-2 border-terminal/30">
-                                <div>Status: <span className="text-terminal">DELIVERED</span></div>
-                                <div>From: {name} ({email})</div>
-                                <div>Message length: {message.length} characters</div>
-                                <div>Timestamp: {new Date().toLocaleString()}</div>
-                            </div>
-                            <div className="h-3"></div>
-                            <div className="text-accent italic text-sm">
-                                Thank you for reaching out! I'll respond to your transmission soon.
-                            </div>
-                            <div className="h-3"></div>
-                            <button
-                                onClick={() => {
-                                    setIsSubmitted(false);
-                                    setShowForm(false);
-                                    setCurrentLine(0);
-                                    setDisplayedLines([]);
-                                    setName("");
-                                    setEmail("");
-                                    setMessage("");
-                                }}
-                                className="font-mono text-terminal/70 hover:text-terminal border border-terminal/30 hover:border-terminal/50 px-4 py-2 text-sm transition-all box-glow-hover"
-                            >
-                                &gt; send_another
-                            </button>
-                            <div className="pt-4">
-                                <span className="inline-block animate-blink text-accent-glow">_</span>
-                            </div>
-                        </div>
                     )}
                 </div>
             </PageTransition>
+
+            {/* Coming Soon Notification */}
+            {showComingSoon && (
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in p-4">
+                    <div className="bg-background border-2 border-accent/50 shadow-[0_0_40px_rgba(157,78,221,0.5)] max-w-md w-full p-8 relative animate-slide-up">
+                        <button
+                            onClick={() => setShowComingSoon(false)}
+                            className="absolute top-4 right-4 text-text/50 hover:text-accent-glow transition-colors text-2xl font-bold leading-none w-8 h-8 flex items-center justify-center border border-border/30 hover:border-accent"
+                        >
+                            ×
+                        </button>
+
+                        <div className="space-y-4">
+                            <div className="text-accent-glow text-2xl font-bold font-mono">
+                                Contact Coming Soon
+                            </div>
+                            <div className="text-text">
+                                I'm currently setting up the backend infrastructure for secure message transmission.
+                            </div>
+
+                            <div className="space-y-2 text-sm text-text/70">
+                                <div>Backend: <span className="text-accent">In Development</span></div>
+                                <div>Expected Launch: <span className="text-terminal">Coming Soon</span></div>
+                                <div>Security: Encrypted transmission protocol</div>
+                            </div>
+
+                            <div className="pt-4 border-t border-border/30">
+                                <div className="text-terminal text-sm font-bold mb-2">&gt; Follow for updates</div>
+                                <div className="text-text/70 text-sm">
+                                    Stay tuned for when the contact system launches!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </TerminalLayout>
     );
 }
