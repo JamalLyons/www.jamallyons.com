@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>Jamal Lyons - Portfolio</title>
+
+        <!-- SEO Meta Tags -->
+        <meta
+            name="description"
+            content="Portfolio of Jamal Lyons, a Computer Science student at Georgia State University passionate about backend architecture, systems programming, and open source."
+        />
+        <meta
+            name="keywords"
+            content="Jamal Lyons, Computer Science, Backend Developer, Systems Programming, Georgia State University, Rust, Convex, Next.js, Open Source"
+        />
+        <meta name="author" content="Jamal Lyons" />
+        <meta name="robots" content="index, follow" />
+
+        <!-- Open Graph / Facebook / LinkedIn -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://jamallyons.com/" />
+        <meta property="og:title" content="Jamal Lyons - Portfolio" />
+        <meta
+            property="og:description"
+            content="Computer Science student at Georgia State University building backend systems and open source tools."
+        />
+        <!-- Replace with a link to an actual image you want shown when your site is shared -->
+        <meta
+            property="og:image"
+            content="https://jamallyons.com/social-preview.png"
+        />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://jamallyons.com/" />
+        <meta name="twitter:title" content="Jamal Lyons - Portfolio" />
+        <meta
+            name="twitter:description"
+            content="Computer Science student at Georgia State University building backend systems and open source tools."
+        />
+        <meta name="twitter:creator" content="@codingwithjamal" />
+        <!-- Replace with a link to an actual image you want shown when your site is shared -->
+        <meta
+            name="twitter:image"
+            content="https://jamallyons.com/social-preview.png"
+        />
+
+        <!-- Canonical URL to prevent duplicate content issues -->
+        <link rel="canonical" href="https://jamallyons.com/" />
+
+        <!-- THE FLASH FIX: This blocking script must run before any CSS or body elements load -->
+        <script>
+            (() => {
+                try {
+                    const savedTheme = localStorage.getItem("theme");
+                    const systemDark = window.matchMedia(
+                        "(prefers-color-scheme: dark)",
+                    ).matches;
+                    if (savedTheme === "dark" || (!savedTheme && systemDark)) {
+                        document.documentElement.classList.add("dark-mode");
+                    }
+                } catch {}
+            })();
+        </script>
+        <script type="module" src="src/main.js"></script>
+
+        <!-- Stylesheet -->
+        <link rel="stylesheet" href="src/style.css" />
+    </head>
+    <body>
+        <header>
+            <button
+                id="theme-toggle"
+                class="theme-toggle"
+                aria-label="Toggle dark mode"
+            >
+                <!-- Moon Icon (Default for Light Mode) -->
+                <svg
+                    id="moon-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="display: none"
+                >
+                    <path
+                        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                    ></path>
+                </svg>
+                <!-- Sun Icon (For Dark Mode) -->
+                <svg
+                    id="sun-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="display: none"
+                >
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+            <h1>Jamal Lyons</h1>
+            <p>
+                <strong
+                    >Computer Science Student @ Georgia State University</strong
+                >
+            </p>
+        </header>
+
+        <div class="social-links">
+            <strong>Links:</strong>
+            <ul>
+                <li><a href="https://github.com/jamallyons">GitHub</a></li>
+                <li>
+                    <a href="https://www.linkedin.com/in/codingwithjamal/"
+                        >LinkedIn</a
+                    >
+                </li>
+                <li><a href="https://x.com/codingwithjamal">X (Twitter)</a></li>
+                <li>
+                    <a href="https://www.claritytext.com/u/jamallyons"
+                        >ClarityText</a
+                    >
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/@codingwithjamal"
+                        >YouTube</a
+                    >
+                </li>
+                <li>
+                    <a href="https://github.com/sponsors/JamalLyons"
+                        >GitHub Sponsors</a
+                    >
+                </li>
+            </ul>
+        </div>
+
+        <main>
+            <section>
+                <h2>About Me</h2>
+                <p>
+                    I'm a Computer Science student at Georgia State University
+                    with a growing passion for backend architecture and systems
+                    programming. I love building the invisible layers that make
+                    software feel alive — from real-time servers and
+                    notification systems to networking and performance
+                    optimizations.
+                </p>
+                <p>
+                    I'm constantly exploring how things work under the hood,
+                    whether it's designing efficient APIs, optimizing data flow,
+                    or diving into low-level code to understand what really
+                    makes computers tick. For me, development isn't just about
+                    writing code — it's about crafting systems that are fast,
+                    reliable, and built to scale.
+                </p>
+            </section>
+
+            <section>
+                <h2>My Open Source Projects</h2>
+                <ul>
+                    <li>
+                        <a href="https://github.com/JamalLyons/bluefox-email"
+                            >bluefox-email</a
+                        >
+                    </li>
+                    <li>
+                        <a href="https://github.com/JamalLyons/convex-doc"
+                            >convex-doc</a
+                        >
+                    </li>
+                    <li>
+                        <a href="https://github.com/jamallyons/type-fetch"
+                            >type-fetch</a
+                        >
+                    </li>
+                    <li>
+                        <a href="https://github.com/JamalLyons/ferros"
+                            >ferros</a
+                        >
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Articles & Writing</h2>
+
+                <article class="article">
+                    <h3>
+                        Transactional Email in Convex with Bluefox and AWS SES
+                    </h3>
+                    <p class="meta">2025-04-23 &bull; 15 min read</p>
+                    <p>
+                        Bluefox is a modern email API built on top of Amazon
+                        SES, designed for developers and SaaS teams. Whether
+                        you're sending transactional emails or integrating
+                        real-time webhooks in a serverless Convex backend,
+                        Bluefox simplifies the process.
+                    </p>
+                    <p class="tags">[Convex] [Email] [AWS] [Backend]</p>
+                    <!-- Replace "#" with the actual link to your article -->
+                    <p>
+                        <a
+                            href="https://dev.to/convexchampions/transactional-email-in-convex-with-bluefox-and-aws-ses-4kpc"
+                            >read article &rarr;</a
+                        >
+                    </p>
+                </article>
+
+                <article class="article">
+                    <h3>
+                        Authentication Best Practices: Convex, Clerk and Next.js
+                    </h3>
+                    <p class="meta">2025-03-06 &bull; 25 min read</p>
+                    <p>
+                        Authentication is the backbone of any full-stack
+                        application, but it's also one of the easiest places to
+                        introduce subtle, hard-to-debug security flaws. As
+                        developers, we aim to build secure, reliable systems,
+                        but scaling an app to a global audience presents unique
+                        challenges—especially regarding authentication.
+                    </p>
+                    <p class="tags">
+                        [Authentication] [Convex] [Clerk] [Next.js] [Security]
+                    </p>
+                    <!-- Replace "#" with the actual link to your article -->
+                    <p>
+                        <a
+                            href="https://dev.to/convexchampions/authentication-best-practices-convex-clerk-and-nextjs-21ag"
+                            >read article &rarr;</a
+                        >
+                    </p>
+                </article>
+
+                <article class="article">
+                    <h3>Building Type-Safe Rust Applications with Convex</h3>
+                    <p class="meta">2024-12-09 &bull; 15 min read</p>
+                    <p>
+                        If you've been following the backend-as-a-service
+                        landscape, you've likely heard of Convex. This
+                        innovative platform has been turning heads by offering a
+                        unique combination of developer experience, serverless
+                        functions, and real-time subscriptions, all wrapped in a
+                        developer-friendly package. What makes Convex
+                        particularly interesting is that under the hood, it's
+                        powered by Rust – a language choice that speaks volumes
+                        about its commitment to performance and reliability.
+                    </p>
+                    <p class="tags">[Rust] [Convex] [TypeScript] [Backend]</p>
+                    <!-- Replace "#" with the actual link to your article -->
+                    <p>
+                        <a
+                            href="https://dev.to/convexchampions/building-type-safe-rust-applications-with-convex-introducing-convex-typegen-1g38"
+                            >read article &rarr;</a
+                        >
+                    </p>
+                </article>
+            </section>
+
+            <section>
+                <h2>Contact</h2>
+                <p>
+                    Want to talk about backend systems, open source, or
+                    potential opportunities?
+                    <!-- Replace the email below with your actual email address -->
+                    Feel free to
+                    <a href="mailto:codingwithmamal@outlook.com"
+                        >send me an email</a
+                    >
+                    or reach out to me on
+                    <a href="https://x.com/codingwithjamal">X (Twitter)</a>.
+                </p>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Jamal Lyons.</p>
+        </footer>
+    </body>
+</html>
