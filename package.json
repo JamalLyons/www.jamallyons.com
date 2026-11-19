@@ -16,7 +16,7 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"test": "node --test src/lib/lighting/ src/lib/notebook/"
+		"test": "node --test src/lib/lighting/ src/lib/notebook/ src/lib/robots/"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^7.0.4",

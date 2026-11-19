@@ -3,12 +3,24 @@
 	import { room, startLighting } from '#lib/lighting/lighting.svelte.js';
 	import Notebook from '#lib/notebook/Notebook.svelte';
 	import Room from '#lib/room/Room.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, type Component } from 'svelte';
 
 	const title = `${site.name} | Portfolio`;
 	const ogImage = `${site.url}/social-preview.png`;
 
 	onMount(startLighting);
+
+	// The desk robots are decoration: load them once the page is idle, like the room clutter.
+	let Robots = $state<Component>();
+	onMount(() => {
+		const load = () => import('#lib/robots/Robots.svelte').then((m) => (Robots = m.default));
+		if ('requestIdleCallback' in window) {
+			const id = requestIdleCallback(load, { timeout: 2500 });
+			return () => cancelIdleCallback(id);
+		}
+		const id = setTimeout(load, 800);
+		return () => clearTimeout(id);
+	});
 </script>
 
 <svelte:head>
@@ -33,6 +45,8 @@
 
 <div class="scene">
 	<Room />
+	<!-- Desk robots go before the lighting layers so the sun and the night dim fall on them too. -->
+	{#if Robots}<Robots />{/if}
 	<!-- Room lighting layers. The lamp pool and LED halo live on the book (Notebook.svelte). -->
 	<div class="light sun-beams" aria-hidden="true"></div>
 	<div class="light night-dim" aria-hidden="true"></div>
