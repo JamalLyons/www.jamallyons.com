@@ -122,122 +122,144 @@
 	}
 }
 
-.room .wall {
-	fill: var(--wall);
-}
+/* Ink weights: near props get heavier lines than far (wall) props. `.heavy` is the
+   silhouette edge on the side away from the window. */
 .room .ink {
 	fill: none;
 	stroke: var(--room-ink);
-	stroke-width: 3;
+	stroke-width: 2.6;
 	stroke-linecap: round;
 	stroke-linejoin: round;
 }
+.room .ink.heavy {
+	stroke-width: 3.6;
+}
 .room .ink.thin {
-	stroke-width: 1.6;
+	stroke-width: 1.5;
+}
+.room .ink.hair {
+	stroke-width: 0.9;
+	opacity: 0.75;
+}
+.room .ink.red {
+	stroke: var(--red-pen);
 }
 .room .ink.strike,
 .room .strike {
 	stroke: var(--red-pen);
-	stroke-width: 2.6;
+	stroke-width: 2.4;
 	fill: none;
 	stroke-linecap: round;
 }
+
+/* wall */
+.room .tex {
+	pointer-events: none;
+}
+.room .sprigs path {
+	fill: none;
+	stroke: #7a6142;
+	stroke-width: 1.2;
+	stroke-linecap: round;
+	opacity: 0.28;
+}
 .room .frame {
 	fill: #e9dcc0;
-	stroke: var(--room-ink);
-	stroke-width: 3;
 }
 .room .skyline {
 	fill: #8aa0b3;
+	opacity: 0.6;
+}
+.room .skyline.far {
+	fill: #b4c4cf;
 	opacity: 0.55;
 }
 html[data-light='night'] .room .skyline {
 	fill: #141a2e;
 	opacity: 1;
 }
-.room .curtain {
-	fill: #b85f48;
-	stroke: var(--room-ink);
-	stroke-width: 2.5;
+html[data-light='night'] .room .skyline.far {
+	fill: #2a3050;
 }
-.room .shelf {
-	fill: #6a432b;
-	stroke: var(--room-ink);
-	stroke-width: 2.5;
-}
-.room .led-strip {
-	fill: #4a3a33;
-}
-.room .led-on {
-	fill: #ffc2cc;
-}
-.room .grain path {
+.room .glare {
 	fill: none;
-	stroke: #5a3925;
-	stroke-width: 2;
-	opacity: 0.45;
-}
-.room .contact-shadow {
-	fill: #2a1a10;
+	stroke: #fff;
+	stroke-width: 5;
+	stroke-linecap: round;
 	opacity: 0.35;
 }
-.room .can {
-	fill: #3d6fb6;
+.room .curtain {
+	fill: #b85f48;
 }
-.room .can-band {
-	fill: #d9dde3;
+.room .curtain-fold {
+	fill: #7e3626;
+	opacity: 0.45;
 }
-.room .can-bolt {
-	fill: #e2b12c;
-}
-.room .can-top {
-	fill: #c6ccd4;
-	stroke: var(--room-ink);
-	stroke-width: 2;
-}
-.room .lamp-metal {
-	fill: #2f3d3a;
-	stroke: #1e2422;
-	stroke-width: 2;
-}
-.room .lamp-arm {
+.room .curtain-lit {
 	fill: none;
-	stroke: #2f3d3a;
-	stroke-width: 9;
+	stroke: #e69a7c;
+	stroke-width: 2.4;
 	stroke-linecap: round;
-	stroke-linejoin: round;
+	opacity: 0.7;
 }
-.room .lamp-shade {
-	fill: #3e6b5e;
-	stroke: #1e2422;
-	stroke-width: 3;
+.room .curtain-rings ellipse {
+	fill: none;
+	stroke: #5a4636;
+	stroke-width: 2;
 }
-.room .lamp-mouth {
-	fill: #1c2321;
+.room .wood-line {
+	fill: none;
+	stroke: #3f2414;
+	stroke-width: 1;
+	opacity: 0.5;
 }
-.room .bulb-on {
-	fill: #fff1b8;
-}
-.room .scrap {
+
+/* paper on the wall and the desk */
+.room .sheet {
 	fill: #f3ead6;
-	stroke: #6b5a48;
-	stroke-width: 1.5;
 }
-.room .scrap.sticky {
-	fill: #f6df7d;
+.room .sheet.bright {
+	fill: #fbf7ee;
 }
-.room .scrap.grid-paper {
+.room .sheet.cool {
 	fill: #eef1ec;
+}
+.room .drop {
+	fill: #2a1608;
+	opacity: 0.32;
 }
 .room .pin {
 	fill: var(--red-pen);
 	stroke: var(--room-ink);
-	stroke-width: 1.5;
+	stroke-width: 1.3;
+}
+.room .nail {
+	fill: #8b8478;
+	stroke: var(--room-ink);
+	stroke-width: 1;
+}
+.room .washi {
+	opacity: 0.78;
+	stroke: rgb(59 42 32 / 0.25);
+	stroke-width: 0.8;
+}
+.room .washi.mint {
+	fill: #9fd0bd;
+}
+.room .washi.rose {
+	fill: #eaa8a8;
+}
+.room .washi.butter {
+	fill: #f0d98c;
+}
+.room .cal-days rect {
+	fill: #c9bba0;
+	opacity: 0.7;
 }
 .room .pencil {
 	fill: none;
 	stroke: #8c8780;
-	stroke-width: 2;
+	stroke-width: 1.8;
 	stroke-linecap: round;
 }
 .room .scrawl {
@@ -245,76 +267,272 @@ html[data-light='night'] .room .skyline {
 	font-size: 22px;
 	fill: #34405a;
 }
-.room .book-a {
-	fill: #6f8f6a;
+.room .spine-bands path {
+	fill: none;
+	stroke: #e9d39a;
+	stroke-width: 1.4;
+	opacity: 0.85;
 }
-.room .book-b {
-	fill: #c9a14a;
-}
-.room .book-c {
-	fill: #8e4c3e;
-}
-.room .jar {
-	fill: #c8d4d4;
-	opacity: 0.8;
-	stroke: var(--room-ink);
+.room .spine-title {
+	fill: none;
+	stroke: #f3e6c8;
 	stroke-width: 2;
+	stroke-linecap: round;
+	opacity: 0.55;
+}
+
+/* desk */
+.room .tex.wood {
+	opacity: 0.55;
+	mix-blend-mode: multiply;
+}
+.room .grain path {
+	fill: none;
+	stroke: #4f301c;
+	stroke-width: 1.6;
+	opacity: 0.4;
+}
+.room .grain.light path {
+	stroke: #b27d55;
+	stroke-width: 1.2;
+	opacity: 0.4;
+}
+.room .knot-ring {
+	fill: none;
+	stroke: #4a2c19;
+	stroke-width: 1.4;
+	opacity: 0.55;
+}
+.room .seam {
+	fill: none;
+	stroke: #2e1a0d;
+	stroke-width: 2.4;
+	opacity: 0.75;
+}
+.room .seam-lip {
+	fill: none;
+	stroke: #b07f58;
+	stroke-width: 1.4;
+	opacity: 0.55;
+}
+.room .scratch path {
+	fill: none;
+	stroke: #c79a72;
+	stroke-width: 0.9;
+	stroke-linecap: round;
+	opacity: 0.4;
+}
+.room .led-strip {
+	fill: #4a3a33;
+}
+.room .led-on {
+	fill: #ffc2cc;
+}
+.room .contact-shadow {
+	fill: #2a1a10;
+	opacity: 0.4;
 }
 .room .ring {
 	fill: none;
 	stroke: #4b2c19;
 	stroke-width: 4;
-	opacity: 0.35;
+	opacity: 0.3;
 }
-.room .pencil-body {
-	fill: #e9b543;
-	stroke: var(--room-ink);
-	stroke-width: 1.5;
-}
-.room .pencil-wood {
-	fill: #e8cfa1;
-	stroke: var(--room-ink);
-	stroke-width: 1.5;
-}
-.room .eraser {
-	fill: #e48b94;
-	stroke: var(--room-ink);
-	stroke-width: 1.5;
-}
-.room .breadboard {
-	fill: #efece4;
-	stroke: #6b5a48;
-	stroke-width: 2;
-}
-.room .holes path {
-	stroke: #a9a395;
-	stroke-width: 3;
-	stroke-dasharray: 2 6;
+
+/* lamp */
+.room .rod {
+	fill: none;
+	stroke: #2f3d3a;
+	stroke-width: 5;
 	stroke-linecap: round;
 }
-.room .chip {
-	fill: #2b2b2b;
+.room .rod-shine {
+	fill: none;
+	stroke: #8fb3a4;
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	opacity: 0.8;
 }
-.room .wire-r,
-.room .wire-b,
-.room .wire-y,
-.room .cable {
+.room .spring {
+	fill: none;
+	stroke: #6d7471;
+	stroke-width: 1.4;
+}
+.room .spring-hook {
+	fill: none;
+	stroke: #6d7471;
+	stroke-width: 1.6;
+	stroke-linecap: round;
+}
+.room .cord {
+	fill: none;
+	stroke: #2a2a2a;
+	stroke-width: 3;
+	stroke-linecap: round;
+}
+.room .filament {
+	fill: none;
+	stroke: #ff9a2e;
+	stroke-width: 1.4;
+	stroke-linejoin: round;
+}
+
+/* small props */
+.room .drops circle {
+	fill: #e6f1ff;
+	stroke: #1d3863;
+	stroke-width: 0.6;
+	opacity: 0.85;
+}
+.room .pencil-mark {
+	font-family: var(--font-body);
+	font-size: 6px;
+	font-weight: 700;
+	fill: #7a5410;
+}
+.room .crumbs path {
+	fill: #e48b94;
+	opacity: 0.85;
+}
+.room .clip {
+	fill: none;
+	stroke: #9aa1a8;
+	stroke-width: 2.2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.room .rail {
+	fill: none;
+	stroke-width: 1.2;
+}
+.room .rail.red {
+	stroke: #d4544a;
+}
+.room .rail.blue {
+	stroke: #4d7bc0;
+}
+.room .hole rect {
+	fill: #7b766b;
+}
+.room .wire {
 	fill: none;
 	stroke-width: 4;
 	stroke-linecap: round;
 }
-.room .wire-r {
+.room .wire.red {
 	stroke: var(--red-pen);
 }
-.room .wire-b {
+.room .wire.blue {
 	stroke: #3d6fb6;
 }
-.room .wire-y {
+.room .wire.yellow {
 	stroke: #e2b12c;
 }
-.room .cable {
-	stroke: #2a2a2a;
+.room .wire-shine {
+	fill: none;
+	stroke: #fff;
+	stroke-width: 1.2;
+	stroke-linecap: round;
+	opacity: 0.6;
+}
+.room .usb {
+	fill: none;
+	stroke: #f1eee6;
 	stroke-width: 5;
+	stroke-linecap: round;
+	filter: drop-shadow(1px 2px 0 rgb(42 22 8 / 0.35));
+}
+.room .usb-shine {
+	fill: none;
+	stroke: #fff;
+	stroke-width: 1.4;
+	opacity: 0.8;
+}
+
+/* ambient motion: transform/opacity only, on the unfiltered .room-motion layer */
+.room-motion {
+	pointer-events: none;
+	will-change: transform;
+}
+.room .curtain-sway {
+	transform-box: view-box;
+	transform-origin: 50px 8px;
+	animation: curtain-sway 9s ease-in-out infinite alternate;
+}
+@keyframes curtain-sway {
+	from {
+		transform: rotate(-0.7deg);
+	}
+	to {
+		transform: rotate(0.9deg);
+	}
+}
+.room .steam path {
+	fill: none;
+	stroke: #fffaf0;
+	stroke-width: 3;
+	stroke-linecap: round;
+	opacity: 0;
+	transform-box: fill-box;
+	transform-origin: 50% 100%;
+	animation: steam 4.5s ease-in-out infinite;
+}
+.room .steam path:nth-child(2) {
+	animation-delay: -1.5s;
+}
+.room .steam path:nth-child(3) {
+	animation-delay: -3s;
+}
+@keyframes steam {
+	0% {
+		opacity: 0;
+		transform: translateY(4px) scaleY(0.8);
+	}
+	35% {
+		opacity: 0.55;
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-12px);
+	}
+}
+.room .motes circle {
+	fill: #fff6d8;
+	opacity: 0;
+	animation: mote 16s linear infinite;
+}
+@keyframes mote {
+	0% {
+		opacity: 0;
+		transform: translate(0, 0);
+	}
+	20%,
+	80% {
+		opacity: 0.75;
+	}
+	100% {
+		opacity: 0;
+		transform: translate(60px, -36px);
+	}
+}
+.room .led-breathe {
+	animation: breathe 6s ease-in-out infinite;
+}
+@keyframes breathe {
+	50% {
+		opacity: 0.72;
+	}
+}
+.room .lamp-pulse {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: lamp-pulse 7s ease-in-out infinite;
+}
+@keyframes lamp-pulse {
+	50% {
+		opacity: 0.85;
+		transform: scale(1.04);
+	}
 }
 
 /* ---------------------------------------------------------------- lighting */
@@ -488,11 +706,16 @@ html[data-sky] .sky-tint {
 	mix-blend-mode: screen;
 	opacity: 0.85;
 }
-/* Night: the room falls into blue shadow; LEDs (in the SVG) and the lamp carry the light. */
+/* Night: the room falls into blue shadow; LEDs (in the SVG) and the lamp carry the light.
+   The lamp keeps a warm pool on the wood under it (right of the book); cool moonlight from
+   the window keeps the left margin readable. */
 .night-dim {
 	z-index: -2;
 	background:
-		radial-gradient(ellipse 22% 24% at 84% 14%, rgb(255 236 200 / 0.9), transparent 70%),
+		radial-gradient(ellipse 16% 20% at 87% 25%, rgb(255 236 200 / 0.9), transparent 70%),
+		radial-gradient(ellipse 34% 46% at 80% 52%, rgb(255 214 160 / 0.85), rgb(220 170 140 / 0.35) 55%, transparent 80%),
+		radial-gradient(ellipse 32% 90% at 0% 60%, rgb(168 176 224), rgb(130 136 196 / 0.6) 55%, transparent 88%),
+		radial-gradient(ellipse 28% 30% at 12% 10%, rgb(160 170 220 / 0.7), transparent 75%),
 		linear-gradient(rgb(52 50 96), rgb(30 28 60));
 	mix-blend-mode: multiply;
 }
@@ -641,33 +864,75 @@ html:not(.js) .view-toggle {
 	filter: blur(18px);
 	transform: translateY(14px);
 }
+/* a tighter contact shadow right under the cover, so the book sits on the desk */
+.book-shadow::after {
+	content: '';
+	position: absolute;
+	inset: 3% 1% -1% 1%;
+	border-radius: 14px;
+	background: color-mix(in oklab, var(--book-shadow) 70%, transparent);
+	filter: blur(5px);
+	transform: translateY(-8px);
+}
+/* cloth cover: a lip of it shows around the page block, darker at the spine fold */
+.cover {
+	position: absolute;
+	inset: -4px -16px -16px -16px;
+	border-radius: 10px 10px 14px 14px;
+	background:
+		linear-gradient(to right, transparent 47%, rgb(0 0 0 / 0.28) 50%, transparent 53%),
+		repeating-linear-gradient(45deg, rgb(255 255 255 / 0.04) 0 1px, transparent 1px 3px),
+		repeating-linear-gradient(-45deg, rgb(0 0 0 / 0.06) 0 1px, transparent 1px 3px),
+		linear-gradient(#3f5b52, #2f463f);
+	box-shadow:
+		inset 0 1px 0 rgb(255 255 255 / 0.18),
+		inset 0 0 0 1.5px rgb(20 28 26 / 0.65),
+		inset 0 -3px 6px rgb(0 0 0 / 0.25);
+}
+/* ribbon bookmark: tucked in at the spine, its tail resting on the cover lip. It must
+   end above the cover's bottom edge (-16px) so it never reaches the page controls. */
+.ribbon {
+	position: absolute;
+	left: calc(50% + 8px);
+	bottom: -13px;
+	width: 12px;
+	height: 40px;
+	z-index: 1;
+	background: linear-gradient(to right, #8e2f26, #c4463a 45%, #a5372d);
+	clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+	transform: rotate(-14deg);
+	transform-origin: top center;
+	filter: drop-shadow(2px 3px 2px rgb(30 16 8 / 0.45));
+}
 /* page block: the stacked sheets under each page, visible as thin edges */
 .block {
 	position: absolute;
-	top: 6px;
-	bottom: -8px;
-	width: calc(50% + 6px);
+	top: 3px;
+	bottom: -9px;
+	width: calc(50% + 8px);
 	background:
 		repeating-linear-gradient(to bottom, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px),
 		var(--paper-shade);
 	border-radius: 4px;
-	box-shadow: inset 0 0 0 1px rgb(80 60 40 / 0.25);
+	box-shadow:
+		inset 0 0 0 1px rgb(80 60 40 / 0.3),
+		0 1px 0 rgb(60 40 20 / 0.35);
 }
 .block.left {
-	left: -6px;
+	left: -8px;
 	border-radius: 6px 2px 2px 8px;
 	background:
-		repeating-linear-gradient(to right, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px) left / 6px 100%
-			no-repeat,
-		repeating-linear-gradient(to bottom, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px);
+		repeating-linear-gradient(to right, var(--paper) 0 1px, var(--paper-shade) 1px 2px, var(--paper-edge) 2px 3px) left /
+			8px 100% no-repeat,
+		repeating-linear-gradient(to bottom, var(--paper) 0 1px, var(--paper-shade) 1px 2px, var(--paper-edge) 2px 3px);
 }
 .block.right {
-	right: -6px;
+	right: -8px;
 	border-radius: 2px 6px 8px 2px;
 	background:
-		repeating-linear-gradient(to left, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px) right / 6px 100%
-			no-repeat,
-		repeating-linear-gradient(to bottom, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px);
+		repeating-linear-gradient(to left, var(--paper) 0 1px, var(--paper-shade) 1px 2px, var(--paper-edge) 2px 3px) right /
+			8px 100% no-repeat,
+		repeating-linear-gradient(to bottom, var(--paper) 0 1px, var(--paper-shade) 1px 2px, var(--paper-edge) 2px 3px);
 }
 
 .spread {
@@ -1297,8 +1562,16 @@ html[data-view='plain'] .room-details {
 @media (prefers-reduced-motion: reduce) {
 	.single-sheet.from-right,
 	.single-sheet.from-left,
-	.room-details {
+	.room-details,
+	.room .curtain-sway,
+	.room .led-breathe,
+	.room .lamp-pulse,
+	.room .motes circle {
 		animation: none;
+	}
+	/* steam and motes only exist as motion */
+	.room .steam {
+		display: none;
 	}
 	.room .day,
 	.room .night,
