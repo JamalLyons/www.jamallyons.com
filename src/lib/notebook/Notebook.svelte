@@ -41,6 +41,8 @@
 		// Mid-turn requests only queue; an unchanged book has nowhere to go.
 		if (was.turning || book === was) return;
 		if (!book.turning) return void settle(focus);
+		// Things on the desk (the robots) react to a page starting to turn.
+		window.dispatchEvent(new CustomEvent('notebook:turn', { detail: { dir: book.turning.dir } }));
 		animate(book.turning.dir).then(() => {
 			const { book: landed, next } = nav.land(book);
 			book = landed;
@@ -72,6 +74,7 @@
 	async function settle(focus: boolean) {
 		announce = nav.spreadLabel(book.spread);
 		syncHash(nav.spreadHash(book.spread));
+		tick().then(() => window.dispatchEvent(new CustomEvent('notebook:settle')));
 		if (focus) {
 			await tick();
 			bookEl?.querySelector<HTMLElement>('.paper.left')?.focus({ preventScroll: true });
