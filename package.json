@@ -15,21 +15,19 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"test": "node --test src/lib/lighting/"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-vercel": "^7.0.4",
 		"@sveltejs/kit": "^3.3.1",
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@tailwindcss/vite": "^4.3.5",
-		"@types/three": "^0.187.0",
+		"@types/node": "^26.6.6",
 		"svelte": "^5.57.3",
 		"svelte-check": "^4.7.8",
 		"tailwindcss": "^4.3.5",
 		"typescript": "^6.0.3",
 		"vite": "^8.3.8"
-	},
-	"dependencies": {
-		"three": "^0.187.0"
 	}
 }
