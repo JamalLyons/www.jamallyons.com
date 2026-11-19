@@ -115,3 +115,15 @@ test('the window glows for half an hour either side of sunrise and sunset', () =
 	assert.equal(skyAt(sunset + GLOW_MS + MIN).sky, null);
 	assert.equal(skyAt(sunset + GLOW_MS + MIN).next, tomorrow - GLOW_MS);
 });
+
+test('lighting follows a place passed in, not only the default', () => {
+	const reykjavik = { name: 'Reykjavik', lat: 64.146, lon: -21.942, timeZone: 'Atlantic/Reykjavik' };
+	// Midsummer: a day over 20 hours long.
+	const { sunrise, sunset } = sunTimes(2026, 6, 21, reykjavik.lat, reykjavik.lon);
+	assert.ok(sunset - sunrise > 20 * 60 * MIN);
+	// 16:00 UTC on Dec 21 is daytime in Atlanta (11:00 EST) but after Reykjavik's ~15:30 sunset.
+	const at = Date.UTC(2026, 11, 21, 16);
+	assert.equal(lightAt(at).state, 'day');
+	assert.equal(lightAt(at, reykjavik).state, 'night');
+	assert.equal(skyAt(Date.UTC(2026, 11, 21, 15, 45), reykjavik).sky, 'dusk');
+});

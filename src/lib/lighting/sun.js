@@ -1,4 +1,4 @@
-// Atlanta sunrise/sunset and the room's lighting state.
+// Sunrise/sunset at the room's place (Atlanta) and the room's lighting state.
 //
 // Plain JavaScript (types in JSDoc) on purpose: the same source is inlined into the
 // document head so the first paint already has the right lighting. Keep it free of
@@ -6,9 +6,14 @@
 //
 // Sun times use the NOAA-style sunrise equation (about a minute of error at Atlanta's
 // latitude). They are absolute instants, so the visitor's own timezone never matters:
-// the only use of `America/New_York` is to decide which Atlanta calendar day "now" is in.
+// the place's timeZone only decides which calendar day "now" is in there.
 
-export const ATLANTA = { lat: 33.749, lon: -84.388, timeZone: 'America/New_York' };
+/**
+ * Where the room is. Change this one object to move it; the clock tag reads `name`.
+ * @typedef {{ name: string, lat: number, lon: number, timeZone: string }} Place
+ * @type {Place}
+ */
+export const PLACE = { name: 'Atlanta', lat: 33.749, lon: -84.388, timeZone: 'America/New_York' };
 
 const DAY_MS = 86400000;
 const J1970 = 2440587.5;
@@ -16,12 +21,12 @@ const J2000 = 2451545;
 const RAD = Math.PI / 180;
 
 /**
- * Atlanta's calendar date at an instant.
+ * The calendar date at an instant in a time zone (the room's by default).
  * @param {number} ms epoch milliseconds
  * @param {string} [timeZone]
  * @returns {{ y: number, m: number, d: number }}
  */
-export function localDate(ms, timeZone = ATLANTA.timeZone) {
+export function localDate(ms, timeZone = PLACE.timeZone) {
 	const parts = new Intl.DateTimeFormat('en-US', {
 		timeZone,
 		year: 'numeric',
@@ -42,7 +47,7 @@ export function localDate(ms, timeZone = ATLANTA.timeZone) {
  * @param {number} [lon] east positive
  * @returns {{ sunrise: number, sunset: number }}
  */
-export function sunTimes(y, m, d, lat = ATLANTA.lat, lon = ATLANTA.lon) {
+export function sunTimes(y, m, d, lat = PLACE.lat, lon = PLACE.lon) {
 	const jdNoon = Date.UTC(y, m - 1, d, 12) / DAY_MS + J1970;
 	const n = Math.round(jdNoon - J2000 + 0.0008);
 	const jStar = n - lon / 360;
@@ -61,15 +66,16 @@ export function sunTimes(y, m, d, lat = ATLANTA.lat, lon = ATLANTA.lon) {
 /**
  * The room's lighting at an instant, and when it next changes.
  * @param {number} ms epoch milliseconds
+ * @param {Place} [place]
  * @returns {{ state: 'day' | 'night', sunrise: number, sunset: number, next: number }}
  */
-export function lightAt(ms) {
-	const { y, m, d } = localDate(ms);
-	const { sunrise, sunset } = sunTimes(y, m, d);
+export function lightAt(ms, place = PLACE) {
+	const { y, m, d } = localDate(ms, place.timeZone);
+	const { sunrise, sunset } = sunTimes(y, m, d, place.lat, place.lon);
 	if (ms < sunrise) return { state: 'night', sunrise, sunset, next: sunrise };
 	if (ms < sunset) return { state: 'day', sunrise, sunset, next: sunset };
 	const t = new Date(Date.UTC(y, m - 1, d + 1));
-	const tomorrow = sunTimes(t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate());
+	const tomorrow = sunTimes(t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate(), place.lat, place.lon);
 	return { state: 'night', sunrise, sunset, next: tomorrow.sunrise };
 }
 
@@ -80,13 +86,14 @@ export const GLOW_MS = 30 * 60000;
  * The sky's colour at an instant: a warm glow for half an hour either side of sunrise
  * (`dawn`) and sunset (`dusk`), otherwise none. `next` is when that changes.
  * @param {number} ms epoch milliseconds
+ * @param {Place} [place]
  * @returns {{ sky: 'dawn' | 'dusk' | null, next: number }}
  */
-export function skyAt(ms) {
-	const { y, m, d } = localDate(ms);
-	const today = sunTimes(y, m, d);
+export function skyAt(ms, place = PLACE) {
+	const { y, m, d } = localDate(ms, place.timeZone);
+	const today = sunTimes(y, m, d, place.lat, place.lon);
 	const t = new Date(Date.UTC(y, m - 1, d + 1));
-	const tomorrow = sunTimes(t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate());
+	const tomorrow = sunTimes(t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate(), place.lat, place.lon);
 	/** @type {Array<[number, 'dawn' | 'dusk']>} */
 	const glows = [
 		[today.sunrise, 'dawn'],
