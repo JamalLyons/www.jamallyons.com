@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+
+@font-face {
+	font-family: '0xProto';
+	src: url('/fonts/0xProto-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: '0xProto';
+	src: url('/fonts/0xProto-Italic.woff2') format('woff2');
+	font-weight: 400;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: '0xProto';
+	src: url('/fonts/0xProto-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@theme {
+	--font-sans: '0xProto', ui-monospace, SFMono-Regular, Menlo, monospace;
+	--font-mono: '0xProto', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	--color-bg: #06070a;
+	--color-surface: #0d1016;
+	--color-line: #1c222c;
+	--color-fg: #e6edf3;
+	--color-muted: #8b96a5;
+	--color-accent: #22d3ee;
+	--color-accent-2: #a78bfa;
+}
+
+@layer base {
+	html {
+		color-scheme: dark;
+		background: var(--color-bg);
+		scroll-behavior: smooth;
+	}
+	body {
+		@apply bg-bg font-sans text-fg antialiased;
+	}
+	::selection {
+		background: color-mix(in oklab, var(--color-accent) 35%, transparent);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+	}
+}
