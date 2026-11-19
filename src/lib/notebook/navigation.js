@@ -80,11 +80,6 @@ export function navigation(pages, { start = 'intro', contents = 'contents' } = {
 		contentsSpread: spreadOfIndex(known(contents)),
 		contentsPosition: order.indexOf(known(contents)),
 
-		/** Page index for a hash or id (leading `#` optional); undefined when unknown. */
-		find,
-
-		/** @param {number} s */
-		clampSpread: (s) => clamp(s, lastSpread),
 		/** @param {number} pos */
 		clampPosition: (pos) => clamp(pos, lastPosition),
 
@@ -101,8 +96,6 @@ export function navigation(pages, { start = 'intro', contents = 'contents' } = {
 		},
 		/** @param {number} pos */
 		pageAt: (pos) => order[pos],
-
-		turn,
 
 		/** Where the book is headed: relative moves made mid-turn count from here. */
 		aim,

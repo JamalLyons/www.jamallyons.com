@@ -26,8 +26,8 @@ test('every page shows on exactly one desktop spread', () => {
 test('spreads at both ends', () => {
 	assert.deepEqual(nav.spreadPages(0), { left: 0, right: 1 });
 	assert.deepEqual(nav.spreadPages(nav.lastSpread), { left: n - 2, right: n - 1 });
-	assert.equal(nav.clampSpread(-3), 0);
-	assert.equal(nav.clampSpread(nav.lastSpread + 4), nav.lastSpread);
+	assert.equal(nav.request({ spread: 1 }, -3, true).spread, 0);
+	assert.equal(nav.request({ spread: 1 }, nav.lastSpread + 4, true).spread, nav.lastSpread);
 });
 
 test('phones read intro, then contents, then the rest in book order', () => {
@@ -48,18 +48,21 @@ test('phones read intro, then contents, then the rest in book order', () => {
 	assert.equal(nav.clampPosition(n), n - 1);
 });
 
+/** The turn a request from spread s to t starts. */
+const turn = (/** @type {number} */ s, /** @type {number} */ t) => nav.request({ spread: s }, t).turning;
+
 test('turn leaf faces for forward and backward jumps', () => {
 	for (let s = 0; s <= nav.lastSpread; s++) {
 		for (let t = 0; t <= nav.lastSpread; t++) {
-			const turn = nav.turn(s, t);
-			if (s === t) assert.equal(turn, undefined);
+			const leaf = turn(s, t);
+			if (s === t) assert.equal(leaf, undefined);
 			else if (t > s)
-				assert.deepEqual(turn, { dir: 1, to: t, front: 2 * s + 1, back: 2 * t, left: 2 * s, right: 2 * t + 1 });
-			else assert.deepEqual(turn, { dir: -1, to: t, front: 2 * t + 1, back: 2 * s, left: 2 * t, right: 2 * s + 1 });
+				assert.deepEqual(leaf, { dir: 1, to: t, front: 2 * s + 1, back: 2 * t, left: 2 * s, right: 2 * t + 1 });
+			else assert.deepEqual(leaf, { dir: -1, to: t, front: 2 * t + 1, back: 2 * s, left: 2 * t, right: 2 * s + 1 });
 		}
 	}
-	assert.deepEqual(nav.turn(0, 3), { dir: 1, to: 3, front: 1, back: 6, left: 0, right: 7 });
-	assert.deepEqual(nav.turn(4, 1), { dir: -1, to: 1, front: 3, back: 8, left: 2, right: 9 });
+	assert.deepEqual(turn(0, 3), { dir: 1, to: 3, front: 1, back: 6, left: 0, right: 7 });
+	assert.deepEqual(turn(4, 1), { dir: -1, to: 1, front: 3, back: 8, left: 2, right: 9 });
 });
 
 test('hashes: empty for the first spread or position, else a page id', () => {
@@ -72,10 +75,9 @@ test('hashes: empty for the first spread or position, else a page id', () => {
 });
 
 test('hash ids resolve, with or without the #; unknown ones do not', () => {
-	assert.equal(nav.find('#about'), 2);
-	assert.equal(nav.find('about'), 2);
+	assert.equal(nav.spreadOf('#about'), 1);
+	assert.equal(nav.positionOf('about'), 2);
 	for (const bad of ['', '#', '#nope', 'Contents']) {
-		assert.equal(nav.find(bad), undefined);
 		assert.equal(nav.spreadOf(bad), undefined);
 		assert.equal(nav.positionOf(bad), undefined);
 	}
@@ -91,9 +93,9 @@ test('announcements and pager text', () => {
 test('a request with no turn running starts one; reduced motion jumps', () => {
 	const book = { spread: 1 };
 	assert.equal(nav.request(book, 1), book);
-	assert.deepEqual(nav.request(book, 3), { spread: 1, turning: nav.turn(1, 3) });
+	assert.deepEqual(nav.request(book, 3), { spread: 1, turning: turn(1, 3) });
 	assert.deepEqual(nav.request(book, 3, true), { spread: 3 });
-	assert.deepEqual(nav.request(book, 99), { spread: 1, turning: nav.turn(1, nav.lastSpread) });
+	assert.deepEqual(nav.request(book, 99), { spread: 1, turning: turn(1, nav.lastSpread) });
 	const first = { spread: 0 };
 	assert.equal(nav.request(first, -1), first);
 });
@@ -104,7 +106,7 @@ test('mid-turn requests queue, the latest wins, and land turns to them next', ()
 	book = nav.request(book, nav.aim(book) + 1);
 	assert.equal(book.queued, 2);
 	assert.equal(book.spread, 0);
-	assert.deepEqual(book.turning, nav.turn(0, 1));
+	assert.deepEqual(book.turning, turn(0, 1));
 	book = nav.request(book, nav.aim(book) + 1);
 	assert.equal(nav.aim(book), 3);
 	// even reduced motion waits for the running turn
@@ -112,7 +114,7 @@ test('mid-turn requests queue, the latest wins, and land turns to them next', ()
 
 	const landed = nav.land(book);
 	assert.deepEqual(landed, { book: { spread: 1 }, next: 3 });
-	assert.deepEqual(nav.request(landed.book, landed.next ?? -1), { spread: 1, turning: nav.turn(1, 3) });
+	assert.deepEqual(nav.request(landed.book, landed.next ?? -1), { spread: 1, turning: turn(1, 3) });
 	assert.deepEqual(nav.land(nav.request({ spread: 2 }, 0)), { book: { spread: 0 }, next: undefined });
 });
 

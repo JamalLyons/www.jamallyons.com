@@ -125,15 +125,16 @@
 	}
 
 	function onClick(e: MouseEvent) {
-		const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
+		if (!(e.target instanceof Element)) return;
+		const a = e.target.closest<HTMLAnchorElement>('a[href^="#"]');
 		if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
 		if (go(a.hash.slice(1))) e.preventDefault();
 	}
 
 	function onKey(e: KeyboardEvent) {
 		if (plain || e.altKey || e.metaKey || e.ctrlKey) return;
-		const t = e.target as HTMLElement;
-		if (t.closest('input, textarea, select, [contenteditable]')) return;
+		// Keys sent to the window itself have no element to check.
+		if (e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable]')) return;
 		const delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
 		if (!delta) return;
 		e.preventDefault();
