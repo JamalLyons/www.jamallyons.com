@@ -326,7 +326,7 @@
 	</g>
 
 	<!-- pencil: hex facets, ferrule, eraser, sharpened tip -->
-	<g transform="rotate(-20 140 668)">
+	<g transform="translate(-10 -56) rotate(-20 140 668)">
 		<rect x="30" y="676" width="200" height="8" rx="4" class="drop" filter="url(#soft)" transform="translate(4 8)" />
 		<rect x="44" y="660" width="166" height="5" fill="#f6cf62" />
 		<rect x="44" y="665" width="166" height="5" fill="#e9b543" />
@@ -347,7 +347,7 @@
 		<text x="70" y="669.5" class="pencil-mark">HB</text>
 	</g>
 	<!-- eraser crumbs and a loose paperclip -->
-	<g class="crumbs">
+	<g class="crumbs" transform="translate(-10 -56)">
 		<path d="M28 704 q3 -2 5 1 q-2 3 -5 -1z M40 714 q2 -2 4 0 q-1 3 -4 0z M22 720 q3 -1 4 2 q-3 2 -4 -2z M48 700 q2 -1 3 1 q-2 2 -3 -1z" />
 	</g>
 	<path class="clip" d="M236 790 l-36 18 a6 6 0 0 0 5 11 l32 -16 a4 4 0 0 0 -4 -7 l-26 13" transform="rotate(-14 216 800)" />
@@ -505,8 +505,8 @@
 		{/each}
 	</g>
 	<g class="steam">
-		<path d="M140 690 c-8 -12 8 -20 0 -32 s8 -20 0 -32" />
-		<path d="M156 688 c-8 -12 8 -20 0 -32 s8 -20 0 -32" />
-		<path d="M170 692 c-8 -12 8 -20 0 -32 s8 -20 0 -32" />
+		<path d="M140 692 c-6 -8 6 -14 0 -20 s6 -14 0 -20" />
+		<path d="M155 690 c-6 -8 6 -14 0 -20 s6 -14 0 -20" />
+		<path d="M169 693 c-6 -8 6 -14 0 -20 s6 -14 0 -20" />
 	</g>
 </svg>

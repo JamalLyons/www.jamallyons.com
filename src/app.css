@@ -486,14 +486,14 @@ html[data-light='night'] .room .skyline.far {
 @keyframes steam {
 	0% {
 		opacity: 0;
-		transform: translateY(6px) scaleY(0.8);
+		transform: translateY(4px) scaleY(0.8);
 	}
 	35% {
-		opacity: 0.5;
+		opacity: 0.55;
 	}
 	100% {
 		opacity: 0;
-		transform: translateY(-26px) scaleY(1.1);
+		transform: translateY(-12px);
 	}
 }
 .room .motes circle {
@@ -707,12 +707,15 @@ html[data-sky] .sky-tint {
 	opacity: 0.85;
 }
 /* Night: the room falls into blue shadow; LEDs (in the SVG) and the lamp carry the light.
-   The lamp keeps a warm pool on the wood under it (right of the book). */
+   The lamp keeps a warm pool on the wood under it (right of the book); cool moonlight from
+   the window keeps the left margin readable. */
 .night-dim {
 	z-index: -2;
 	background:
 		radial-gradient(ellipse 16% 20% at 87% 25%, rgb(255 236 200 / 0.9), transparent 70%),
 		radial-gradient(ellipse 34% 46% at 80% 52%, rgb(255 214 160 / 0.85), rgb(220 170 140 / 0.35) 55%, transparent 80%),
+		radial-gradient(ellipse 32% 90% at 0% 60%, rgb(168 176 224), rgb(130 136 196 / 0.6) 55%, transparent 88%),
+		radial-gradient(ellipse 28% 30% at 12% 10%, rgb(160 170 220 / 0.7), transparent 75%),
 		linear-gradient(rgb(52 50 96), rgb(30 28 60));
 	mix-blend-mode: multiply;
 }
@@ -886,14 +889,14 @@ html:not(.js) .view-toggle {
 		inset 0 0 0 1.5px rgb(20 28 26 / 0.65),
 		inset 0 -3px 6px rgb(0 0 0 / 0.25);
 }
-/* ribbon bookmark: tucked in at the spine, its tail resting on the cover lip
-   (short, so it stays clear of the page controls below) */
+/* ribbon bookmark: tucked in at the spine, its tail resting on the cover lip. It must
+   end above the cover's bottom edge (-16px) so it never reaches the page controls. */
 .ribbon {
 	position: absolute;
 	left: calc(50% + 8px);
-	bottom: -22px;
+	bottom: -13px;
 	width: 12px;
-	height: 54px;
+	height: 40px;
 	z-index: 1;
 	background: linear-gradient(to right, #8e2f26, #c4463a 45%, #a5372d);
 	clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
@@ -1566,10 +1569,9 @@ html[data-view='plain'] .room-details {
 	.room .motes circle {
 		animation: none;
 	}
-	/* steam holds one faint still wisp; motes stay hidden */
-	.room .steam path {
-		animation: none;
-		opacity: 0.3;
+	/* steam and motes only exist as motion */
+	.room .steam {
+		display: none;
 	}
 	.room .day,
 	.room .night,
