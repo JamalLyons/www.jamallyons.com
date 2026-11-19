@@ -1,15 +1,5 @@
 <script lang="ts">
-	import { pageNumber } from '../pages.js';
-
-	const entries = [
-		{ id: 'about', label: 'About', note: 'school, systems, the problems I like' },
-		{ id: 'projects', label: 'Projects', note: 'everything I am building' },
-		{ id: 'ferros', label: 'Ferros', note: 'a Rust-native debugger', sub: true },
-		{ id: 'convex-typegen', label: 'Convex Typegen', note: 'schema → Rust types', sub: true },
-		{ id: 'dotfile-sync', label: 'dotfile-sync', note: 'a Mac, set up from one repo', sub: true },
-		{ id: 'writing', label: 'Writing', note: 'articles and tutorials' },
-		{ id: 'contact', label: 'Contact', note: 'say hello' }
-	];
+	import { pageNumber, tocEntries as entries } from '../manifest.js';
 </script>
 
 <h2 class="hand-title">Contents</h2>

@@ -1,9 +1,8 @@
-<h2 class="hand-title">dotfile-sync</h2>
-<p class="project-sub">
-	a Mac, set up from one repo · <a href="https://github.com/JamalLyons/dotfile-sync" target="_blank" rel="noopener"
-		>github.com/JamalLyons/dotfile-sync ↗</a
-	>
-</p>
+<script lang="ts">
+	import ProjectHeader from '../ProjectHeader.svelte';
+</script>
+
+<ProjectHeader slug="dotfile-sync" />
 
 <figure class="sketch-figure">
 	<svg class="sketch" viewBox="0 0 300 110" role="img" aria-label="Sketch: the same Mac before setup, with an empty dock, and after, with apps, a Fish shell, and editor settings">

@@ -18,8 +18,10 @@ export const links = [
 	{ label: 'Sponsor', href: 'https://github.com/sponsors/JamalLyons' }
 ];
 
+// `slug` is the stable key notebook pages use to find a project; never change one.
 export const projects = [
 	{
+		slug: 'ferros',
 		name: 'Ferros',
 		href: 'https://github.com/JamalLyons/ferros',
 		description:
@@ -27,12 +29,14 @@ export const projects = [
 		tags: ['Rust', 'Debugger', 'Systems']
 	},
 	{
+		slug: 'phoenix-language',
 		name: 'Phoenix Language',
 		href: 'https://github.com/phoenix-language/phoenix',
 		description: 'A statically typed systems language that compiles to portable bytecode and runs on the Phoenix VM.',
 		tags: ['Rust', 'Compiler', 'VM']
 	},
 	{
+		slug: 'phoenix-music-player',
 		name: 'Phoenix Music Player',
 		href: 'https://phoenix.jamallyons.com/',
 		description:
@@ -40,12 +44,14 @@ export const projects = [
 		tags: ['Desktop', 'Audio', 'Local-first']
 	},
 	{
+		slug: 'convex-typegen',
 		name: 'Convex Typegen',
 		href: 'https://github.com/JamalLyons/convex-typegen',
 		description: 'End-to-end type safety for Convex in Rust. Generates Rust types straight from your Convex schema.',
 		tags: ['Rust', 'Convex', 'Codegen']
 	},
 	{
+		slug: 'dotfile-sync',
 		name: 'dotfile-sync',
 		href: 'https://github.com/JamalLyons/dotfile-sync',
 		description:
@@ -53,18 +59,27 @@ export const projects = [
 		tags: ['Swift', 'macOS', 'CLI']
 	},
 	{
+		slug: 'agent-skills',
 		name: 'Agent Skills',
 		href: 'https://github.com/JamalLyons/Agent-Skills',
 		description: 'A shared collection of Agent Skills for Claude Code, Codex, Cursor, and Gemini CLI. Edit once, use across agents.',
 		tags: ['AI', 'Agents', 'DX']
 	},
 	{
+		slug: 'type-fetch',
 		name: 'Type Fetch',
 		href: 'https://github.com/jamallyons/type-fetch',
 		description: 'A lightweight, zero-dependency HTTP client for type-safe API requests in JavaScript/TypeScript.',
 		tags: ['TypeScript', 'HTTP', 'npm']
 	}
 ];
+
+/** A project by slug. Throws on an unknown slug so a stale reference breaks the build. */
+export function projectBySlug(slug: string) {
+	const project = projects.find((p) => p.slug === slug);
+	if (!project) throw new Error(`Unknown project: ${slug}`);
+	return project;
+}
 
 export const articles = [
 	{

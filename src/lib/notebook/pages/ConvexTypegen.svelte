@@ -2,6 +2,7 @@
 	// Arrows are measured from the highlighted fields, so they connect the right lines at
 	// any page width (spread, phone, plain view).
 	import { onMount } from 'svelte';
+	import ProjectHeader from '../ProjectHeader.svelte';
 
 	const fields = ['text', 'priority', 'tag', 'done'];
 	let fig = $state<HTMLElement>();
@@ -63,12 +64,7 @@
 	});
 </script>
 
-<h2 class="hand-title">Convex Typegen</h2>
-<p class="project-sub">
-	Convex schema → Rust types · <a href="https://github.com/JamalLyons/convex-typegen" target="_blank" rel="noopener"
-		>github.com/JamalLyons/convex-typegen ↗</a
-	>
-</p>
+<ProjectHeader slug="convex-typegen" />
 
 <!-- Verified against examples/basic in the repo: its schema.ts and the struct build.rs generates. -->
 <figure class="sketch-figure typegen" bind:this={fig}>
