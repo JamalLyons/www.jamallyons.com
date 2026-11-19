@@ -34,6 +34,3 @@ const components: Record<PageId, Component> = {
 export type PageDef = { id: PageId; title: string; component: Component };
 
 export const pages: PageDef[] = pageMeta.map((p) => ({ id: p.id, title: p.title, component: components[p.id] }));
-
-/** Phones read one page at a time and start on the introduction, then the contents. */
-export const mobileOrder = [1, 0, ...pages.keys()].filter((v, i, all) => all.indexOf(v) === i);

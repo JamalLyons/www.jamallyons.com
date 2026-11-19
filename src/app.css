@@ -595,12 +595,34 @@ html[data-view='plain'] .plain {
 html:not(.js) .view-toggle {
 	display: none;
 }
+/* Phones (and short landscape screens): one page at a time. The only copy of this query in
+   CSS; keep it equal to SINGLE_PAGE_QUERY in src/lib/notebook/breakpoint.js. */
 @media (max-width: 899px), (max-height: 559px) {
 	html.js:not([data-view='plain']) .book {
 		display: none;
 	}
 	html.js:not([data-view='plain']) .single {
 		display: block;
+	}
+	.clock-tag {
+		top: 12px;
+		bottom: auto;
+		left: 12px;
+		font-size: 16px;
+	}
+	.view-toggle {
+		top: 10px;
+		right: 12px;
+	}
+	.view-toggle button {
+		font-size: 13px;
+		padding: 7px 10px 6px;
+		min-height: 34px;
+	}
+	.desk-surface {
+		padding-top: 58px;
+		padding-bottom: 90px;
+		align-items: start;
 	}
 }
 
@@ -1237,28 +1259,6 @@ html:not(.js) .view-toggle {
 	font-family: var(--font-hand);
 	font-size: 19px;
 	color: #f3e6c8;
-}
-@media (max-width: 899px), (max-height: 559px) {
-	.clock-tag {
-		top: 12px;
-		bottom: auto;
-		left: 12px;
-		font-size: 16px;
-	}
-	.view-toggle {
-		top: 10px;
-		right: 12px;
-	}
-	.view-toggle button {
-		font-size: 13px;
-		padding: 7px 10px 6px;
-		min-height: 34px;
-	}
-	.desk-surface {
-		padding-top: 58px;
-		padding-bottom: 90px;
-		align-items: start;
-	}
 }
 
 /* ---------------------------------------------------------------- plain reading view */
