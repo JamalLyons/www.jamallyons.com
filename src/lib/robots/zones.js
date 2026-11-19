@@ -35,7 +35,7 @@ export const SEAT_CENTRE = 15.5;
 export const PERCH_HOP = 10;
 /** The drone hovers this far above a note lying on the desk. */
 export const PAD_HOVER = 44;
-export const MARBLE_R = 6.5;
+export const MARBLE_R = 7.5;
 /** How far ahead of Treadbot's origin the marble sits while pushed. */
 export const PUSH_OFF = 41;
 
@@ -89,7 +89,7 @@ export function zonesFor(L) {
 	// Robots scale with the window, and must fit (standing on the floor line) under the
 	// book's cover. The page controls are dodged sideways, not shrunk under.
 	const above = bottom(cover) + GAP;
-	const s = Math.min(1.1, vh / 1050, (floorY - above) / -BOX.tread.t);
+	const s = Math.min(1.1, vh / 880, (floorY - above) / -BOX.tread.t);
 	const floorOk = s >= 0.7;
 
 	/** Widest stretch of the floor line, inside [a, b], clear of the avoid rects for a robot box. */
