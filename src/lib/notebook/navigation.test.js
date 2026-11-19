@@ -120,3 +120,8 @@ test('queued moves clamp to the book', () => {
 	const book = nav.request(nav.request({ spread: nav.lastSpread - 1 }, nav.lastSpread), nav.lastSpread + 5);
 	assert.equal(book.queued, nav.lastSpread);
 });
+
+test('an odd page count is rejected rather than leaving a spread half empty', () => {
+	const odd = [...pageMeta, { id: 'extra', title: 'Extra' }];
+	assert.throws(() => navigation(odd), /even page count/);
+});

@@ -43,7 +43,10 @@ export function navigation(pages, { start = 'intro', contents = 'contents' } = {
 		return i;
 	};
 
-	const lastSpread = Math.ceil(pages.length / 2) - 1;
+	// Every spread is a left and a right page, from the inside front cover to the inside
+	// back cover. An odd count would leave the last spread without a right page.
+	if (pages.length % 2) throw new Error(`The notebook needs an even page count, got ${pages.length}`);
+	const lastSpread = pages.length / 2 - 1;
 	/** @param {number} s */
 	const spreadPages = (s) => ({ left: s * 2, right: s * 2 + 1 });
 	/** @param {number} i */
