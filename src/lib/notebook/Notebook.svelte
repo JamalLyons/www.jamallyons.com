@@ -192,6 +192,8 @@
 >
 	<div class="led-halo" aria-hidden="true"></div>
 	<div class="book-shadow" aria-hidden="true"></div>
+	<div class="cover" aria-hidden="true"></div>
+	<div class="ribbon" aria-hidden="true"></div>
 	<div class="block left" aria-hidden="true"></div>
 	<div class="block right" aria-hidden="true"></div>
 
