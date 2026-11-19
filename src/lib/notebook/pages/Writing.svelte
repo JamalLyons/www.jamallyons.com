@@ -22,3 +22,40 @@
 		</li>
 	{/each}
 </ol>
+
+<style>
+	.reading-list {
+		list-style: none;
+		padding: 0;
+		counter-reset: rl;
+	}
+	.reading-list li {
+		position: relative;
+		padding: 0.2em 0 0.8em 1.8em;
+		counter-increment: rl;
+	}
+	.reading-list li::before {
+		content: counter(rl) '.';
+		position: absolute;
+		left: 0;
+		top: 0.05em;
+		font-family: var(--font-hand);
+		font-size: 1.6em;
+		color: var(--red-pen);
+	}
+	.rl-meta {
+		font-size: 0.78em;
+		color: var(--pencil);
+	}
+	.rl-title {
+		font-weight: 650;
+		line-height: 1.35;
+		display: inline-block;
+	}
+	.rl-desc {
+		font-size: 0.84em;
+		line-height: 1.5;
+		color: var(--ink-soft);
+		margin-top: 0.2em !important;
+	}
+</style>

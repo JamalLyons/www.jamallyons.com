@@ -36,3 +36,15 @@
 	</svg>
 	<figcaption class="margin-note">where I like to spend my time</figcaption>
 </figure>
+
+<style>
+	.margin-figure {
+		margin-top: 1em !important;
+		width: 82%;
+		margin-left: auto !important;
+		transform: rotate(1.2deg);
+	}
+	.margin-figure figcaption {
+		text-align: right;
+	}
+</style>

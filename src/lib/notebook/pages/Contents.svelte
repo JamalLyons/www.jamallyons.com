@@ -29,3 +29,62 @@
 		<circle cx="22" cy="72" r="5" />
 	</g>
 </svg>
+
+<style>
+	.toc {
+		list-style: none;
+		padding: 0;
+		margin-top: 0.5em !important;
+	}
+	.toc li {
+		margin-bottom: 0.55em;
+	}
+	.toc li.sub {
+		padding-left: 1.4em;
+		margin-top: -0.25em;
+	}
+	.toc a {
+		display: flex;
+		align-items: baseline;
+		gap: 0.4em;
+		text-decoration: none;
+		font-family: var(--font-hand);
+		font-size: calc(var(--fs) * 1.75);
+		line-height: 1.15;
+		font-weight: 600;
+	}
+	.toc li.sub a {
+		font-size: calc(var(--fs) * 1.45);
+		font-weight: 500;
+	}
+	.toc a:hover .toc-label {
+		text-decoration: underline wavy var(--red-pen) 1.5px;
+		text-underline-offset: 5px;
+	}
+	.toc-dots {
+		flex: 1;
+		border-bottom: 2px dotted var(--pencil);
+		transform: translateY(-0.25em);
+		min-width: 1em;
+	}
+	.toc-num {
+		font-size: 0.9em;
+		color: var(--ink-soft);
+	}
+	.toc-note {
+		display: block;
+		font-size: 0.82em;
+		line-height: 1.4;
+		color: var(--pencil);
+	}
+	.toc-tip {
+		margin-top: 1em !important;
+		color: var(--pencil);
+		font-size: calc(var(--fs) * 1.15);
+	}
+	.toc-doodle {
+		width: 46%;
+		margin: 0.5em 0 0 auto;
+		opacity: 0.6;
+	}
+</style>

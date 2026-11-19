@@ -114,3 +114,84 @@
 	</p>
 	<p>A wrong table, field, argument, or return type becomes a compile error instead of a runtime bug.</p>
 </div>
+
+<style>
+	.typegen {
+		position: relative;
+	}
+	.typegen .tg-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: 12%;
+		align-items: start;
+	}
+	.typegen .code-card {
+		font-size: calc(var(--fs) * 0.62);
+		padding: 0.55em 0.6em;
+		overflow: hidden;
+	}
+	.typegen .schema {
+		transform: rotate(-1.2deg);
+	}
+	.typegen .rust {
+		transform: rotate(1deg) translateY(0.8em);
+	}
+	.typegen .f-text {
+		background: color-mix(in oklab, var(--highlight) 90%, transparent);
+	}
+	.typegen .f-priority {
+		background: rgb(180 214 255 / 0.9);
+	}
+	.typegen .f-tag {
+		background: rgb(198 232 190 / 0.95);
+	}
+	.typegen .f-done {
+		background: rgb(255 196 190 / 0.9);
+	}
+	.tg-arrows {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		overflow: visible;
+	}
+	.tg-arrows path {
+		fill: none;
+		stroke: var(--red-pen);
+		stroke-width: 1.5;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.tg-arrows .tg-line {
+		stroke-dasharray: 4 3;
+	}
+	.tg-arrows .tg-dot {
+		fill: var(--red-pen);
+		stroke: none;
+	}
+	/* Narrow pages: stack the two cards; the highlight colours pair the fields. */
+	@container page (max-width: 430px) {
+		.typegen .tg-grid {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 0.9em;
+			padding-left: 46px;
+		}
+		.typegen .rust {
+			transform: rotate(0.8deg);
+			margin-right: 6%;
+		}
+		.typegen .code-card {
+			font-size: calc(var(--fs) * 0.7);
+		}
+	}
+	.tg-notes {
+		list-style: none;
+		padding: 0;
+		margin-top: 0.9em !important;
+		font-size: calc(var(--fs) * 1.15);
+	}
+	.tg-notes li + li {
+		margin-top: 0.15em;
+	}
+</style>

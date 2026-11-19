@@ -22,3 +22,46 @@
 <a class="more-link" href="https://github.com/jamallyons?tab=repositories" target="_blank" rel="noopener"
 	>and more on GitHub ↗</a
 >
+
+<style>
+	.project-index {
+		list-style: none;
+		padding: 0;
+	}
+	.project-index li {
+		padding: 0.35em 0 0.45em;
+		border-bottom: 1px dashed color-mix(in oklab, var(--ink-soft) 30%, transparent);
+	}
+	.pi-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0.6em;
+		flex-wrap: wrap;
+	}
+	.pi-name {
+		font-weight: 650;
+		font-size: 1.02em;
+	}
+	.pi-page {
+		font-family: var(--font-hand);
+		font-size: 1.2em;
+		color: var(--red-pen) !important;
+		text-decoration: none !important;
+		white-space: nowrap;
+	}
+	.pi-page:hover {
+		text-decoration: underline !important;
+	}
+	.pi-desc {
+		font-size: 0.84em;
+		line-height: 1.45;
+		color: var(--ink-soft);
+	}
+	.more-link {
+		display: inline-block;
+		margin-top: 0.6em;
+		font-family: var(--font-hand);
+		font-size: 1.35em;
+	}
+</style>

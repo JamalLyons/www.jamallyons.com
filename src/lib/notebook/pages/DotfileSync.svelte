@@ -44,3 +44,14 @@ Plan p-… (profile base)
 		first.
 	</p>
 </div>
+
+<style>
+	.plan-card {
+		font-size: calc(var(--fs) * 0.6);
+		transform: rotate(-0.6deg);
+	}
+	.plan-note {
+		margin: 0.3em 0 0.6em !important;
+		font-size: calc(var(--fs) * 1.15);
+	}
+</style>
