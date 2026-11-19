@@ -46,7 +46,9 @@
 
 	/* book geometry: one page is --page-w wide and --page-h tall */
 	--controls-h: 56px;
-	--page-w: min(540px, 40vw, calc((100svh - var(--controls-h) - 150px) * 0.72));
+	/* Fit the window height, but never shorter than a page can hold: on short windows the
+	   book stays readable and the desk scrolls, rather than the paper scrolling inside. */
+	--page-w: min(540px, 40vw, max(400px, calc((100svh - var(--controls-h) - 150px) * 0.72)));
 	--page-h: calc(var(--page-w) / 0.72);
 	--fs: clamp(12.5px, calc(var(--page-w) * 0.0285), 16px);
 
@@ -306,20 +308,149 @@ html[data-light='night'] .room .skyline {
 
 /* ---------------------------------------------------------------- lighting */
 
-/* Each lighting state shows its own layers. The switch is a short crossfade; props never move. */
+/*
+ * Each lighting state shows its own layers; props never move. The switch is staged so it
+ * reads as the sun going down (or coming up) rather than a fade. Transitions take their
+ * timing from the state being entered, so night rules hold the sunset order and the
+ * base rules hold the sunrise order:
+ *   sunset  - sun sinks behind the skyline, sky deepens, room dims, stars and city windows
+ *             come out, the moon rises, LEDs warm up, then the lamp clicks on (~8s)
+ *   sunrise - lamp off, LEDs off, windows go dark, moon sets, sky pales, sun rises,
+ *             light comes back across the desk (~8s)
+ * Half an hour either side of each, html[data-sky] tints the window and the room.
+ */
 .room .day,
 .room .night,
-.light {
-	transition: opacity 1.4s ease;
+.room .glow,
+.light,
+.led-halo {
+	transition-property: opacity;
+	transition-timing-function: ease-in-out;
 }
 html:not([data-light='night']) .room .night,
 html:not([data-light='night']) .night-dim,
-html:not([data-light='night']) .lamp-pool {
+html:not([data-light='night']) .lamp-pool,
+html:not([data-light='night']) .led-halo {
 	opacity: 0;
 }
 html[data-light='night'] .room .day,
 html[data-light='night'] .sun-beams {
 	opacity: 0;
+}
+
+/* sunrise order (entering day); general layers first, specific ones override below */
+.room .day,
+.room .night,
+.night-dim {
+	transition-duration: 5s;
+	transition-delay: 1.8s;
+}
+.room .lamp,
+.lamp-pool {
+	transition-duration: 0.2s;
+	transition-delay: 0s;
+}
+.room .led,
+.led-halo {
+	transition-duration: 0.9s;
+	transition-delay: 0.6s;
+}
+.room .windows {
+	transition-duration: 1.5s;
+	transition-delay: 1.4s;
+}
+.room .stars {
+	transition-duration: 2.5s;
+	transition-delay: 1s;
+}
+.sun-beams {
+	transition-duration: 4s;
+	transition-delay: 4.2s;
+}
+.room .sun,
+.room .moon {
+	transform-box: view-box;
+	transition: transform 4.5s cubic-bezier(0.4, 0, 0.3, 1);
+}
+.room .sun {
+	transition-delay: 2.6s;
+}
+.room .moon {
+	transition-delay: 0.4s;
+	transform: translateY(170px);
+}
+html[data-light='night'] .room .sun {
+	transform: translateY(170px);
+}
+html[data-light='night'] .room .moon {
+	transform: none;
+}
+
+/* sunset order (entering night) */
+html[data-light='night'] .sun-beams {
+	transition-duration: 3.5s;
+	transition-delay: 0s;
+}
+html[data-light='night'] .room .sun {
+	transition-delay: 0s;
+	transition-timing-function: cubic-bezier(0.5, 0, 0.7, 1);
+}
+html[data-light='night'] .room .day,
+html[data-light='night'] .room .night,
+html[data-light='night'] .night-dim {
+	transition-duration: 5s;
+	transition-delay: 0.8s;
+}
+html[data-light='night'] .room .stars {
+	transition-duration: 3s;
+	transition-delay: 4s;
+}
+html[data-light='night'] .room .moon {
+	transition-delay: 3.4s;
+}
+html[data-light='night'] .room .windows {
+	transition-duration: 0.4s;
+	transition-delay: 4.6s;
+}
+html[data-light='night'] .room .led,
+html[data-light='night'] .led-halo {
+	transition-duration: 1.2s;
+	transition-delay: 6s;
+}
+html[data-light='night'] .room .lamp,
+html[data-light='night'] .lamp-pool {
+	transition-duration: 0.12s;
+	transition-delay: 7.6s;
+}
+
+/* No lighting transitions until the page has settled: the first paint must already be
+   the right room, never a fade from the unstyled state (Safari animates that). */
+html:not(.lit) :is(.room .day, .room .night, .room .glow, .room .sun, .room .moon, .light, .led-halo) {
+	transition: none !important;
+}
+
+/* dawn and dusk: a warm sky in the window and a faint warm cast over the room */
+.room .glow {
+	opacity: 0;
+	transition-duration: 6s;
+	transition-delay: 0s;
+}
+html[data-sky='dawn'] .room .glow.dawn,
+html[data-sky='dusk'] .room .glow.dusk {
+	opacity: 0.9;
+}
+html[data-sky][data-light='night'] .room .glow {
+	opacity: 0.45;
+}
+.sky-tint {
+	z-index: -2;
+	background: radial-gradient(ellipse 70% 60% at 12% 8%, rgb(255 150 90 / 0.5), rgb(255 170 110 / 0.18) 60%, transparent);
+	mix-blend-mode: soft-light;
+	opacity: 0;
+	transition-duration: 6s;
+}
+html[data-sky] .sky-tint {
+	opacity: 1;
 }
 
 .light {
@@ -363,11 +494,6 @@ html[data-light='night'] .sun-beams {
 	background: radial-gradient(closest-side, rgb(255 140 190 / 0.38), rgb(170 120 255 / 0.18) 60%, transparent);
 	mix-blend-mode: screen;
 	filter: blur(10px);
-	opacity: 0;
-	transition: opacity 1.4s ease;
-}
-html[data-light='night'] .led-halo {
-	opacity: 1;
 }
 /* The lamp's warm pool sits over the book itself, brightest on the page under the shade. */
 .book .lamp-pool {
@@ -607,6 +733,18 @@ html:not(.js) .view-toggle {
 }
 .face.back {
 	transform: rotateY(180deg);
+}
+.seg-a > .face.front {
+	visibility: var(--a-front, visible);
+}
+.seg-a > .face.back {
+	visibility: var(--a-back, hidden);
+}
+.seg-b > .face.front {
+	visibility: var(--b-front, visible);
+}
+.seg-b > .face.back {
+	visibility: var(--b-back, hidden);
 }
 .face::after {
 	content: '';
@@ -1455,7 +1593,11 @@ html[data-view='plain'] .room-details {
 	}
 	.room .day,
 	.room .night,
+	.room .glow,
+	.room .sun,
+	.room .moon,
 	.light,
+	.led-halo,
 	.corner-hint .fingers {
 		transition: none;
 	}

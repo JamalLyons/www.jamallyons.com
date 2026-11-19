@@ -64,6 +64,8 @@
 	}
 
 	function animate(dir: 1 | -1): Promise<void> {
+		// Start from this turn's first frame, not the last turn's final one.
+		for (const [k, v] of Object.entries(frameStyle(frame(dir, phases[0].name, 0)))) bookEl?.style.setProperty(k, v);
 		return new Promise((resolve) => {
 			let i = 0;
 			let t0 = performance.now();

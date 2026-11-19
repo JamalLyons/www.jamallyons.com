@@ -72,3 +72,30 @@ export function lightAt(ms) {
 	const tomorrow = sunTimes(t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate());
 	return { state: 'night', sunrise, sunset, next: tomorrow.sunrise };
 }
+
+/** How long before and after sunrise/sunset the window glows. */
+export const GLOW_MS = 30 * 60000;
+
+/**
+ * The sky's colour at an instant: a warm glow for half an hour either side of sunrise
+ * (`dawn`) and sunset (`dusk`), otherwise none. `next` is when that changes.
+ * @param {number} ms epoch milliseconds
+ * @returns {{ sky: 'dawn' | 'dusk' | null, next: number }}
+ */
+export function skyAt(ms) {
+	const { y, m, d } = localDate(ms);
+	const today = sunTimes(y, m, d);
+	const t = new Date(Date.UTC(y, m - 1, d + 1));
+	const tomorrow = sunTimes(t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate());
+	/** @type {Array<[number, 'dawn' | 'dusk']>} */
+	const glows = [
+		[today.sunrise, 'dawn'],
+		[today.sunset, 'dusk'],
+		[tomorrow.sunrise, 'dawn']
+	];
+	for (const [at, sky] of glows) {
+		if (ms < at - GLOW_MS) return { sky: null, next: at - GLOW_MS };
+		if (ms < at + GLOW_MS) return { sky, next: at + GLOW_MS };
+	}
+	return { sky: null, next: tomorrow.sunrise - GLOW_MS };
+}

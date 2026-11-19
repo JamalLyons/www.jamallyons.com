@@ -36,6 +36,7 @@
 	<!-- Room lighting layers. The lamp pool and LED halo live on the book (Notebook.svelte). -->
 	<div class="light sun-beams" aria-hidden="true"></div>
 	<div class="light night-dim" aria-hidden="true"></div>
+	<div class="light sky-tint" aria-hidden="true"></div>
 
 	<main class="desk-surface">
 		<Notebook />

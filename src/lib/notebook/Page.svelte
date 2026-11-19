@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fitPage } from './fit.js';
 	import { pages } from './pages.js';
 
 	let { index, side, live = false }: { index: number; side: 'left' | 'right'; live?: boolean } = $props();
@@ -12,6 +13,7 @@
 	data-page={page.id}
 	aria-label={live ? `Page ${index + 1}: ${page.title}` : undefined}
 	tabindex={live ? -1 : undefined}
+	{@attach fitPage}
 >
 	<div class="paper-inner">
 		<page.component />

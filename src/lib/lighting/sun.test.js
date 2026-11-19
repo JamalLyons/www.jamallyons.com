@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { overrides } from './overrides.js';
-import { lightAt, localDate, sunTimes } from './sun.js';
+import { GLOW_MS, lightAt, localDate, skyAt, sunTimes } from './sun.js';
 
 const MIN = 60000;
 
@@ -92,9 +92,26 @@ test('the same instant gives the same state for any visitor timezone', () => {
 });
 
 test('URL overrides pin or shift the clock', () => {
-	assert.deepEqual(overrides('?light=night'), { offset: 0, force: 'night' });
+	assert.deepEqual(overrides('?light=night'), { offset: 0, force: 'night', sky: null, cycle: 0 });
+	assert.equal(overrides('?sky=dusk').sky, 'dusk');
+	assert.equal(overrides('?sky=noon').sky, null);
 	assert.equal(overrides('?light=purple').force, null);
 	const { offset } = overrides('?at=2026-06-21T20:50:00-04:00');
 	assert.ok(Math.abs(Date.now() + offset - Date.parse('2026-06-21T20:50:00-04:00')) < 1000);
 	assert.equal(lightAt(Date.now() + offset).state, 'day');
+});
+
+test('the window glows for half an hour either side of sunrise and sunset', () => {
+	const { sunrise, sunset } = sunTimes(2026, 6, 21);
+	assert.equal(skyAt(sunrise - GLOW_MS - MIN).sky, null);
+	assert.equal(skyAt(sunrise - GLOW_MS - MIN).next, sunrise - GLOW_MS);
+	assert.equal(skyAt(sunrise).sky, 'dawn');
+	assert.equal(skyAt(sunrise).next, sunrise + GLOW_MS);
+	assert.equal(skyAt(sunrise + GLOW_MS + MIN).sky, null);
+	assert.equal(skyAt(sunrise + GLOW_MS + MIN).next, sunset - GLOW_MS);
+	assert.equal(skyAt(sunset - MIN).sky, 'dusk');
+	assert.equal(skyAt(sunset + MIN).sky, 'dusk');
+	const tomorrow = sunTimes(2026, 6, 22).sunrise;
+	assert.equal(skyAt(sunset + GLOW_MS + MIN).sky, null);
+	assert.equal(skyAt(sunset + GLOW_MS + MIN).next, tomorrow - GLOW_MS);
 });

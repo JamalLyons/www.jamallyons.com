@@ -40,6 +40,19 @@
 				<stop offset="0" stop-color="#0f1630" />
 				<stop offset="1" stop-color="#262a48" />
 			</linearGradient>
+			<linearGradient id="sky-dusk" x1="0" y1="0" x2="0" y2="1">
+				<stop offset="0" stop-color="#5a4f8c" />
+				<stop offset="0.45" stop-color="#d9708a" />
+				<stop offset="0.8" stop-color="#f7a65e" />
+				<stop offset="1" stop-color="#ffd27a" />
+			</linearGradient>
+			<linearGradient id="sky-dawn" x1="0" y1="0" x2="0" y2="1">
+				<stop offset="0" stop-color="#7f9cc8" />
+				<stop offset="0.5" stop-color="#f2b3b0" />
+				<stop offset="0.85" stop-color="#ffd3a1" />
+				<stop offset="1" stop-color="#fff0c4" />
+			</linearGradient>
+			<clipPath id="glass"><rect x="56" y="30" width="298" height="180" /></clipPath>
 			<linearGradient id="desk-wood" x1="0" y1="0" x2="0" y2="1">
 				<stop offset="0" stop-color="#7f5236" />
 				<stop offset="1" stop-color="#6a432b" />
@@ -65,24 +78,25 @@
 		<!-- window, top left -->
 		<g filter="url(#wobble)">
 			<rect x="40" y="16" width="330" height="206" rx="5" class="frame" />
-			<rect x="56" y="30" width="298" height="180" class="day" fill="url(#sky-day)" />
-			<rect x="56" y="30" width="298" height="180" class="night" fill="url(#sky-night)" />
-			<g class="day">
-				<circle cx="300" cy="70" r="20" fill="#fff4cf" />
-				<path d="M86 96 q16 -20 38 -6 q14 -14 30 -2 q20 0 18 14 h-90 q-8 -4 4 -6z" fill="#fbf7ee" />
-			</g>
-			<g class="night">
-				<path d="M300 52 a20 20 0 1 0 18 28 a15 15 0 1 1 -18 -28z" fill="#f2ecd2" />
-				<g fill="#f2ecd2">
+			<!-- sky, sun and moon are clipped to the glass so they can rise and set behind the skyline -->
+			<g clip-path="url(#glass)">
+				<rect x="56" y="30" width="298" height="180" class="day" fill="url(#sky-day)" />
+				<rect x="56" y="30" width="298" height="180" class="night" fill="url(#sky-night)" />
+				<rect x="56" y="30" width="298" height="180" class="glow dawn" fill="url(#sky-dawn)" />
+				<rect x="56" y="30" width="298" height="180" class="glow dusk" fill="url(#sky-dusk)" />
+				<g class="night stars" fill="#f2ecd2">
 					<circle cx="90" cy="60" r="1.6" /><circle cx="150" cy="86" r="1.3" /><circle cx="210" cy="50" r="1.6" />
 					<circle cx="250" cy="110" r="1.2" /><circle cx="120" cy="130" r="1.3" />
 				</g>
+				<circle cx="300" cy="70" r="20" class="sun" fill="#fff4cf" />
+				<path d="M300 52 a20 20 0 1 0 18 28 a15 15 0 1 1 -18 -28z" class="moon" fill="#f2ecd2" />
+				<path d="M86 96 q16 -20 38 -6 q14 -14 30 -2 q20 0 18 14 h-90 q-8 -4 4 -6z" class="day cloud" fill="#fbf7ee" />
 			</g>
 			<path
 				class="skyline"
 				d="M56 210 v-34 h24 v-16 h18 v26 h14 v-48 h10 v-10 h6 v10 h10 v48 h20 v-30 h26 v40 h16 v-70 l12 -14 l12 14 v70 h16 v-36 h22 v24 h18 v-48 h16 v48 h24 v-22 h20 v32 h14 v16z"
 			/>
-			<g class="night" fill="#ffd98a">
+			<g class="night windows" fill="#ffd98a">
 				<rect x="118" y="160" width="4" height="4" /><rect x="124" y="176" width="4" height="4" />
 				<rect x="196" y="170" width="4" height="4" /><rect x="206" y="186" width="4" height="4" />
 				<rect x="202" y="152" width="4" height="4" /><rect x="306" y="190" width="4" height="4" />
@@ -99,15 +113,15 @@
 			<rect x="1040" y="84" width="300" height="12" rx="2" class="shelf" />
 			<path class="ink" d="M1066 96 v14 M1314 96 v14" />
 			<rect x="1050" y="97" width="280" height="4" rx="2" class="led-strip" />
-			<rect x="1050" y="97" width="280" height="4" rx="2" class="night led-on" />
+			<rect x="1050" y="97" width="280" height="4" rx="2" class="night led led-on" />
 		</g>
-		<rect x="990" y="100" width="400" height="120" class="night" fill="url(#led-down)" />
+		<rect x="990" y="100" width="400" height="120" class="night led" fill="url(#led-down)" />
 
 		<!-- desk, with an LED strip along its back edge -->
 		<path d="M0 240 H1600 V1000 H0z" fill="url(#desk-wood)" />
-		<rect x="0" y="120" width="1600" height="120" class="night" fill="url(#led-up)" />
+		<rect x="0" y="120" width="1600" height="120" class="night led" fill="url(#led-up)" />
 		<rect x="0" y="236" width="1600" height="6" class="led-strip" />
-		<rect x="0" y="236" width="1600" height="6" class="night led-on" />
+		<rect x="0" y="236" width="1600" height="6" class="night led led-on" />
 		<g class="grain" filter="url(#wobble)">
 			<path d="M0 320 C300 314 600 328 900 320 S1400 316 1600 324" />
 			<path d="M0 470 C260 480 520 460 820 472 S1340 482 1600 468" />
@@ -137,9 +151,9 @@
 			<circle cx="1452" cy="120" r="8" class="lamp-metal" />
 			<path d="M1462 104 L1380 58 L1318 158 L1394 196 Z" class="lamp-shade" />
 			<ellipse cx="1356" cy="178" rx="42" ry="15" transform="rotate(28 1356 178)" class="lamp-mouth" />
-			<ellipse cx="1356" cy="178" rx="34" ry="11" transform="rotate(28 1356 178)" class="night bulb-on" />
+			<ellipse cx="1356" cy="178" rx="34" ry="11" transform="rotate(28 1356 178)" class="night lamp bulb-on" />
 		</g>
-		<circle cx="1340" cy="200" r="150" class="night" fill="url(#bulb-glow)" />
+		<circle cx="1340" cy="200" r="150" class="night lamp" fill="url(#bulb-glow)" />
 	</svg>
 
 	{#if Details}<Details />{/if}

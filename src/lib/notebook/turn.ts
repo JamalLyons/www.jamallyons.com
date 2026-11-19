@@ -55,7 +55,17 @@ export function frameStyle({ angle, bend, fingers }: Frame): Record<string, stri
 	const rad = (angle * Math.PI) / 180;
 	const over = Math.cos(rad); // >0 while the leaf is over the right page, <0 over the left
 	const lift = Math.abs(Math.sin(rad));
+	// Which face of each panel points at the reader. WebKit (iOS Safari) does not reliably
+	// honour backface-visibility inside nested preserve-3d panels, so mirrored text bleeds
+	// through mid-turn; the faces are switched explicitly instead.
+	const facing = (deg: number) => (Math.cos((deg * Math.PI) / 180) >= 0 ? 'front' : 'back');
+	const showA = facing(angle);
+	const showB = facing(angle + bend);
 	return {
+		'--a-front': showA === 'front' ? 'visible' : 'hidden',
+		'--a-back': showA === 'back' ? 'visible' : 'hidden',
+		'--b-front': showB === 'front' ? 'visible' : 'hidden',
+		'--b-back': showB === 'back' ? 'visible' : 'hidden',
 		'--a': `${angle.toFixed(2)}deg`,
 		'--bend': `${bend.toFixed(2)}deg`,
 		'--lift': lift.toFixed(3),
