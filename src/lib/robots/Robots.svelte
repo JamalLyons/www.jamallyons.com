@@ -29,6 +29,8 @@
 	let night = $state(false);
 	/** Robots appear on their first frame, with a fade. */
 	let shown = $state(false);
+	// Speech marks are hand-lettered: hold them back until Caveat has loaded, never show the fallback.
+	let lettered = $state(false);
 
 	const comps = { tread: Treadbot, hopper: Hopper, drone: Drone };
 	const names: Name[] = ['drone', 'hopper', 'tread'];
@@ -174,6 +176,8 @@
 		reduce.addEventListener('change', onReduce);
 		// fonts change the measured text blocks
 		document.fonts?.ready.then(invalidate);
+		if (document.fonts) document.fonts.load('700 24px Caveat').then(() => (lettered = true), () => {});
+		else lettered = true;
 		loop();
 
 		poke = (name: Name) => {
@@ -336,7 +340,7 @@
 		<!-- speech marks, hand-lettered -->
 		{#each names as name (name)}
 			{@const b = v[name]}
-			{#if b?.mark}
+			{#if lettered && b?.mark}
 				{@const top = rectOf(name, b).y}
 				{#key b.mark.id}
 					<g transform="translate({(b.x + 14 * b.s).toFixed(1)} {(top - 2).toFixed(1)}) rotate(-6)">
@@ -344,7 +348,7 @@
 					</g>
 				{/key}
 			{/if}
-			{#if b?.pose === 'sleep'}
+			{#if lettered && b?.pose === 'sleep'}
 				<g class="zzz" transform="translate({(b.x + 22 * b.s).toFixed(1)} {(b.y - 14 * b.s).toFixed(1)}) scale({b.s})">
 					<text x="0" y="0">z</text>
 					<text x="8" y="-12" style="font-size: 17px">z</text>
