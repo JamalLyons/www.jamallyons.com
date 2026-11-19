@@ -41,3 +41,35 @@
 </svg>
 
 <p class="turn-hint" aria-hidden="true">turn the page →</p>
+
+<style>
+	.hand-title.name {
+		font-size: calc(var(--fs) * 3.6);
+		margin-bottom: 0.1em !important;
+	}
+	.interests {
+		list-style: none;
+		padding: 0;
+		margin: 0.4em 0 0.8em !important;
+	}
+	.interests li {
+		font-family: var(--font-hand);
+		font-size: calc(var(--fs) * 1.45);
+		line-height: 1.3;
+	}
+	.ink-mark {
+		color: var(--red-pen);
+		margin-right: 0.2em;
+	}
+	.turn-hint {
+		font-family: var(--font-hand);
+		font-size: calc(var(--fs) * 1.3);
+		color: var(--pencil);
+		text-align: right;
+		margin-top: 0.4em !important;
+	}
+	.intro-sketch {
+		margin-top: 0.4em;
+		max-width: 92%;
+	}
+</style>

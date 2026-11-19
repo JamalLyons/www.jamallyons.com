@@ -44,7 +44,7 @@
 
 	<p class="clock-tag" aria-live="off">
 		{#if room.clock}
-			{room.clock} in Atlanta · {room.light === 'day' ? 'lamp off' : 'lamp on'}
+			{room.clock} in {room.place} · {room.light === 'day' ? 'lamp off' : 'lamp on'}
 		{/if}
 	</p>
 </div>

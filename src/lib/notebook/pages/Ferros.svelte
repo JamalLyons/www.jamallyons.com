@@ -1,5 +1,8 @@
-<h2 class="hand-title">Ferros</h2>
-<p class="project-sub">a Rust-native debugger · <a href="https://github.com/JamalLyons/ferros" target="_blank" rel="noopener">github.com/JamalLyons/ferros ↗</a></p>
+<script lang="ts">
+	import ProjectHeader from '../ProjectHeader.svelte';
+</script>
+
+<ProjectHeader slug="ferros" />
 
 <figure class="sketch-figure">
 	<svg class="sketch" viewBox="0 0 300 170" role="img" aria-label="Sketch: Ferros stopped at a breakpoint on line 9 of main.rs, before the call to add_one">

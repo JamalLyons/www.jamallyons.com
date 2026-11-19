@@ -1,65 +1,51 @@
 <script lang="ts">
 	// The open notebook: a two-page spread on desktop, one page at a time on phones, and a
-	// plain reading view. Navigation state is one number per mode; the hash mirrors it.
+	// plain reading view. navigation.js decides which pages show; this file animates, moves
+	// focus and keeps the hash in step.
 	import { goto } from '$app/navigation';
 	import { onMount, tick } from 'svelte';
 	import Fingers from './Fingers.svelte';
 	import Leaf from './Leaf.svelte';
 	import Page from './Page.svelte';
-	import { mobileOrder, pages } from './pages.js';
+	import { SINGLE_PAGE_QUERY } from './breakpoint.js';
+	import { type Book, navigation } from './navigation.js';
+	import { pages } from './pages.js';
 	import { frame, frameStyle, phases } from './turn.js';
 
-	const lastSpread = Math.ceil(pages.length / 2) - 1;
+	const nav = navigation(pages);
 
-	let spread = $state(0);
-	let single = $state(0); // position in mobileOrder
+	let book = $state.raw<Book>({ spread: 0 });
+	let single = $state(0); // position in the phone reading order
 	let plain = $state(false);
-	let turning = $state<{ dir: 1 | -1; to: number; front: number; back: number; left: number; right: number }>();
-	let queued: number | undefined;
 	let announce = $state('');
+
+	const spread = $derived(book.spread);
+	const turning = $derived(book.turning);
 
 	let bookEl = $state<HTMLElement>();
 	let singleEl = $state<HTMLElement>();
 	let hover = $state<'left' | 'right'>();
 
-	const leftPage = $derived(turning ? turning.left : spread * 2);
-	const rightPage = $derived(turning ? turning.right : spread * 2 + 1);
-	const singlePage = $derived(mobileOrder[single]);
+	const leftPage = $derived(turning ? turning.left : nav.spreadPages(spread).left);
+	const rightPage = $derived(turning ? turning.right : nav.spreadPages(spread).right);
+	const singlePage = $derived(nav.pageAt(single));
 
 	const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-	const isSingle = () => matchMedia('(max-width: 899px), (max-height: 559px)').matches;
+	const isSingle = () => matchMedia(SINGLE_PAGE_QUERY).matches;
 
 	// ---- desktop spread --------------------------------------------------------------
 
-	/** Where the book is headed: relative moves made mid-turn count from here. */
-	const aim = () => queued ?? turning?.to ?? spread;
-
 	function turnTo(target: number, focus = false) {
-		target = Math.max(0, Math.min(lastSpread, target));
-		if (turning) {
-			queued = target;
-			return;
-		}
-		if (target === spread) return;
-		const dir = target > spread ? 1 : -1;
-		if (reduceMotion()) {
-			spread = target;
+		const was = book;
+		book = nav.request(book, target, reduceMotion());
+		// Mid-turn requests only queue; an unchanged book has nowhere to go.
+		if (was.turning || book === was) return;
+		if (!book.turning) return void settle(focus);
+		animate(book.turning.dir).then(() => {
+			const { book: landed, next } = nav.land(book);
+			book = landed;
 			settle(focus);
-			return;
-		}
-		turning =
-			dir === 1
-				? { dir, to: target, front: spread * 2 + 1, back: target * 2, left: spread * 2, right: target * 2 + 1 }
-				: { dir, to: target, front: target * 2 + 1, back: spread * 2, left: target * 2, right: spread * 2 + 1 };
-		animate(dir).then(() => {
-			spread = target;
-			turning = undefined;
-			settle(focus);
-			if (queued !== undefined) {
-				const next = queued;
-				queued = undefined;
-				turnTo(next, focus);
-			}
+			if (next !== undefined) turnTo(next, focus);
 		});
 	}
 
@@ -84,10 +70,8 @@
 	}
 
 	async function settle(focus: boolean) {
-		const l = pages[spread * 2];
-		const r = pages[spread * 2 + 1];
-		announce = `Pages ${spread * 2 + 1} and ${spread * 2 + 2}: ${l.title}, ${r.title}`;
-		syncHash(spread === 0 ? '' : l.id);
+		announce = nav.spreadLabel(book.spread);
+		syncHash(nav.spreadHash(book.spread));
 		if (focus) {
 			await tick();
 			bookEl?.querySelector<HTMLElement>('.paper.left')?.focus({ preventScroll: true });
@@ -99,13 +83,12 @@
 	let slide = $state<'from-right' | 'from-left' | ''>('');
 
 	async function showSingle(pos: number, focus = false) {
-		pos = Math.max(0, Math.min(mobileOrder.length - 1, pos));
+		pos = nav.clampPosition(pos);
 		if (pos === single) return;
 		slide = reduceMotion() ? '' : pos > single ? 'from-right' : 'from-left';
 		single = pos;
-		const p = pages[mobileOrder[pos]];
-		announce = `Page ${mobileOrder[pos] + 1}: ${p.title}`;
-		syncHash(pos === 0 ? '' : p.id);
+		announce = nav.positionLabel(pos);
+		syncHash(nav.positionHash(pos));
 		await tick();
 		window.scrollTo({ top: 0, behavior: 'instant' });
 		if (focus) singleEl?.querySelector<HTMLElement>('.paper')?.focus({ preventScroll: true });
@@ -127,35 +110,36 @@
 	// ---- shared ---------------------------------------------------------------------
 
 	function go(id: string, focus = true) {
-		const index = pages.findIndex((p) => p.id === id);
-		if (index < 0) return false;
-		if (plain) return false;
-		if (isSingle()) showSingle(mobileOrder.indexOf(index), focus);
-		else turnTo(Math.floor(index / 2), focus);
+		const target = nav.spreadOf(id);
+		const pos = nav.positionOf(id);
+		if (target === undefined || pos === undefined || plain) return false;
+		if (isSingle()) showSingle(pos, focus);
+		else turnTo(target, focus);
 		return true;
 	}
 
-	function syncHash(id: string) {
-		const hash = id ? `#${id}` : '';
+	/** @param hash `#id`, or empty for the first page */
+	function syncHash(hash: string) {
 		if (location.hash === hash) return;
 		goto(hash || location.pathname + location.search, { replace: true, shallow: true, state: {} });
 	}
 
 	function onClick(e: MouseEvent) {
-		const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
+		if (!(e.target instanceof Element)) return;
+		const a = e.target.closest<HTMLAnchorElement>('a[href^="#"]');
 		if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
 		if (go(a.hash.slice(1))) e.preventDefault();
 	}
 
 	function onKey(e: KeyboardEvent) {
 		if (plain || e.altKey || e.metaKey || e.ctrlKey) return;
-		const t = e.target as HTMLElement;
-		if (t.closest('input, textarea, select, [contenteditable]')) return;
+		// Keys sent to the window itself have no element to check.
+		if (e.target instanceof Element && e.target.closest('input, textarea, select, [contenteditable]')) return;
 		const delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
 		if (!delta) return;
 		e.preventDefault();
 		if (isSingle()) showSingle(single + delta);
-		else turnTo(aim() + delta);
+		else turnTo(nav.aim(book) + delta);
 	}
 
 	function setPlain(on: boolean) {
@@ -168,11 +152,11 @@
 	}
 
 	function openFromHash() {
-		const id = location.hash.slice(1);
-		const index = pages.findIndex((p) => p.id === id);
-		if (index < 0) return;
-		spread = Math.floor(index / 2);
-		single = mobileOrder.indexOf(index);
+		const target = nav.spreadOf(location.hash);
+		const pos = nav.positionOf(location.hash);
+		if (target === undefined || pos === undefined) return;
+		book = { spread: target };
+		single = pos;
 	}
 
 	onMount(() => {
@@ -238,7 +222,7 @@
 		class="edge prev"
 		aria-label="Previous page"
 		disabled={spread === 0 && !turning}
-		onclick={() => turnTo(aim() - 1)}
+		onclick={() => turnTo(nav.aim(book) - 1)}
 		onpointerenter={() => (hover = 'left')}
 		onpointerleave={() => (hover = undefined)}
 	></button>
@@ -246,17 +230,19 @@
 		type="button"
 		class="edge next"
 		aria-label="Next page"
-		disabled={spread === lastSpread && !turning}
-		onclick={() => turnTo(aim() + 1)}
+		disabled={spread === nav.lastSpread && !turning}
+		onclick={() => turnTo(nav.aim(book) + 1)}
 		onpointerenter={() => (hover = 'right')}
 		onpointerleave={() => (hover = undefined)}
 	></button>
 
 	<nav class="book-controls" aria-label="Page controls">
 		<button type="button" onclick={() => turnTo(spread - 1, true)} disabled={spread === 0}>← Previous</button>
-		<span class="pager" aria-hidden="true">{spread * 2 + 1}–{spread * 2 + 2} of {pages.length}</span>
-		<button type="button" onclick={() => turnTo(0, true)} disabled={spread === 0}>Contents</button>
-		<button type="button" onclick={() => turnTo(spread + 1, true)} disabled={spread === lastSpread}>Next →</button>
+		<span class="pager" aria-hidden="true">{nav.pager(spread)}</span>
+		<button type="button" onclick={() => turnTo(nav.contentsSpread, true)} disabled={spread === nav.contentsSpread}>
+			Contents
+		</button>
+		<button type="button" onclick={() => turnTo(spread + 1, true)} disabled={spread === nav.lastSpread}>Next →</button>
 	</nav>
 </div>
 
@@ -279,17 +265,23 @@
 		<button type="button" onclick={() => showSingle(single - 1, true)} disabled={single === 0}>
 			<span aria-hidden="true">←</span> Prev
 		</button>
-		<button type="button" onclick={() => showSingle(1, true)} disabled={singlePage === 0}>Contents</button>
-		<button type="button" onclick={() => showSingle(single + 1, true)} disabled={single === mobileOrder.length - 1}>
+		<button
+			type="button"
+			onclick={() => showSingle(nav.contentsPosition, true)}
+			disabled={single === nav.contentsPosition}
+		>
+			Contents
+		</button>
+		<button type="button" onclick={() => showSingle(single + 1, true)} disabled={single === nav.lastPosition}>
 			Next <span aria-hidden="true">→</span>
 		</button>
 	</nav>
-	<p class="swipe-hint" aria-hidden="true">swipe to turn · {single + 1} / {mobileOrder.length}</p>
+	<p class="swipe-hint" aria-hidden="true">swipe to turn · {single + 1} / {nav.order.length}</p>
 </div>
 
 <!-- Plain reading view (also the no-JavaScript fallback) -->
 <div class="plain">
-	{#each mobileOrder as index (index)}
+	{#each nav.order as index (index)}
 		<section id={pages[index].id} class="plain-section" aria-label={pages[index].title}>
 			<Page {index} side="right" />
 		</section>

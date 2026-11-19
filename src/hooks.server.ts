@@ -2,7 +2,7 @@ import type { Handle } from '@sveltejs/kit/hooks';
 import overridesSource from '#lib/lighting/overrides.js?raw';
 import sunSource from '#lib/lighting/sun.js?raw';
 
-// Runs before first paint: picks the Atlanta lighting and the saved reading view, so the
+// Runs before first paint: picks the room's lighting and the saved reading view, so the
 // prerendered page never flashes the wrong room. Same source the client module imports.
 const strip = (src: string) => src.replace(/^export /gm, '');
 const boot = `(function(){${strip(sunSource)}

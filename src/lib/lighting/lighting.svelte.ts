@@ -1,16 +1,16 @@
 import { overrides } from './overrides.js';
-import { ATLANTA, lightAt, skyAt } from './sun.js';
+import { lightAt, PLACE, skyAt } from './sun.js';
 
 /** Live room lighting. `html[data-light]` drives the CSS; this mirrors it for the UI. */
-export const room = $state({ light: 'day' as 'day' | 'night', clock: '' });
+export const room = $state({ light: 'day' as 'day' | 'night', clock: '', place: PLACE.name });
 
 const clockFmt = new Intl.DateTimeFormat('en-US', {
-	timeZone: ATLANTA.timeZone,
+	timeZone: PLACE.timeZone,
 	hour: 'numeric',
 	minute: '2-digit'
 });
 
-/** Keeps `html[data-light]` in step with Atlanta's sun. Returns a cleanup function. */
+/** Keeps `html[data-light]` in step with the sun at `PLACE`. Returns a cleanup function. */
 export function startLighting(): () => void {
 	const { offset, force, sky: pinnedSky, cycle } = overrides(location.search);
 	const html = document.documentElement;

@@ -32,3 +32,31 @@
 		<text x="170" y="70">← faster</text>
 	</g>
 </svg>
+
+<style>
+	.workbench-sketch {
+		margin-top: 0.8em;
+		width: 88%;
+	}
+	.checklist {
+		list-style: none;
+		padding-left: 0;
+	}
+	.checklist li {
+		position: relative;
+		padding-left: 1.5em;
+		margin-bottom: 0.45em;
+		line-height: 1.55;
+	}
+	.checklist li::before {
+		content: '';
+		position: absolute;
+		left: 0.1em;
+		top: 0.35em;
+		width: 0.8em;
+		height: 0.8em;
+		border: 1.6px solid var(--red-pen);
+		border-radius: 2px 3px 2px 4px;
+		transform: rotate(-4deg);
+	}
+</style>
