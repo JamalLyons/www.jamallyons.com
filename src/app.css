@@ -1,55 +1,1465 @@
 @import 'tailwindcss';
 
 @font-face {
-	font-family: '0xProto';
-	src: url('/fonts/0xProto-Regular.woff2') format('woff2');
-	font-weight: 400;
+	font-family: 'Caveat';
+	src: url('/fonts/Caveat-Variable.woff2') format('woff2');
+	font-weight: 400 700;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Shantell Sans';
+	src: url('/fonts/ShantellSans-Variable.woff2') format('woff2');
+	font-weight: 300 800;
 	font-style: normal;
 	font-display: swap;
 }
 @font-face {
-	font-family: '0xProto';
-	src: url('/fonts/0xProto-Italic.woff2') format('woff2');
-	font-weight: 400;
+	font-family: 'Shantell Sans';
+	src: url('/fonts/ShantellSans-Italic-Variable.woff2') format('woff2');
+	font-weight: 300 800;
 	font-style: italic;
 	font-display: swap;
 }
 @font-face {
 	font-family: '0xProto';
-	src: url('/fonts/0xProto-Bold.woff2') format('woff2');
-	font-weight: 700;
-	font-style: normal;
+	src: url('/fonts/0xProto-Regular.woff2') format('woff2');
+	font-weight: 400;
 	font-display: swap;
 }
 
-@theme {
-	--font-sans: '0xProto', ui-monospace, SFMono-Regular, Menlo, monospace;
-	--font-mono: '0xProto', ui-monospace, SFMono-Regular, Menlo, monospace;
+:root {
+	/* paper and ink */
+	--paper: #f7f0de;
+	--paper-edge: #e7dcc2;
+	--paper-shade: #d9ccae;
+	--rule: #c9d6e6;
+	--margin-red: #e2a59a;
+	--ink: #26344f;
+	--ink-soft: #4b5873;
+	--pencil: #7d7a72;
+	--highlight: #ffe58a;
+	--red-pen: #c4463a;
 
-	--color-bg: #06070a;
-	--color-surface: #0d1016;
-	--color-line: #1c222c;
-	--color-fg: #e6edf3;
-	--color-muted: #8b96a5;
-	--color-accent: #22d3ee;
-	--color-accent-2: #a78bfa;
+	/* room */
+	--wall: #c9b79a;
+	--wood: #7f5236;
+
+	/* book geometry: one page is --page-w wide and --page-h tall */
+	--controls-h: 56px;
+	--page-w: min(540px, 40vw, calc((100svh - var(--controls-h) - 150px) * 0.72));
+	--page-h: calc(var(--page-w) / 0.72);
+	--fs: clamp(12.5px, calc(var(--page-w) * 0.0285), 16px);
+
+	--font-hand: 'Caveat', 'Shantell Sans', cursive;
+	--font-body: 'Shantell Sans', ui-rounded, 'Segoe Print', system-ui, sans-serif;
+	--font-code: '0xProto', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	color-scheme: light;
 }
 
 @layer base {
 	html {
-		color-scheme: dark;
-		background: var(--color-bg);
-		scroll-behavior: smooth;
+		background: #5d3c27;
+		overflow-x: clip;
 	}
 	body {
-		@apply bg-bg font-sans text-fg antialiased;
+		margin: 0;
+		font-family: var(--font-body);
+		color: var(--ink);
+		-webkit-font-smoothing: antialiased;
+		overflow-x: hidden;
 	}
 	::selection {
-		background: color-mix(in oklab, var(--color-accent) 35%, transparent);
+		background: color-mix(in oklab, var(--highlight) 80%, transparent);
 	}
-	@media (prefers-reduced-motion: reduce) {
-		html {
-			scroll-behavior: auto;
-		}
+	:focus-visible {
+		outline: 2px dashed var(--red-pen);
+		outline-offset: 3px;
+	}
+	.paper:focus-visible {
+		outline: none;
+	}
+}
+
+/* ---------------------------------------------------------------- scene & room */
+
+.scene {
+	position: relative;
+	min-height: 100svh;
+	isolation: isolate;
+}
+.room {
+	position: fixed;
+	inset: 0;
+	z-index: -3;
+	background: var(--wood);
+}
+.room-art {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+.room-details {
+	animation: fade-in 0.6s ease-out both;
+}
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+.room .wall {
+	fill: var(--wall);
+}
+.room .ink {
+	fill: none;
+	stroke: #3b2a20;
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.room .ink.thin {
+	stroke-width: 1.6;
+}
+.room .ink.strike,
+.room .strike {
+	stroke: var(--red-pen);
+	stroke-width: 2.6;
+	fill: none;
+	stroke-linecap: round;
+}
+.room .frame {
+	fill: #e9dcc0;
+	stroke: #3b2a20;
+	stroke-width: 3;
+}
+.room .skyline {
+	fill: #8aa0b3;
+	opacity: 0.55;
+}
+html[data-light='night'] .room .skyline {
+	fill: #141a2e;
+	opacity: 1;
+}
+.room .curtain {
+	fill: #b85f48;
+	stroke: #3b2a20;
+	stroke-width: 2.5;
+}
+.room .shelf {
+	fill: #6a432b;
+	stroke: #3b2a20;
+	stroke-width: 2.5;
+}
+.room .led-strip {
+	fill: #4a3a33;
+}
+.room .led-on {
+	fill: #ffc2cc;
+}
+.room .grain path {
+	fill: none;
+	stroke: #5a3925;
+	stroke-width: 2;
+	opacity: 0.45;
+}
+.room .contact-shadow {
+	fill: #2a1a10;
+	opacity: 0.35;
+}
+.room .can {
+	fill: #3d6fb6;
+}
+.room .can-band {
+	fill: #d9dde3;
+}
+.room .can-bolt {
+	fill: #e2b12c;
+}
+.room .can-top {
+	fill: #c6ccd4;
+	stroke: #3b2a20;
+	stroke-width: 2;
+}
+.room .lamp-metal {
+	fill: #2f3d3a;
+	stroke: #1e2422;
+	stroke-width: 2;
+}
+.room .lamp-arm {
+	fill: none;
+	stroke: #2f3d3a;
+	stroke-width: 9;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.room .lamp-shade {
+	fill: #3e6b5e;
+	stroke: #1e2422;
+	stroke-width: 3;
+}
+.room .lamp-mouth {
+	fill: #1c2321;
+}
+.room .bulb-on {
+	fill: #fff1b8;
+}
+.room .scrap {
+	fill: #f3ead6;
+	stroke: #6b5a48;
+	stroke-width: 1.5;
+}
+.room .scrap.sticky {
+	fill: #f6df7d;
+}
+.room .scrap.grid-paper {
+	fill: #eef1ec;
+}
+.room .pin {
+	fill: #c4463a;
+	stroke: #3b2a20;
+	stroke-width: 1.5;
+}
+.room .pencil {
+	fill: none;
+	stroke: #8c8780;
+	stroke-width: 2;
+	stroke-linecap: round;
+}
+.room .scrawl {
+	font-family: var(--font-hand);
+	font-size: 22px;
+	fill: #34405a;
+}
+.room .book-a {
+	fill: #6f8f6a;
+}
+.room .book-b {
+	fill: #c9a14a;
+}
+.room .book-c {
+	fill: #8e4c3e;
+}
+.room .jar {
+	fill: #c8d4d4;
+	opacity: 0.8;
+	stroke: #3b2a20;
+	stroke-width: 2;
+}
+.room .ring {
+	fill: none;
+	stroke: #4b2c19;
+	stroke-width: 4;
+	opacity: 0.35;
+}
+.room .pencil-body {
+	fill: #e9b543;
+	stroke: #3b2a20;
+	stroke-width: 1.5;
+}
+.room .pencil-wood {
+	fill: #e8cfa1;
+	stroke: #3b2a20;
+	stroke-width: 1.5;
+}
+.room .eraser {
+	fill: #e48b94;
+	stroke: #3b2a20;
+	stroke-width: 1.5;
+}
+.room .breadboard {
+	fill: #efece4;
+	stroke: #6b5a48;
+	stroke-width: 2;
+}
+.room .holes path {
+	stroke: #a9a395;
+	stroke-width: 3;
+	stroke-dasharray: 2 6;
+	stroke-linecap: round;
+}
+.room .chip {
+	fill: #2b2b2b;
+}
+.room .wire-r,
+.room .wire-b,
+.room .wire-y,
+.room .cable {
+	fill: none;
+	stroke-width: 4;
+	stroke-linecap: round;
+}
+.room .wire-r {
+	stroke: #c4463a;
+}
+.room .wire-b {
+	stroke: #3d6fb6;
+}
+.room .wire-y {
+	stroke: #e2b12c;
+}
+.room .cable {
+	stroke: #2a2a2a;
+	stroke-width: 5;
+}
+
+/* ---------------------------------------------------------------- lighting */
+
+/* Each lighting state shows its own layers. The switch is a short crossfade; props never move. */
+.room .day,
+.room .night,
+.light {
+	transition: opacity 1.4s ease;
+}
+html:not([data-light='night']) .room .night,
+html:not([data-light='night']) .night-dim,
+html:not([data-light='night']) .lamp-pool {
+	opacity: 0;
+}
+html[data-light='night'] .room .day,
+html[data-light='night'] .sun-beams {
+	opacity: 0;
+}
+
+.light {
+	pointer-events: none;
+	position: fixed;
+	inset: 0;
+}
+/* Day: sun through the window (top left) lies across the desk in long soft shafts. */
+.sun-beams {
+	z-index: -2;
+	background:
+		linear-gradient(
+			118deg,
+			transparent 18%,
+			rgb(255 226 160 / 0.32) 24%,
+			rgb(255 226 160 / 0.32) 34%,
+			transparent 40%,
+			transparent 44%,
+			rgb(255 226 160 / 0.24) 49%,
+			rgb(255 226 160 / 0.24) 58%,
+			transparent 64%
+		),
+		radial-gradient(ellipse 50% 45% at 14% 10%, rgb(255 240 200 / 0.45), transparent 70%);
+	mix-blend-mode: screen;
+	opacity: 0.85;
+}
+/* Night: the room falls into blue shadow; LEDs (in the SVG) and the lamp carry the light. */
+.night-dim {
+	z-index: -2;
+	background:
+		radial-gradient(ellipse 22% 24% at 84% 14%, rgb(255 236 200 / 0.9), transparent 70%),
+		linear-gradient(rgb(52 50 96), rgb(30 28 60));
+	mix-blend-mode: multiply;
+}
+/* Night: LEDs behind the desk throw a soft pink-violet halo around the book. */
+.led-halo {
+	position: absolute;
+	inset: -18% -14%;
+	z-index: -1;
+	pointer-events: none;
+	background: radial-gradient(closest-side, rgb(255 140 190 / 0.38), rgb(170 120 255 / 0.18) 60%, transparent);
+	mix-blend-mode: screen;
+	filter: blur(10px);
+	opacity: 0;
+	transition: opacity 1.4s ease;
+}
+html[data-light='night'] .led-halo {
+	opacity: 1;
+}
+/* The lamp's warm pool sits over the book itself, brightest on the page under the shade. */
+.book .lamp-pool {
+	position: absolute;
+	inset: -6px -8px -10px;
+	border-radius: 8px;
+	z-index: 5;
+	background: radial-gradient(ellipse 70% 75% at 66% 32%, rgb(255 236 196) 0%, rgb(250 214 160) 45%, rgb(150 120 130) 100%);
+	mix-blend-mode: multiply;
+}
+html[data-light='night'] .lamp-pool {
+	opacity: 1;
+}
+
+.clock-tag {
+	position: fixed;
+	left: 16px;
+	bottom: 12px;
+	z-index: 10;
+	margin: 0;
+	padding: 4px 10px 3px;
+	font-family: var(--font-hand);
+	font-size: 19px;
+	color: #3a2c22;
+	background: #f6df7d;
+	transform: rotate(-2deg);
+	box-shadow: 0 2px 4px rgb(0 0 0 / 0.25);
+}
+.clock-tag:empty {
+	display: none;
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.desk-surface {
+	position: relative;
+	min-height: 100svh;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	place-items: center;
+	padding: 24px 16px calc(var(--controls-h) + 16px);
+	box-sizing: border-box;
+}
+
+.view-toggle {
+	position: fixed;
+	top: 12px;
+	right: 16px;
+	z-index: 20;
+}
+.view-toggle button,
+.book-controls button,
+.single-controls button {
+	font: 600 15px/1 var(--font-body);
+	color: var(--ink);
+	background: var(--paper);
+	border: 1.5px solid #6b5a48;
+	border-radius: 6px 4px 7px 5px;
+	padding: 9px 14px 8px;
+	cursor: pointer;
+	box-shadow: 0 2px 0 #6b5a48;
+	min-height: 40px;
+}
+.view-toggle button:hover,
+.book-controls button:hover:not(:disabled),
+.single-controls button:hover:not(:disabled) {
+	background: #fff8e6;
+}
+.book-controls button:disabled,
+.single-controls button:disabled {
+	opacity: 0.45;
+	cursor: default;
+}
+
+/* which view shows: book (desktop), single (phones), plain (opt-in, and without JS) */
+.book,
+.single,
+.plain {
+	display: none;
+}
+html.js:not([data-view='plain']) .book {
+	display: block;
+}
+html:not(.js) .plain,
+html[data-view='plain'] .plain {
+	display: block;
+}
+html:not(.js) .view-toggle {
+	display: none;
+}
+@media (max-width: 899px), (max-height: 559px) {
+	html.js:not([data-view='plain']) .book {
+		display: none;
+	}
+	html.js:not([data-view='plain']) .single {
+		display: block;
+	}
+}
+
+/* ---------------------------------------------------------------- the book */
+
+.book {
+	position: relative;
+	width: calc(var(--page-w) * 2);
+	height: var(--page-h);
+}
+.book-shadow {
+	position: absolute;
+	inset: 2% -1% -3% -1%;
+	border-radius: 12px;
+	background: rgb(30 16 8 / 0.55);
+	filter: blur(18px);
+	transform: translateY(14px);
+}
+/* page block: the stacked sheets under each page, visible as thin edges */
+.block {
+	position: absolute;
+	top: 6px;
+	bottom: -8px;
+	width: calc(50% + 6px);
+	background:
+		repeating-linear-gradient(to bottom, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px),
+		var(--paper-shade);
+	border-radius: 4px;
+	box-shadow: inset 0 0 0 1px rgb(80 60 40 / 0.25);
+}
+.block.left {
+	left: -6px;
+	border-radius: 6px 2px 2px 8px;
+	background:
+		repeating-linear-gradient(to right, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px) left / 6px 100%
+			no-repeat,
+		repeating-linear-gradient(to bottom, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px);
+}
+.block.right {
+	right: -6px;
+	border-radius: 2px 6px 8px 2px;
+	background:
+		repeating-linear-gradient(to left, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px) right / 6px 100%
+			no-repeat,
+		repeating-linear-gradient(to bottom, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px);
+}
+
+.spread {
+	position: absolute;
+	inset: 0;
+	perspective: 2600px;
+	perspective-origin: 50% 40%;
+}
+.side {
+	position: absolute;
+	top: 0;
+	width: 50%;
+	height: 100%;
+}
+.side.left {
+	left: 0;
+}
+.side.right {
+	right: 0;
+}
+.spine {
+	position: absolute;
+	left: calc(50% - 18px);
+	width: 36px;
+	top: 0;
+	bottom: 0;
+	pointer-events: none;
+	background: linear-gradient(
+		to right,
+		transparent,
+		rgb(90 60 30 / 0.1) 30%,
+		rgb(60 40 20 / 0.35) 50%,
+		rgb(90 60 30 / 0.1) 70%,
+		transparent
+	);
+	z-index: 2;
+}
+
+/* moving shadow the turning leaf casts on the page beneath it */
+.cast {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	pointer-events: none;
+	opacity: 0;
+	z-index: 3;
+}
+.book.turning .cast-r {
+	left: 0;
+	width: var(--cast-r-w, 0%);
+	opacity: var(--cast-r, 0);
+	background: linear-gradient(to right, rgb(40 25 10 / 0.25), rgb(40 25 10 / 0.55) 85%, transparent);
+}
+.book.turning .cast-l {
+	right: 0;
+	width: var(--cast-l-w, 0%);
+	opacity: var(--cast-l, 0);
+	background: linear-gradient(to left, rgb(40 25 10 / 0.25), rgb(40 25 10 / 0.55) 85%, transparent);
+}
+
+/* the turning leaf, hinged at the spine */
+.leaf {
+	position: absolute;
+	left: 50%;
+	top: 0;
+	width: 50%;
+	height: 100%;
+	transform-origin: left center;
+	transform: rotateY(var(--a, 0deg));
+	transform-style: preserve-3d;
+	z-index: 4;
+	pointer-events: none;
+}
+.seg {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	transform-style: preserve-3d;
+}
+.seg-a {
+	left: 0;
+	width: 50%;
+}
+.seg-b {
+	left: 100%;
+	width: 100%;
+	transform-origin: left center;
+	transform: rotateY(var(--bend, 0deg));
+}
+.face {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+}
+.face.back {
+	transform: rotateY(180deg);
+}
+.face::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: linear-gradient(to right, rgb(60 40 20 / 0.28), transparent 60%);
+	opacity: calc(var(--lift, 0) * 0.9);
+}
+.seg-b > .face::after {
+	background: linear-gradient(to right, rgb(60 40 20 / 0.12), rgb(255 250 235 / 0.2));
+}
+.slice {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 200%;
+	height: 100%;
+}
+.slice.shift {
+	left: -100%;
+}
+
+/* fingertips */
+.fingers {
+	position: absolute;
+	bottom: -3%;
+	right: -7%;
+	width: 26%;
+	aspect-ratio: 1;
+	pointer-events: none;
+	opacity: var(--fingers, 0);
+	transform: translate(calc((1 - var(--fingers, 0)) * 30%), calc((1 - var(--fingers, 0)) * 20%));
+	z-index: 6;
+	filter: drop-shadow(0 4px 4px rgb(40 20 10 / 0.35));
+}
+.fingers.left {
+	right: auto;
+	left: -7%;
+	scale: -1 1;
+}
+.fingers svg {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+.finger-ink .skin {
+	fill: #a8704f;
+	stroke: #3b2318;
+	stroke-width: 2.2;
+	stroke-linejoin: round;
+}
+.finger-ink .thumb {
+	fill: #9a6446;
+}
+.finger-ink .nail {
+	fill: #d9b39a;
+	stroke: #3b2318;
+	stroke-width: 1.5;
+}
+.finger-ink .crease {
+	fill: none;
+	stroke: #3b2318;
+	stroke-width: 1.4;
+	stroke-linecap: round;
+	opacity: 0.6;
+}
+/* hovering an edge: fingertips peek at that corner, the corner lifts a little */
+.corner-hint {
+	position: absolute;
+	top: 0;
+	width: 50%;
+	height: 100%;
+	pointer-events: none;
+	--fingers: 0;
+}
+.corner-hint.left {
+	left: 0;
+}
+.corner-hint.right {
+	right: 0;
+}
+.corner-hint .fingers {
+	transition:
+		opacity 0.2s ease,
+		transform 0.25s ease;
+}
+.book[data-hover='right'] .corner-hint.right,
+.book[data-hover='left'] .corner-hint.left {
+	--fingers: 0.75;
+}
+
+/* clickable page edges (outer margin only, so links on the page stay independent) */
+.edge {
+	position: absolute;
+	top: 0;
+	width: calc(var(--page-w) * 0.065);
+	height: 100%;
+	border: 0;
+	padding: 0;
+	background: transparent;
+	cursor: pointer;
+	z-index: 7;
+}
+.edge.prev {
+	left: 0;
+	cursor: w-resize;
+}
+.edge.next {
+	right: 0;
+	cursor: e-resize;
+}
+.edge:disabled {
+	cursor: default;
+}
+.book.turning .edge {
+	pointer-events: none;
+}
+
+.book-controls {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: calc(100% + 18px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+.pager {
+	font-family: var(--font-hand);
+	font-size: 20px;
+	color: #f3e6c8;
+	min-width: 6.5em;
+	text-align: center;
+}
+
+/* ---------------------------------------------------------------- paper */
+
+.paper {
+	position: absolute;
+	inset: 0;
+	box-sizing: border-box;
+	background-color: var(--paper);
+	background-image:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0 0.2 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+		repeating-linear-gradient(
+			to bottom,
+			transparent 0,
+			transparent calc(var(--fs) * 1.75 - 1px),
+			var(--rule) calc(var(--fs) * 1.75 - 1px),
+			var(--rule) calc(var(--fs) * 1.75)
+		);
+	background-position:
+		0 0,
+		0 calc(var(--fs) * 4.2);
+	font-size: var(--fs);
+	line-height: 1.75;
+	color: var(--ink);
+	overflow: hidden;
+}
+.paper.left {
+	border-radius: 6px 0 0 6px;
+	box-shadow:
+		inset -22px 0 26px -18px rgb(80 50 20 / 0.35),
+		inset 0 0 0 1px rgb(120 90 60 / 0.18);
+}
+.paper.right {
+	border-radius: 0 6px 6px 0;
+	box-shadow:
+		inset 22px 0 26px -18px rgb(80 50 20 / 0.35),
+		inset 0 0 0 1px rgb(120 90 60 / 0.18);
+}
+/* red margin rule */
+.paper::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 1.5px;
+	background: var(--margin-red);
+	opacity: 0.7;
+}
+.paper.left::before {
+	right: 9%;
+}
+.paper.right::before {
+	left: 9%;
+}
+.paper-inner {
+	container: page / inline-size;
+	position: absolute;
+	inset: 6% 10% 8% 10%;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+.paper.left .paper-inner {
+	inset: 6% 13% 8% 8%;
+}
+.paper.right .paper-inner {
+	inset: 6% 8% 8% 13%;
+}
+.folio {
+	position: absolute;
+	bottom: 2.6%;
+	margin: 0;
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 1.25);
+	color: var(--pencil);
+}
+.paper.left .folio {
+	left: 8%;
+}
+.paper.right .folio {
+	right: 8%;
+}
+
+/* ---------------------------------------------------------------- page content */
+
+.paper :where(p, ul, ol, h1, h2, figure, pre) {
+	margin: 0;
+}
+.paper a {
+	color: var(--ink);
+	text-decoration-color: color-mix(in oklab, var(--red-pen) 70%, transparent);
+	text-decoration-thickness: 1.5px;
+	text-underline-offset: 3px;
+}
+.paper a:hover {
+	color: var(--red-pen);
+}
+.paper code {
+	font-family: var(--font-code);
+	font-size: 0.82em;
+	background: rgb(38 52 79 / 0.07);
+	padding: 0 0.25em;
+	border-radius: 3px;
+}
+.paper kbd {
+	font-family: var(--font-code);
+	font-size: 0.8em;
+	border: 1px solid var(--pencil);
+	border-radius: 3px;
+	padding: 0 0.3em;
+}
+
+.hand-title {
+	font-family: var(--font-hand);
+	font-weight: 700;
+	font-size: calc(var(--fs) * 2.7);
+	line-height: 1.05;
+	color: var(--ink);
+	margin-bottom: 0.35em !important;
+	transform: rotate(-1.2deg);
+	transform-origin: left;
+}
+.hand-title.name {
+	font-size: calc(var(--fs) * 3.6);
+	margin-bottom: 0.1em !important;
+}
+.kicker {
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 1.35);
+	color: var(--pencil);
+}
+.role {
+	font-size: 0.9em;
+	color: var(--ink-soft);
+	margin-bottom: 1.2em !important;
+}
+.role::before {
+	content: '';
+	display: block;
+	width: 5.5em;
+	height: 3px;
+	margin: 0 0 0.6em;
+	background: var(--highlight);
+	border-radius: 2px;
+}
+.prose p + p {
+	margin-top: 0.7em;
+}
+.prose strong {
+	font-weight: 600;
+	background: linear-gradient(transparent 55%, rgb(255 229 138 / 0.8) 55%);
+}
+.prose-lead {
+	color: var(--ink-soft);
+	margin-bottom: 0.9em !important;
+}
+.margin-note {
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 1.25);
+	line-height: 1.25;
+	color: var(--red-pen);
+}
+.margin-note code {
+	font-size: 0.65em;
+	color: var(--ink);
+}
+
+.interests {
+	list-style: none;
+	padding: 0;
+	margin: 0.4em 0 0.8em !important;
+}
+.interests li {
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 1.45);
+	line-height: 1.3;
+}
+.ink-mark {
+	color: var(--red-pen);
+	margin-right: 0.2em;
+}
+.turn-hint {
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 1.3);
+	color: var(--pencil);
+	text-align: right;
+	margin-top: 0.4em !important;
+}
+
+/* contents */
+.toc {
+	list-style: none;
+	padding: 0;
+	margin-top: 0.5em !important;
+}
+.toc li {
+	margin-bottom: 0.55em;
+}
+.toc li.sub {
+	padding-left: 1.4em;
+	margin-top: -0.25em;
+}
+.toc a {
+	display: flex;
+	align-items: baseline;
+	gap: 0.4em;
+	text-decoration: none;
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 1.75);
+	line-height: 1.15;
+	font-weight: 600;
+}
+.toc li.sub a {
+	font-size: calc(var(--fs) * 1.45);
+	font-weight: 500;
+}
+.toc a:hover .toc-label {
+	text-decoration: underline wavy var(--red-pen) 1.5px;
+	text-underline-offset: 5px;
+}
+.toc-dots {
+	flex: 1;
+	border-bottom: 2px dotted var(--pencil);
+	transform: translateY(-0.25em);
+	min-width: 1em;
+}
+.toc-num {
+	font-size: 0.9em;
+	color: var(--ink-soft);
+}
+.toc-note {
+	display: block;
+	font-size: 0.82em;
+	line-height: 1.4;
+	color: var(--pencil);
+}
+.toc-tip {
+	margin-top: 1em !important;
+	color: var(--pencil);
+	font-size: calc(var(--fs) * 1.15);
+}
+
+/* sketches */
+.sketch {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+.sketch .ink {
+	stroke: var(--ink);
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	fill: none;
+}
+.sketch .ink .thick {
+	stroke-width: 6;
+	stroke: color-mix(in oklab, var(--ink) 60%, transparent);
+}
+.sketch .strike,
+.sketch .circle-mark {
+	stroke: var(--red-pen);
+	stroke-width: 2;
+}
+.sketch .hl {
+	fill: rgb(255 229 138 / 0.75);
+	stroke: none;
+}
+.sketch .bp-dot {
+	fill: var(--red-pen);
+}
+.pencil-text text {
+	font-family: var(--font-hand);
+	font-size: 15px;
+	fill: var(--ink-soft);
+}
+.code-text text {
+	font-family: var(--font-code);
+	font-size: 10.5px;
+	fill: var(--ink);
+	white-space: pre;
+}
+.code-text .ln {
+	fill: var(--pencil);
+}
+.intro-sketch {
+	margin-top: 0.4em;
+	max-width: 92%;
+}
+.toc-doodle {
+	width: 46%;
+	margin: 0.5em 0 0 auto;
+	opacity: 0.6;
+}
+.margin-figure {
+	margin-top: 1em !important;
+	width: 82%;
+	margin-left: auto !important;
+	transform: rotate(1.2deg);
+}
+.margin-figure figcaption {
+	text-align: right;
+}
+.workbench-sketch {
+	margin-top: 0.8em;
+	width: 88%;
+}
+.checklist {
+	list-style: none;
+	padding-left: 0;
+}
+.checklist li {
+	position: relative;
+	padding-left: 1.5em;
+	margin-bottom: 0.45em;
+	line-height: 1.55;
+}
+.checklist li::before {
+	content: '';
+	position: absolute;
+	left: 0.1em;
+	top: 0.35em;
+	width: 0.8em;
+	height: 0.8em;
+	border: 1.6px solid var(--red-pen);
+	border-radius: 2px 3px 2px 4px;
+	transform: rotate(-4deg);
+}
+
+/* projects */
+.project-index {
+	list-style: none;
+	padding: 0;
+}
+.project-index li {
+	padding: 0.35em 0 0.45em;
+	border-bottom: 1px dashed rgb(75 88 115 / 0.3);
+}
+.pi-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.6em;
+	flex-wrap: wrap;
+}
+.pi-name {
+	font-weight: 650;
+	font-size: 1.02em;
+}
+.pi-page {
+	font-family: var(--font-hand);
+	font-size: 1.2em;
+	color: var(--red-pen) !important;
+	text-decoration: none !important;
+	white-space: nowrap;
+}
+.pi-page:hover {
+	text-decoration: underline !important;
+}
+.pi-desc {
+	font-size: 0.84em;
+	line-height: 1.45;
+	color: var(--ink-soft);
+}
+.more-link {
+	display: inline-block;
+	margin-top: 0.6em;
+	font-family: var(--font-hand);
+	font-size: 1.35em;
+}
+.project-sub {
+	font-size: 0.86em;
+	color: var(--ink-soft);
+	margin-bottom: 0.8em !important;
+}
+.sketch-figure {
+	position: relative;
+	margin-bottom: 0.9em !important;
+}
+.sketch-figure figcaption {
+	margin-top: 0.1em;
+}
+.code-card {
+	max-width: 100%;
+	box-sizing: border-box;
+	font-family: var(--font-code);
+	font-size: calc(var(--fs) * 0.68);
+	line-height: 1.5;
+	white-space: pre;
+	overflow-x: auto;
+	color: var(--ink);
+	background: rgb(255 255 255 / 0.55);
+	border: 1.5px solid var(--ink-soft);
+	border-radius: 4px 6px 3px 5px;
+	padding: 0.6em 0.75em;
+	box-shadow: 2px 3px 0 rgb(38 52 79 / 0.15);
+}
+.cc-file {
+	display: block;
+	font-family: var(--font-hand);
+	font-size: 1.45em;
+	color: var(--red-pen);
+	line-height: 1.1;
+	margin-bottom: 0.2em;
+}
+.typegen {
+	position: relative;
+}
+.typegen .tg-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: 12%;
+	align-items: start;
+}
+.typegen .code-card {
+	font-size: calc(var(--fs) * 0.62);
+	padding: 0.55em 0.6em;
+	overflow: hidden;
+}
+.typegen .schema {
+	transform: rotate(-1.2deg);
+}
+.typegen .rust {
+	transform: rotate(1deg) translateY(0.8em);
+}
+.typegen .f-text {
+	background: rgb(255 229 138 / 0.9);
+}
+.typegen .f-priority {
+	background: rgb(180 214 255 / 0.9);
+}
+.typegen .f-tag {
+	background: rgb(198 232 190 / 0.95);
+}
+.typegen .f-done {
+	background: rgb(255 196 190 / 0.9);
+}
+.tg-arrows {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	overflow: visible;
+}
+.tg-arrows path {
+	fill: none;
+	stroke: var(--red-pen);
+	stroke-width: 1.5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.tg-arrows .tg-line {
+	stroke-dasharray: 4 3;
+}
+.tg-arrows .tg-dot {
+	fill: var(--red-pen);
+	stroke: none;
+}
+/* Narrow pages: stack the two cards; the highlight colours pair the fields. */
+@container page (max-width: 430px) {
+	.typegen .tg-grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.9em;
+		padding-left: 46px;
+	}
+	.typegen .rust {
+		transform: rotate(0.8deg);
+		margin-right: 6%;
+	}
+	.typegen .code-card {
+		font-size: calc(var(--fs) * 0.7);
+	}
+}
+.tg-notes {
+	list-style: none;
+	padding: 0;
+	margin-top: 0.9em !important;
+	font-size: calc(var(--fs) * 1.15);
+}
+.tg-notes li + li {
+	margin-top: 0.15em;
+}
+.plan-card {
+	font-size: calc(var(--fs) * 0.6);
+	transform: rotate(-0.6deg);
+}
+.plan-note {
+	margin: 0.3em 0 0.6em !important;
+	font-size: calc(var(--fs) * 1.15);
+}
+
+/* writing */
+.reading-list {
+	list-style: none;
+	padding: 0;
+	counter-reset: rl;
+}
+.reading-list li {
+	position: relative;
+	padding: 0.2em 0 0.8em 1.8em;
+	counter-increment: rl;
+}
+.reading-list li::before {
+	content: counter(rl) '.';
+	position: absolute;
+	left: 0;
+	top: 0.05em;
+	font-family: var(--font-hand);
+	font-size: 1.6em;
+	color: var(--red-pen);
+}
+.rl-meta {
+	font-size: 0.78em;
+	color: var(--pencil);
+}
+.rl-title {
+	font-weight: 650;
+	line-height: 1.35;
+	display: inline-block;
+}
+.rl-desc {
+	font-size: 0.84em;
+	line-height: 1.5;
+	color: var(--ink-soft);
+	margin-top: 0.2em !important;
+}
+
+/* contact */
+.email-link {
+	display: inline-block;
+	margin: 0.9em 0 1em;
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 2);
+	font-weight: 700;
+	background: linear-gradient(transparent 60%, rgb(255 229 138 / 0.9) 60%);
+	text-decoration: none !important;
+	word-break: break-all;
+}
+.profile-links {
+	list-style: none;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3em 1.2em;
+}
+.profile-links a {
+	font-weight: 600;
+}
+.signoff {
+	margin-top: 1.4em !important;
+	font-family: var(--font-hand);
+	font-size: calc(var(--fs) * 2);
+	transform: rotate(-3deg);
+	transform-origin: left;
+}
+
+/* ---------------------------------------------------------------- phones: one page */
+
+.single {
+	width: min(100%, 560px);
+	min-width: 0;
+	/* the slide-in must never widen the layout viewport (mobile browsers zoom out) */
+	overflow-x: clip;
+	overflow-clip-margin: 24px;
+	--page-w: min(calc(100vw - 32px), 560px);
+	--fs: clamp(15px, calc(var(--page-w) * 0.042), 17px);
+	touch-action: pan-y;
+}
+.single-sheet {
+	position: relative;
+	filter: drop-shadow(0 10px 14px rgb(30 16 8 / 0.45));
+}
+.single-sheet::before {
+	/* page block beneath */
+	content: '';
+	position: absolute;
+	inset: 4px -4px -5px 4px;
+	border-radius: 6px;
+	background: repeating-linear-gradient(to bottom, var(--paper-edge) 0 1px, var(--paper-shade) 1px 2px);
+}
+.single-sheet.from-right {
+	animation: slide-in-right 0.28s ease-out;
+}
+.single-sheet.from-left {
+	animation: slide-in-left 0.28s ease-out;
+}
+@keyframes slide-in-right {
+	from {
+		transform: translateX(28px) rotate(1deg);
+		opacity: 0.4;
+	}
+}
+@keyframes slide-in-left {
+	from {
+		transform: translateX(-28px) rotate(-1deg);
+		opacity: 0.4;
+	}
+}
+.single .paper {
+	position: relative;
+	inset: auto;
+	min-height: calc(100svh - 150px);
+	border-radius: 6px;
+	box-shadow:
+		inset 18px 0 22px -18px rgb(80 50 20 / 0.35),
+		inset 0 0 0 1px rgb(120 90 60 / 0.18);
+	overflow: visible;
+}
+.single .paper-inner,
+.plain .paper-inner {
+	position: static;
+	padding: 28px 22px 48px 44px;
+	overflow: visible;
+}
+.single .paper::before,
+.plain .paper::before {
+	left: 30px;
+	right: auto;
+}
+.single .folio,
+.plain .folio {
+	right: 18px;
+	left: auto;
+	bottom: 10px;
+}
+.single-controls {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 15;
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+	background: linear-gradient(transparent, rgb(40 24 14 / 0.65) 40%);
+}
+.single-controls button {
+	flex: 1;
+	max-width: 160px;
+}
+.swipe-hint {
+	text-align: center;
+	margin: 12px 0 0;
+	font-family: var(--font-hand);
+	font-size: 19px;
+	color: #f3e6c8;
+}
+@media (max-width: 899px), (max-height: 559px) {
+	.clock-tag {
+		top: 12px;
+		bottom: auto;
+		left: 12px;
+		font-size: 16px;
+	}
+	.view-toggle {
+		top: 10px;
+		right: 12px;
+	}
+	.view-toggle button {
+		font-size: 13px;
+		padding: 7px 10px 6px;
+		min-height: 34px;
+	}
+	.desk-surface {
+		padding-top: 58px;
+		padding-bottom: 90px;
+		align-items: start;
+	}
+}
+
+/* ---------------------------------------------------------------- plain reading view */
+
+.plain {
+	width: min(100%, 720px);
+	--page-w: min(calc(100vw - 32px), 720px);
+	--fs: 16.5px;
+}
+.plain-section {
+	position: relative;
+	margin-bottom: 20px;
+	scroll-margin-top: 60px;
+}
+.plain .paper {
+	position: relative;
+	inset: auto;
+	border-radius: 6px;
+	overflow: visible;
+	box-shadow: 0 6px 14px rgb(30 16 8 / 0.35);
+}
+.plain .paper-inner {
+	padding-left: 50px;
+}
+html[data-view='plain'] .desk-surface,
+html:not(.js) .desk-surface {
+	align-items: start;
+	padding-top: 64px;
+}
+html[data-view='plain'] .room-details {
+	display: none;
+}
+
+/* ---------------------------------------------------------------- reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+	.single-sheet.from-right,
+	.single-sheet.from-left,
+	.room-details {
+		animation: none;
+	}
+	.room .day,
+	.room .night,
+	.light,
+	.corner-hint .fingers {
+		transition: none;
+	}
+	.book[data-hover] .corner-hint {
+		--fingers: 0 !important;
 	}
 }
